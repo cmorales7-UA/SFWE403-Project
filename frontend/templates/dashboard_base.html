@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="dashboard-shell" id="dashboard-shell">
+
+    <!-- This section contains navigation for the current user role. -->
+    <aside class="dashboard-sidebar" id="dashboard-sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="sidebar-role-text">
+                {% block sidebar_role %}
+                {% endblock %}
+            </div>
+
+            <!-- This button collapses or expands the sidebar. -->
+            <button type="button" class="sidebar-toggle" id="sidebar-toggle" aria-label="Collapse navigation"
+                aria-controls="dashboard-sidebar" aria-expanded="true">
+                <span id="sidebar-toggle-icon">‹</span>
+            </button>
+
+        </div>
+
+
+        <nav class="sidebar-navigation">
+            {% block sidebar_navigation %}
+            {% endblock %}
+        </nav>
+
+    </aside>
+
+
+    <!-- This section contains the main dashboard information. -->
+    <main class="dashboard-main">
+
+        <div class="dashboard-main-container">
+
+            <div class="dashboard-heading">
+
+                <h1>
+                    {% block dashboard_heading %}
+                    Dashboard
+                    {% endblock %}
+                </h1>
+
+            </div>
+
+
+            <section class="dashboard-summary">
+                {% block dashboard_summary %}
+                {% endblock %}
+            </section>
+
+
+            <section class="dashboard-content">
+                {% block dashboard_content %}
+                {% endblock %}
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="/static/js/pages/dashboard.js"></script>
+
+{% endblock %}

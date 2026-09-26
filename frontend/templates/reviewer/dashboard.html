@@ -1,28 +1,124 @@
-{% extends "base.html" %}
+{% extends "dashboard_base.html" %}
 
 {% block title %}
-Reviewer | UA-GDAS
+Reviewer Dashboard | UA-GDAS
 {% endblock %}
 
-{% block content %}
 
-<section class="dashboard-page">
+{% block sidebar_role %}
+Application Reviewer
+{% endblock %}
 
-    <div class="dashboard-container">
 
-        <h1>Application Reviewer</h1>
+{% block sidebar_navigation %}
 
-        <div class="dashboard-grid">
+<div class="sidebar-main-navigation">
 
-            <a href="#" class="dashboard-card">
-                <span class="card-number">01</span>
-                <h2>Review Applications</h2>
-            </a>
+    <a href="/reviewer" class="sidebar-link active">
+        Overview
+    </a>
 
-        </div>
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Review
+        </span>
+
+        <a href="#" class="sidebar-link">
+            Review Applications
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Advisor Communication
+        </a>
 
     </div>
 
-</section>
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Resources
+        </span>
+
+        <a href="#" class="sidebar-link">
+            Graduate Degrees
+        </a>
+
+    </div>
+
+</div>
+
+{% include "partials/sidebar_settings.html" %}
+
+{% endblock %}
+
+
+{% block dashboard_heading %}
+Reviewer Dashboard
+{% endblock %}
+
+
+{% block dashboard_summary %}
+
+<div class="summary-card">
+    <span class="summary-label">Assigned Applications</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+<div class="summary-card">
+    <span class="summary-label">Pending Reviews</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+<div class="summary-card">
+    <span class="summary-label">Completed Reviews</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+<div class="summary-card">
+    <span class="summary-label">Recommendations Entered</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<div class="dashboard-panel">
+
+    <div class="panel-heading">
+        <h2>Assigned Applications</h2>
+    </div>
+
+    <div class="table-container">
+
+        <table class="dashboard-table">
+
+            <thead>
+                <tr>
+                    <th>Applicant</th>
+                    <th>Degree Program</th>
+                    <th>Status</th>
+                    <th>Recommendation</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="empty-row">
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
 
 {% endblock %}

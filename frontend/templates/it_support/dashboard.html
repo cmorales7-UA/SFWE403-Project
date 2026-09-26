@@ -1,28 +1,117 @@
-{% extends "base.html" %}
+{% extends "dashboard_base.html" %}
 
 {% block title %}
-IT Support | UA-GDAS
+IT Support Dashboard | UA-GDAS
 {% endblock %}
 
-{% block content %}
 
-<section class="dashboard-page">
+{% block sidebar_role %}
+IT Support
+{% endblock %}
 
-    <div class="dashboard-container">
 
-        <h1>IT Support</h1>
+{% block sidebar_navigation %}
 
-        <div class="dashboard-grid">
+<div class="sidebar-main-navigation">
 
-            <a href="#" class="dashboard-card">
-                <span class="card-number">01</span>
-                <h2>User Accounts</h2>
-            </a>
+    <a href="/it-support" class="sidebar-link active">
+        Overview
+    </a>
 
-        </div>
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Accounts
+        </span>
+
+        <a href="#" class="sidebar-link">
+            Manage User Accounts
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Authorize Accounts
+        </a>
 
     </div>
 
-</section>
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Resources
+        </span>
+
+        <a href="#" class="sidebar-link">
+            Graduate Degrees
+        </a>
+
+    </div>
+
+</div>
+
+{% include "partials/sidebar_settings.html" %}
+
+{% endblock %}
+
+
+{% block dashboard_heading %}
+IT Support Dashboard
+{% endblock %}
+
+
+{% block dashboard_summary %}
+
+<div class="summary-card">
+    <span class="summary-label">User Accounts</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+<div class="summary-card">
+    <span class="summary-label">Pending Authorization</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+<div class="summary-card">
+    <span class="summary-label">Authorized Accounts</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<div class="dashboard-panel">
+
+    <div class="panel-heading">
+        <h2>User Accounts</h2>
+    </div>
+
+    <div class="table-container">
+
+        <table class="dashboard-table">
+
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>User Type</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="empty-row">
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
 
 {% endblock %}

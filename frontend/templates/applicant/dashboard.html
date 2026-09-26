@@ -1,38 +1,176 @@
-{% extends "base.html" %}
+{% extends "dashboard_base.html" %}
 
 {% block title %}
-Applicant | UA-GDAS
+Applicant Dashboard | UA-GDAS
 {% endblock %}
 
-{% block content %}
 
-<section class="dashboard-page">
+{% block sidebar_role %}
+Applicant
+{% endblock %}
 
-    <div class="dashboard-container">
 
-        <h1>Applicant</h1>
+{% block sidebar_navigation %}
 
-        <div class="dashboard-grid">
+<div class="sidebar-main-navigation">
 
-            <a href="#" class="dashboard-card">
-                <span class="card-number">01</span>
-                <h2>Student Application</h2>
-            </a>
+    <a href="/applicant" class="sidebar-link active">
+        Overview
+    </a>
 
-            <a href="#" class="dashboard-card">
-                <span class="card-number">02</span>
-                <h2>Modify Application</h2>
-            </a>
 
-            <a href="#" class="dashboard-card">
-                <span class="card-number">03</span>
-                <h2>View Graduate Degrees</h2>
-            </a>
+    <div class="sidebar-group">
 
-        </div>
+        <span class="sidebar-group-label">
+            Application
+        </span>
+
+        <a href="#" class="sidebar-link">
+            Student Application
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Modify Application
+        </a>
 
     </div>
 
-</section>
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Resources
+        </span>
+
+        <a href="#" class="sidebar-link">
+            Graduate Degrees
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Notifications
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- This control opens account settings. -->
+<a
+    href="#"
+    class="sidebar-settings"
+    aria-label="Settings"
+    title="Settings"
+>
+
+    <svg
+        class="settings-icon"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+    >
+        <path
+            d="M19.14 12.94a7.43 7.43 0 0 0 .05-.94
+               7.43 7.43 0 0 0-.05-.94l2.03-1.58
+               a.5.5 0 0 0 .12-.64l-1.92-3.32
+               a.5.5 0 0 0-.61-.22l-2.39.96
+               a7.28 7.28 0 0 0-1.63-.94L14.38 2.8
+               a.5.5 0 0 0-.5-.4h-3.84
+               a.5.5 0 0 0-.5.4l-.36 2.52
+               a7.28 7.28 0 0 0-1.63.94L5.16 5.3
+               a.5.5 0 0 0-.61.22L2.63 8.84
+               a.5.5 0 0 0 .12.64l2.03 1.58
+               a7.43 7.43 0 0 0-.05.94
+               7.43 7.43 0 0 0 .05.94L2.75 14.52
+               a.5.5 0 0 0-.12.64l1.92 3.32
+               a.5.5 0 0 0 .61.22l2.39-.96
+               a7.28 7.28 0 0 0 1.63.94l.36 2.52
+               a.5.5 0 0 0 .5.4h3.84
+               a.5.5 0 0 0 .5-.4l.36-2.52
+               a7.28 7.28 0 0 0 1.63-.94l2.39.96
+               a.5.5 0 0 0 .61-.22l1.92-3.32
+               a.5.5 0 0 0-.12-.64zM12 15.5
+               A3.5 3.5 0 1 1 12 8
+               a3.5 3.5 0 0 1 0 7.5z"
+        />
+    </svg>
+
+    <span class="settings-text">
+        Settings
+    </span>
+
+</a>
+
+{% endblock %}
+
+
+{% block dashboard_heading %}
+Applicant Dashboard
+{% endblock %}
+
+
+{% block dashboard_summary %}
+
+<div class="summary-card">
+    <span class="summary-label">Application Status</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+<div class="summary-card">
+    <span class="summary-label">Degree Program</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+<div class="summary-card">
+    <span class="summary-label">Campus</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+<div class="summary-card">
+    <span class="summary-label">Term</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<div class="dashboard-panel">
+
+    <div class="panel-heading">
+        <h2>Applications</h2>
+    </div>
+
+    <div class="table-container">
+
+        <table class="dashboard-table">
+
+            <thead>
+                <tr>
+                    <th>Degree Program</th>
+                    <th>Campus</th>
+                    <th>Term</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr class="empty-row">
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
 
 {% endblock %}

@@ -1,43 +1,138 @@
-{% extends "base.html" %}
+{% extends "dashboard_base.html" %}
 
 {% block title %}
-Degree Advisor | UA-GDAS
+Degree Advisor Dashboard | UA-GDAS
 {% endblock %}
 
-{% block content %}
 
-<section class="dashboard-page">
+{% block sidebar_role %}
+Degree Advisor
+{% endblock %}
 
-    <div class="dashboard-container">
 
-        <h1>Graduate Degree Advisor</h1>
+{% block sidebar_navigation %}
 
-        <div class="dashboard-grid">
+<div class="sidebar-main-navigation">
 
-            <a href="#" class="dashboard-card">
-                <span class="card-number">01</span>
-                <h2>Create Degree Program</h2>
-            </a>
+    <a href="/advisor" class="sidebar-link active">
+        Overview
+    </a>
 
-            <a href="#" class="dashboard-card">
-                <span class="card-number">02</span>
-                <h2>Modify Degree Program</h2>
-            </a>
 
-            <a href="#" class="dashboard-card">
-                <span class="card-number">03</span>
-                <h2>Application Review</h2>
-            </a>
+    <div class="sidebar-group">
 
-            <a href="#" class="dashboard-card">
-                <span class="card-number">04</span>
-                <h2>View Graduate Degrees</h2>
-            </a>
+        <span class="sidebar-group-label">
+            Applications
+        </span>
 
-        </div>
+        <a href="#" class="sidebar-link">
+            Student Applications
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Application Review
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Review Committee
+        </a>
 
     </div>
 
-</section>
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Degree Programs
+        </span>
+
+        <a href="#" class="sidebar-link">
+            Create Degree Program
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Modify Degree Program
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Graduate Degrees
+        </a>
+
+    </div>
+
+</div>
+
+{% include "partials/sidebar_settings.html" %}
+
+{% endblock %}
+
+
+{% block dashboard_heading %}
+Degree Advisor Dashboard
+{% endblock %}
+
+
+{% block dashboard_summary %}
+
+<div class="summary-card">
+    <span class="summary-label">Applications</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+<div class="summary-card">
+    <span class="summary-label">Reviews Pending</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+<div class="summary-card">
+    <span class="summary-label">Reviews Completed</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+<div class="summary-card">
+    <span class="summary-label">Degree Programs</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<div class="dashboard-panel">
+
+    <div class="panel-heading">
+        <h2>Applications</h2>
+    </div>
+
+    <div class="table-container">
+
+        <table class="dashboard-table">
+
+            <thead>
+                <tr>
+                    <th>Applicant</th>
+                    <th>Degree Program</th>
+                    <th>Term</th>
+                    <th>Status</th>
+                    <th>Decision</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="empty-row">
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
 
 {% endblock %}

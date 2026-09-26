@@ -1,28 +1,96 @@
-{% extends "base.html" %}
+{% extends "dashboard_base.html" %}
 
 {% block title %}
-Reference | UA-GDAS
+Reference Dashboard | UA-GDAS
 {% endblock %}
 
-{% block content %}
 
-<section class="dashboard-page">
+{% block sidebar_role %}
+Applicant Reference
+{% endblock %}
 
-    <div class="dashboard-container">
 
-        <h1>Applicant Reference</h1>
+{% block sidebar_navigation %}
 
-        <div class="dashboard-grid">
+<div class="sidebar-main-navigation">
 
-            <a href="#" class="dashboard-card">
-                <span class="card-number">01</span>
-                <h2>Letter of Recommendation</h2>
-            </a>
+    <a href="/reference" class="sidebar-link active">
+        Overview
+    </a>
 
-        </div>
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Recommendation
+        </span>
+
+        <a href="#" class="sidebar-link">
+            Letter of Recommendation
+        </a>
 
     </div>
 
-</section>
+</div>
+
+{% endblock %}
+
+
+{% block dashboard_heading %}
+Reference Dashboard
+{% endblock %}
+
+
+{% block dashboard_summary %}
+
+<div class="summary-card">
+    <span class="summary-label">Requests</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+<div class="summary-card">
+    <span class="summary-label">Letters Submitted</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+<div class="summary-card">
+    <span class="summary-label">Pending</span>
+    <strong class="summary-value">—</strong>
+</div>
+
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<div class="dashboard-panel">
+
+    <div class="panel-heading">
+        <h2>Recommendation Requests</h2>
+    </div>
+
+    <div class="table-container">
+
+        <table class="dashboard-table">
+
+            <thead>
+                <tr>
+                    <th>Request</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="empty-row">
+                    <td>—</td>
+                    <td>—</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
 
 {% endblock %}
