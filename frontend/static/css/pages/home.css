@@ -1,0 +1,141 @@
+/* Hero */
+
+.hero {
+    position: relative;
+
+    width: 100%;
+    height: 560px;
+
+    overflow: hidden;
+}
+
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+    object-position: center;
+}
+
+
+.hero-overlay {
+    position: absolute;
+
+    top: 50%;
+    right: 8%;
+
+    transform: translateY(-50%);
+
+    width: 460px;
+    padding: 40px;
+
+    background-color: rgba(12, 35, 75, 0.94);
+    color: var(--white);
+
+    border-radius: 8px;
+}
+
+
+.hero-overlay h1 {
+    margin: 0 0 20px;
+
+    font-size: 2.5rem;
+    line-height: 1.1;
+}
+
+
+.hero-overlay p {
+    margin: 0;
+
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+
+/* How It Works */
+
+.how-it-works {
+    background-color: var(--white);
+
+    padding: 72px 32px;
+}
+
+
+.how-it-works-container {
+    max-width: 1280px;
+
+    margin: 0 auto;
+}
+
+
+.how-it-works h2 {
+    margin: 0 0 48px;
+
+    text-align: center;
+
+    color: var(--ua-blue);
+
+    font-size: 2rem;
+}
+
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 56px;
+}
+
+
+.step-number {
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: var(--ua-red);
+
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+
+.step h3 {
+    margin: 0 0 12px;
+
+    color: var(--ua-blue);
+
+    font-size: 1.25rem;
+}
+
+
+.step p {
+    margin: 0;
+
+    color: var(--text-secondary);
+
+    line-height: 1.6;
+}
+
+
+/* Basic responsive fallback */
+
+@media (max-width: 900px) {
+
+    .hero {
+        height: 560px;
+    }
+
+    .hero-overlay {
+        right: 4%;
+
+        width: 420px;
+    }
+
+    .steps {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+}

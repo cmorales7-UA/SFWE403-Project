@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Account | UA-GDAS
+{% endblock %}
+
+{% block content %}
+
+<section class="account-page">
+
+    <div class="account-container">
+
+        <h1>Create Account</h1>
+
+        <form class="account-form">
+
+            <!-- This section collects the user's account credentials. -->
+            <section class="form-section">
+
+                <div class="section-heading">
+                    <span class="section-number">01</span>
+                    <h2>Account Information</h2>
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-field">
+                        <label for="username">Username</label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label for="password">Password</label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- This section collects the security questions used for account recovery. -->
+            <section class="form-section">
+
+                <div class="section-heading">
+                    <span class="section-number">02</span>
+                    <h2>Security Questions</h2>
+                </div>
+
+                <div class="form-field">
+                    <label for="security_question_1">
+                        Security Question 1
+                    </label>
+
+                    <input
+                        type="text"
+                        id="security_question_1"
+                        name="security_question_1"
+                        required
+                    >
+                </div>
+
+                <div class="form-field">
+                    <label for="security_answer_1">
+                        Answer
+                    </label>
+
+                    <input
+                        type="text"
+                        id="security_answer_1"
+                        name="security_answer_1"
+                        required
+                    >
+                </div>
+
+                <div class="form-field">
+                    <label for="security_question_2">
+                        Security Question 2
+                    </label>
+
+                    <input
+                        type="text"
+                        id="security_question_2"
+                        name="security_question_2"
+                        required
+                    >
+                </div>
+
+                <div class="form-field">
+                    <label for="security_answer_2">
+                        Answer
+                    </label>
+
+                    <input
+                        type="text"
+                        id="security_answer_2"
+                        name="security_answer_2"
+                        required
+                    >
+                </div>
+
+            </section>
+
+
+            <!-- This section collects the user's personal and contact information. -->
+            <section class="form-section">
+
+                <div class="section-heading">
+                    <span class="section-number">03</span>
+                    <h2>Personal Information</h2>
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-field">
+                        <label for="first_name">First Name</label>
+
+                        <input
+                            type="text"
+                            id="first_name"
+                            name="first_name"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label for="last_name">Last Name</label>
+
+                        <input
+                            type="text"
+                            id="last_name"
+                            name="last_name"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label for="net_id">
+                            NetID <span class="optional">(Optional)</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="net_id"
+                            name="net_id"
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label for="phone_number">
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone_number"
+                            name="phone_number"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-field form-field-full">
+                        <label for="email_address">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email_address"
+                            name="email_address"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- This button submits the Create Account form. -->
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Create Account
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

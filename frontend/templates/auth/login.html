@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}
+Log In | UA-GDAS
+{% endblock %}
+
+{% block content %}
+
+<section class="login-page">
+
+    <div class="login-container">
+
+        <h1>Log In</h1>
+
+        <form class="login-form">
+
+            <!-- This section collects the user's login credentials. -->
+            <div class="login-fields">
+
+                <div class="form-field">
+                    <label for="username">Username</label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-field">
+                    <label for="password">Password</label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                    >
+                </div>
+
+            </div>
+
+
+            <!-- This button submits the Login form. -->
+            <div class="login-actions">
+
+                <button
+                    type="submit"
+                    class="login-button"
+                >
+                    Log In
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

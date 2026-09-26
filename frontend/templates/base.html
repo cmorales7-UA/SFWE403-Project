@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{% block title %}UA-GDAS{% endblock %}</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/css/main.css"
+    >
+</head>
+
+<body>
+
+    <header class="site-header">
+
+        <div class="header-content">
+
+            <a href="/" class="university-brand">
+                <img
+                    src="/static/images/ua-logo.png"
+                    alt="University of Arizona"
+                    class="ua-logo"
+                >
+            </a>
+
+
+            <div class="system-title">
+                Graduate Degree Application System
+            </div>
+
+
+            <nav class="account-navigation">
+                <a href="/login">Log In</a>
+
+                <span class="nav-divider">|</span>
+
+                <a href="/create-account">Sign Up</a>
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+</body>
+</html>

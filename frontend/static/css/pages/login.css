@@ -1,0 +1,129 @@
+/* This section controls the overall Login page layout. */
+.login-page {
+    min-height: calc(100vh - 94px);
+    padding: 72px 32px 96px;
+
+    background-color: #f5f7fa;
+}
+
+
+.login-container {
+    width: 100%;
+    max-width: 520px;
+
+    margin: 0 auto;
+}
+
+
+.login-container > h1 {
+    position: relative;
+
+    margin: 0 0 36px;
+    padding-bottom: 14px;
+
+    color: var(--ua-blue);
+
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+
+/* This adds the Arizona Red accent below the page title. */
+.login-container > h1::after {
+    content: "";
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 56px;
+    height: 4px;
+
+    background-color: var(--ua-red);
+
+    border-radius: 2px;
+}
+
+
+/* This section styles the Login form container. */
+.login-form {
+    overflow: hidden;
+
+    background-color: var(--white);
+
+    border: 1px solid #dce1e7;
+    border-radius: 10px;
+
+    box-shadow: 0 8px 28px rgba(12, 35, 75, 0.08);
+}
+
+
+/* This section contains the username and password fields. */
+.login-fields {
+    padding: 40px;
+}
+
+
+.login-fields .form-field {
+    margin-bottom: 28px;
+}
+
+
+.login-fields .form-field:last-child {
+    margin-bottom: 0;
+}
+
+
+/* This section contains the main Login action. */
+.login-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    padding: 28px 40px;
+
+    background-color: #f8fafc;
+
+    border-top: 1px solid #e4e8ed;
+}
+
+
+/* This section styles the Login button. */
+.login-button {
+    min-width: 140px;
+
+    padding: 13px 26px;
+
+    background-color: var(--ua-red);
+    color: var(--white);
+
+    border: 2px solid var(--ua-red);
+    border-radius: 5px;
+
+    font: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.1s ease;
+}
+
+
+.login-button:hover {
+    background-color: #8c041a;
+    border-color: #8c041a;
+}
+
+
+.login-button:active {
+    transform: translateY(1px);
+}
+
+
+.login-button:focus {
+    outline: 3px solid rgba(12, 35, 75, 0.25);
+    outline-offset: 3px;
+}

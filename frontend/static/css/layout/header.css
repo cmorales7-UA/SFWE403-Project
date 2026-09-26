@@ -1,0 +1,83 @@
+.site-header {
+    background-color: var(--white);
+
+    border-top: 4px solid var(--ua-red);
+    border-bottom: 4px solid var(--ua-blue);
+}
+
+
+.header-content {
+    width: 100%;
+    max-width: 1280px;
+    height: 90px;
+
+    margin: 0 auto;
+    padding: 0 32px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(250px, 1fr)
+        minmax(350px, 2fr)
+        minmax(200px, 1fr);
+
+    align-items: center;
+}
+
+
+.university-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: var(--ua-blue);
+
+    font-size: 1rem;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+.ua-logo {
+    height: 48px;
+    width: auto;
+}
+
+
+.system-title {
+    text-align: center;
+
+    color: var(--ua-blue);
+
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+
+.account-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+}
+
+
+.account-navigation a {
+    color: var(--ua-blue);
+
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+
+.account-navigation a:hover {
+    text-decoration: underline;
+}
+
+
+.nav-divider {
+    color: var(--ua-red);
+}

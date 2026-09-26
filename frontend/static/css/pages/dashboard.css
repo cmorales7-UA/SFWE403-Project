@@ -1,0 +1,127 @@
+/* This section controls the overall dashboard layout. */
+.dashboard-page {
+    min-height: calc(100vh - 94px);
+    padding: 56px 32px 96px;
+
+    background-color: #f5f7fa;
+}
+
+
+.dashboard-container {
+    width: 100%;
+    max-width: 1100px;
+
+    margin: 0 auto;
+}
+
+
+.dashboard-container > h1 {
+    position: relative;
+
+    margin: 0 0 40px;
+    padding-bottom: 14px;
+
+    color: var(--ua-blue);
+
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+
+/* This adds the Arizona Red accent below the page title. */
+.dashboard-container > h1::after {
+    content: "";
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 56px;
+    height: 4px;
+
+    background-color: var(--ua-red);
+
+    border-radius: 2px;
+}
+
+
+/* This section creates the dashboard card layout. */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 24px;
+}
+
+
+/* This section styles each dashboard option. */
+.dashboard-card {
+    min-height: 150px;
+
+    padding: 28px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    background-color: var(--white);
+    color: var(--ua-blue);
+
+    border: 1px solid #dce1e7;
+    border-top: 4px solid var(--ua-blue);
+    border-radius: 8px;
+
+    box-shadow: 0 6px 20px rgba(12, 35, 75, 0.06);
+
+    text-decoration: none;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.15s ease;
+}
+
+
+.dashboard-card:hover {
+    border-top-color: var(--ua-red);
+
+    box-shadow: 0 9px 26px rgba(12, 35, 75, 0.11);
+
+    transform: translateY(-2px);
+}
+
+
+.card-number {
+    color: var(--ua-red);
+
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+
+.dashboard-card h2 {
+    margin: 24px 0 0;
+
+    color: var(--ua-blue);
+
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+
+/* This keeps the dashboard usable on smaller screens. */
+@media (max-width: 900px) {
+
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}

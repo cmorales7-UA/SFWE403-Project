@@ -1,0 +1,286 @@
+/* This section controls the overall Create Account page. */
+.account-page {
+    min-height: calc(100vh - 94px);
+    padding: 56px 32px 96px;
+
+    background-color: #f5f7fa;
+}
+
+
+.account-container {
+    width: 100%;
+    max-width: 880px;
+
+    margin: 0 auto;
+}
+
+
+.account-container > h1 {
+    position: relative;
+
+    margin: 0 0 36px;
+    padding-bottom: 14px;
+
+    color: var(--ua-blue);
+
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+
+/* This red line gives the page title a subtle UA accent. */
+.account-container > h1::after {
+    content: "";
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 56px;
+    height: 4px;
+
+    background-color: var(--ua-red);
+
+    border-radius: 2px;
+}
+
+
+/* This section styles the main form container. */
+.account-form {
+    overflow: hidden;
+
+    background-color: var(--white);
+
+    border: 1px solid #dce1e7;
+    border-radius: 10px;
+
+    box-shadow: 0 8px 28px rgba(12, 35, 75, 0.08);
+}
+
+
+/* This section separates each group while keeping the form visually light. */
+.form-section {
+    padding: 36px 40px;
+
+    border-bottom: 1px solid #e4e8ed;
+}
+
+
+.form-section:last-of-type {
+    border-bottom: none;
+}
+
+
+/* This section styles the numbered headings for each requirement group. */
+.section-heading {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    margin-bottom: 28px;
+}
+
+
+.section-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    background-color: var(--ua-red);
+    color: var(--white);
+
+    border-radius: 50%;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+
+.section-heading h2 {
+    margin: 0;
+
+    color: var(--ua-blue);
+
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+
+/* This section controls the layout of related fields. */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 24px 28px;
+}
+
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 24px;
+}
+
+
+.form-grid .form-field {
+    margin-bottom: 0;
+}
+
+
+.form-field-full {
+    grid-column: 1 / -1;
+}
+
+
+/* This section controls field labels. */
+.form-field label {
+    margin-bottom: 8px;
+
+    color: var(--ua-blue);
+
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+
+.optional {
+    color: #6b7280;
+
+    font-weight: 400;
+}
+
+
+/* This section controls the input fields and interaction states. */
+.form-field input {
+    width: 100%;
+    height: 48px;
+
+    padding: 0 14px;
+
+    color: #1f2937;
+    background-color: var(--white);
+
+    border: 1px solid #a9b3c1;
+    border-radius: 5px;
+
+    font: inherit;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+.form-field input:hover {
+    border-color: #60758f;
+}
+
+
+.form-field input:focus {
+    border-color: var(--ua-blue);
+
+    outline: none;
+
+    box-shadow: 0 0 0 3px rgba(12, 35, 75, 0.13);
+}
+
+
+/* This section contains the main form action. */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    padding: 28px 40px;
+
+    background-color: #f8fafc;
+
+    border-top: 1px solid #e4e8ed;
+}
+
+
+/* This section styles the Create Account button. */
+.primary-button {
+    min-width: 180px;
+
+    padding: 13px 26px;
+
+    background-color: var(--ua-red);
+    color: var(--white);
+
+    border: 2px solid var(--ua-red);
+    border-radius: 5px;
+
+    font: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.1s ease;
+}
+
+
+.primary-button:hover {
+    background-color: #8c041a;
+    border-color: #8c041a;
+}
+
+
+.primary-button:active {
+    transform: translateY(1px);
+}
+
+
+.primary-button:focus {
+    outline: 3px solid rgba(12, 35, 75, 0.25);
+    outline-offset: 3px;
+}
+
+
+/* This keeps the form usable on smaller screens. */
+@media (max-width: 700px) {
+
+    .account-page {
+        padding: 40px 20px 64px;
+    }
+
+
+    .account-container > h1 {
+        font-size: 2.1rem;
+    }
+
+
+    .form-section {
+        padding: 28px 24px;
+    }
+
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .form-field-full {
+        grid-column: auto;
+    }
+
+
+    .form-actions {
+        padding: 24px;
+    }
+
+
+    .primary-button {
+        width: 100%;
+    }
+}
