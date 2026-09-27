@@ -1,5 +1,6 @@
 {% extends "dashboard_base.html" %}
 
+
 {% block title %}
 Applicant Dashboard | UA-GDAS
 {% endblock %}
@@ -25,11 +26,11 @@ Applicant
             Application
         </span>
 
-        <a href="#" class="sidebar-link">
+        <a href="/applicant/application" class="sidebar-link">
             Student Application
         </a>
 
-        <a href="#" class="sidebar-link">
+        <a href="/applicant/modify-application" class="sidebar-link">
             Modify Application
         </a>
 
@@ -42,7 +43,7 @@ Applicant
             Resources
         </span>
 
-        <a href="#" class="sidebar-link">
+        <a href="/applicant/graduate-degrees" class="sidebar-link">
             Graduate Degrees
         </a>
 
@@ -55,52 +56,7 @@ Applicant
 </div>
 
 
-<!-- This control opens account settings. -->
-<a
-    href="#"
-    class="sidebar-settings"
-    aria-label="Settings"
-    title="Settings"
->
-
-    <svg
-        class="settings-icon"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-    >
-        <path
-            d="M19.14 12.94a7.43 7.43 0 0 0 .05-.94
-               7.43 7.43 0 0 0-.05-.94l2.03-1.58
-               a.5.5 0 0 0 .12-.64l-1.92-3.32
-               a.5.5 0 0 0-.61-.22l-2.39.96
-               a7.28 7.28 0 0 0-1.63-.94L14.38 2.8
-               a.5.5 0 0 0-.5-.4h-3.84
-               a.5.5 0 0 0-.5.4l-.36 2.52
-               a7.28 7.28 0 0 0-1.63.94L5.16 5.3
-               a.5.5 0 0 0-.61.22L2.63 8.84
-               a.5.5 0 0 0 .12.64l2.03 1.58
-               a7.43 7.43 0 0 0-.05.94
-               7.43 7.43 0 0 0 .05.94L2.75 14.52
-               a.5.5 0 0 0-.12.64l1.92 3.32
-               a.5.5 0 0 0 .61.22l2.39-.96
-               a7.28 7.28 0 0 0 1.63.94l.36 2.52
-               a.5.5 0 0 0 .5.4h3.84
-               a.5.5 0 0 0 .5-.4l.36-2.52
-               a7.28 7.28 0 0 0 1.63-.94l2.39.96
-               a.5.5 0 0 0 .61-.22l1.92-3.32
-               a.5.5 0 0 0-.12-.64zM12 15.5
-               A3.5 3.5 0 1 1 12 8
-               a3.5 3.5 0 0 1 0 7.5z"
-        />
-    </svg>
-
-    <span class="settings-text">
-        Settings
-    </span>
-
-</a>
+{% include "partials/sidebar_settings.html" %}
 
 {% endblock %}
 
@@ -113,23 +69,46 @@ Applicant Dashboard
 {% block dashboard_summary %}
 
 <div class="summary-card">
-    <span class="summary-label">Application Status</span>
-    <strong class="summary-value">—</strong>
+    <span class="summary-label">
+        Application Status
+    </span>
+
+    <strong class="summary-value">
+        —
+    </strong>
 </div>
 
-<div class="summary-card">
-    <span class="summary-label">Degree Program</span>
-    <strong class="summary-value">—</strong>
-</div>
 
 <div class="summary-card">
-    <span class="summary-label">Campus</span>
-    <strong class="summary-value">—</strong>
+    <span class="summary-label">
+        Degree Program
+    </span>
+
+    <strong class="summary-value">
+        —
+    </strong>
 </div>
 
+
 <div class="summary-card">
-    <span class="summary-label">Term</span>
-    <strong class="summary-value">—</strong>
+    <span class="summary-label">
+        Campus
+    </span>
+
+    <strong class="summary-value">
+        —
+    </strong>
+</div>
+
+
+<div class="summary-card">
+    <span class="summary-label">
+        Term
+    </span>
+
+    <strong class="summary-value">
+        —
+    </strong>
 </div>
 
 {% endblock %}
@@ -143,18 +122,22 @@ Applicant Dashboard
         <h2>Applications</h2>
     </div>
 
+
     <div class="table-container">
 
         <table class="dashboard-table">
 
             <thead>
+
                 <tr>
                     <th>Degree Program</th>
                     <th>Campus</th>
                     <th>Term</th>
                     <th>Status</th>
                 </tr>
+
             </thead>
+
 
             <tbody>
 

@@ -1,0 +1,81 @@
+{% extends "dashboard_base.html" %}
+
+
+{% block title %}
+Modify Application | UA-GDAS
+{% endblock %}
+
+
+{% block sidebar_role %}
+Applicant
+{% endblock %}
+
+
+{% block sidebar_navigation %}
+
+<div class="sidebar-main-navigation">
+
+    <a href="/applicant" class="sidebar-link">
+        Overview
+    </a>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Application
+        </span>
+
+        <a href="/applicant/application" class="sidebar-link">
+            Student Application
+        </a>
+
+        <a
+            href="/applicant/modify-application"
+            class="sidebar-link active"
+        >
+            Modify Application
+        </a>
+
+    </div>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Resources
+        </span>
+
+        <a href="/applicant/graduate-degrees" class="sidebar-link">
+            Graduate Degrees
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Notifications
+        </a>
+
+    </div>
+
+</div>
+
+{% include "partials/sidebar_settings.html" %}
+
+{% endblock %}
+
+
+{% block dashboard_heading %}
+Modify Application
+{% endblock %}
+
+
+{% block dashboard_summary %}
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+{% set submit_button_text = "Save Changes" %}
+
+{% include "partials/student_application_form.html" %}
+
+{% endblock %}

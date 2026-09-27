@@ -1,0 +1,596 @@
+{% extends "dashboard_base.html" %}
+
+
+{% block title %}
+Manage Users | UA-GDAS
+{% endblock %}
+
+
+{% block sidebar_role %}
+Administrator
+{% endblock %}
+
+
+{% block sidebar_navigation %}
+
+<div class="sidebar-main-navigation">
+
+    <a href="/administrator" class="sidebar-link">
+        Overview
+    </a>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Management
+        </span>
+
+        <a
+            href="/administrator/manage-users"
+            class="sidebar-link active"
+        >
+            Manage Users
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Student Applications
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Application Review
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Review Committee
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Admissions Processing
+        </a>
+
+    </div>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Degree Programs
+        </span>
+
+        <a href="#" class="sidebar-link">
+            Create Degree Program
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Modify Degree Program
+        </a>
+
+        <a href="#" class="sidebar-link">
+            Graduate Degrees
+        </a>
+
+    </div>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Reporting
+        </span>
+
+        <a href="#" class="sidebar-link">
+            Generate Reports
+        </a>
+
+    </div>
+
+</div>
+
+
+{% include "partials/sidebar_settings.html" %}
+
+{% endblock %}
+
+
+{% block dashboard_heading %}
+Manage Users
+{% endblock %}
+
+
+{% block dashboard_summary %}
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<div class="user-management">
+
+    <!-- This panel allows the administrator to find and select users. -->
+    <section class="user-list-panel">
+
+        <div class="user-panel-heading">
+
+            <h2>Find Users</h2>
+
+            <p>
+                Search for an existing UA-GDAS user account.
+            </p>
+
+        </div>
+
+
+        <!-- This section provides scalable search and filtering controls. -->
+        <form
+            class="user-search-form"
+            method="get"
+            action="/administrator/manage-users"
+        >
+
+            <div class="user-search-field">
+
+                <label for="user_search">
+                    Search Users
+                </label>
+
+                <input
+                    type="search"
+                    id="user_search"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Name, username, email, or Net ID"
+                >
+
+            </div>
+
+
+            <div class="user-filter-field">
+
+                <label for="user_type_filter">
+                    User Type
+                </label>
+
+                <select
+                    id="user_type_filter"
+                    name="user_type"
+                >
+
+                    <option
+                        value=""
+                        {% if selected_user_type == "" %}selected{% endif %}
+                    >
+                        All User Types
+                    </option>
+
+                    <option
+                        value="applicant"
+                        {% if selected_user_type == "applicant" %}selected{% endif %}
+                    >
+                        Graduate Student Applicant
+                    </option>
+
+                    <option
+                        value="administrator"
+                        {% if selected_user_type == "administrator" %}selected{% endif %}
+                    >
+                        Graduate College Administrator / Staff
+                    </option>
+
+                    <option
+                        value="advisor"
+                        {% if selected_user_type == "advisor" %}selected{% endif %}
+                    >
+                        Graduate Degree Advisor / Staff
+                    </option>
+
+                    <option
+                        value="reviewer"
+                        {% if selected_user_type == "reviewer" %}selected{% endif %}
+                    >
+                        Applicant Reviewer
+                    </option>
+
+                    <option
+                        value="reference"
+                        {% if selected_user_type == "reference" %}selected{% endif %}
+                    >
+                        Applicant Reference
+                    </option>
+
+                    <option
+                        value="it_support"
+                        {% if selected_user_type == "it_support" %}selected{% endif %}
+                    >
+                        IT Support Staff
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="user-search-button"
+            >
+                Search
+            </button>
+
+        </form>
+
+
+        <!-- This section contains search results. -->
+        <div class="user-results-section">
+
+            <div class="user-results-header">
+
+                <h3>
+                    Search Results
+                </h3>
+
+                {% if users %}
+
+                <span class="user-results-count">
+                    {{ users|length }} shown
+                </span>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if users %}
+
+            <!-- Only the returned user records scroll. -->
+            <div class="user-results-list">
+
+                {% for user in users %}
+
+                <a
+                    href="/administrator/manage-users?user={{ user.id }}"
+                    class="user-list-item"
+                >
+
+                    <span class="user-list-name">
+                        {{ user.first_name }} {{ user.last_name }}
+                    </span>
+
+                    <span class="user-list-username">
+                        {{ user.username }}
+                    </span>
+
+                    <span class="user-list-role">
+                        {{ user.user_type }}
+                    </span>
+
+                </a>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- Pagination stays visible below the scrolling results. -->
+            <div class="user-pagination">
+
+                <a href="#" class="pagination-control">
+                    Previous
+                </a>
+
+                <span class="pagination-page">
+                    Page 1
+                </span>
+
+                <a href="#" class="pagination-control">
+                    Next
+                </a>
+
+            </div>
+
+
+            {% else %}
+
+            <div class="user-results-empty">
+
+                <div
+                    class="user-results-empty-icon"
+                    aria-hidden="true"
+                >
+
+                    <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+                    </svg>
+
+                </div>
+
+                <p>
+                    Search to find existing user accounts.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- This panel displays and updates the selected user. -->
+    <section class="user-details-panel">
+
+        <div class="user-details-heading">
+
+            <span class="user-details-label">
+                Account Management
+            </span>
+
+            <h2>
+                User Details
+            </h2>
+
+        </div>
+
+
+        {% if selected_user %}
+
+        <div class="selected-user-heading">
+
+            <span>
+                Selected User
+            </span>
+
+            <strong>
+                {{ selected_user.first_name }}
+                {{ selected_user.last_name }}
+            </strong>
+
+        </div>
+
+
+        <form class="user-edit-form">
+
+            <div class="user-form-grid">
+
+                <div class="user-field">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        value="{{ selected_user.username }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="user-field">
+
+                    <label for="user_type">
+                        User Type
+                    </label>
+
+                    <select
+                        id="user_type"
+                        name="user_type"
+                        required
+                    >
+
+                        <option value="">
+                            Select User Type
+                        </option>
+
+                        <option value="applicant">
+                            Graduate Student Applicant
+                        </option>
+
+                        <option value="administrator">
+                            Graduate College Administrator / Staff
+                        </option>
+
+                        <option value="advisor">
+                            Graduate Degree Advisor / Staff
+                        </option>
+
+                        <option value="reviewer">
+                            Applicant Reviewer
+                        </option>
+
+                        <option value="reference">
+                            Applicant Reference
+                        </option>
+
+                        <option value="it_support">
+                            IT Support Staff
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="user-field">
+
+                    <label for="first_name">
+                        First Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="first_name"
+                        name="first_name"
+                        value="{{ selected_user.first_name }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="user-field">
+
+                    <label for="last_name">
+                        Last Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="last_name"
+                        name="last_name"
+                        value="{{ selected_user.last_name }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="user-field">
+
+                    <label for="net_id">
+                        Net ID
+                        <span class="optional">
+                            (If Applicable)
+                        </span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="net_id"
+                        name="net_id"
+                        value="{{ selected_user.net_id }}"
+                    >
+
+                </div>
+
+
+                <div class="user-field">
+
+                    <label for="phone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value="{{ selected_user.phone }}"
+                    >
+
+                </div>
+
+
+                <div class="user-field user-field-full">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="{{ selected_user.email }}"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- This section allows the administrator to assign a new password. -->
+            <div class="user-password-section">
+
+                <h3>
+                    Password
+                </h3>
+
+                <div class="user-field">
+
+                    <label for="new_password">
+                        New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="new_password"
+                        name="new_password"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="user-form-actions">
+
+                <button
+                    type="submit"
+                    class="user-save-button"
+                >
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+
+        {% else %}
+
+        <!-- This state explains the purpose of the right panel. -->
+        <div class="user-selection-empty">
+
+            <div
+                class="user-selection-icon"
+                aria-hidden="true"
+            >
+
+                <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M20 21a8 8 0 0 0-16 0"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+
+            </div>
+
+
+            <h3>
+                No User Selected
+            </h3>
+
+            <p>
+                Select a user from the search results to review and update their account information.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+{% endblock %}

@@ -1,20 +1,9 @@
 <!-- This control opens account settings. -->
-<a
-    href="#"
-    class="sidebar-settings"
-    aria-label="Settings"
-    title="Settings"
->
+<a href="/settings/change-password?return_to=/{{ request.url.path.strip('/').split('/')[0] }}" class="sidebar-settings"
+    aria-label="Settings" title="Settings">
 
-    <svg
-        class="settings-icon"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-    >
-        <path
-            d="M19.14 12.94a7.43 7.43 0 0 0 .05-.94
+    <svg class="settings-icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19.14 12.94a7.43 7.43 0 0 0 .05-.94
                7.43 7.43 0 0 0-.05-.94l2.03-1.58
                a.5.5 0 0 0 .12-.64l-1.92-3.32
                a.5.5 0 0 0-.61-.22l-2.39.96
@@ -35,8 +24,7 @@
                a.5.5 0 0 0 .61-.22l1.92-3.32
                a.5.5 0 0 0-.12-.64zM12 15.5
                A3.5 3.5 0 1 1 12 8
-               a3.5 3.5 0 0 1 0 7.5z"
-        />
+               a3.5 3.5 0 0 1 0 7.5z" />
     </svg>
 
     <span class="settings-text">
