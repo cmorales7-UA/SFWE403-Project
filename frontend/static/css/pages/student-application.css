@@ -1,0 +1,344 @@
+/* This section controls the main Student Application form. */
+.student-application-form {
+    width: 100%;
+    max-width: 1100px;
+}
+
+
+/* This section creates each application section. */
+.application-section {
+    margin-bottom: 22px;
+    padding: 32px 36px;
+
+    background-color: var(--white);
+
+    border: 1px solid #dce1e7;
+    border-radius: 8px;
+}
+
+
+/* This section styles each numbered application heading. */
+.application-section-heading {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    margin-bottom: 30px;
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid #e4e8ed;
+}
+
+
+.application-section-number {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background-color: var(--ua-red);
+    color: var(--white);
+
+    border-radius: 50%;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+
+.application-section-heading h2 {
+    margin: 0;
+
+    color: var(--ua-blue);
+
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+
+/* This section creates the two-column form layout. */
+.application-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 24px 28px;
+}
+
+
+.application-field {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+
+    margin-bottom: 24px;
+}
+
+
+.application-form-grid .application-field {
+    margin-bottom: 0;
+}
+
+
+.application-field-full {
+    grid-column: 1 / -1;
+}
+
+
+/* This section styles form labels. */
+.application-field label {
+    margin-bottom: 8px;
+
+    color: var(--ua-blue);
+
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    line-height: 1.35;
+}
+
+
+.optional {
+    color: #6b7280;
+
+    font-size: 0.84rem;
+    font-weight: 400;
+}
+
+
+/* This section styles text fields, dropdowns, and text areas. */
+.application-field input,
+.application-field select,
+.application-field textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    color: #1f2937;
+    background-color: var(--white);
+
+    border: 1px solid #a9b3c1;
+    border-radius: 5px;
+
+    font: inherit;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+.application-field input,
+.application-field select {
+    min-height: 46px;
+}
+
+
+.application-field textarea {
+    min-height: 110px;
+
+    resize: vertical;
+}
+
+
+/* This section provides feedback when interacting with a field. */
+.application-field input:hover,
+.application-field select:hover,
+.application-field textarea:hover {
+    border-color: #60758f;
+}
+
+
+.application-field input:focus,
+.application-field select:focus,
+.application-field textarea:focus {
+    border-color: var(--ua-blue);
+
+    outline: none;
+
+    box-shadow: 0 0 0 3px rgba(12, 35, 75, 0.13);
+}
+
+
+/* This gives read-only fields a clear visual state. */
+.application-field input[readonly] {
+    background-color: #f4f6f8;
+    color: #6b7280;
+
+    border-color: #d2d8df;
+
+    cursor: default;
+}
+
+
+/* This section improves file upload fields. */
+.application-field input[type="file"] {
+    min-height: 48px;
+
+    padding: 6px;
+
+    background-color: #fafbfc;
+}
+
+
+.application-field input[type="file"]::file-selector-button {
+    height: 34px;
+
+    margin-right: 12px;
+    padding: 0 14px;
+
+    background-color: #eef2f6;
+    color: var(--ua-blue);
+
+    border: 1px solid #cbd3dd;
+    border-radius: 4px;
+
+    font: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.application-field input[type="file"]::file-selector-button:hover {
+    background-color: #e3e8ee;
+}
+
+
+/* This section separates each recommendation contact. */
+.reference-entry {
+    margin-bottom: 18px;
+    padding: 24px;
+
+    background-color: #f8fafc;
+
+    border: 1px solid #dfe4ea;
+    border-radius: 6px;
+}
+
+
+.reference-entry:last-child {
+    margin-bottom: 0;
+}
+
+
+.reference-entry h3 {
+    margin: 0 0 22px;
+
+    color: var(--ua-blue);
+
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+
+/* This section separates international applicant fields. */
+.international-section {
+    margin-top: 30px;
+    padding: 24px;
+
+    background-color: #f8fafc;
+
+    border: 1px solid #dfe4ea;
+    border-radius: 6px;
+}
+
+
+.international-section h3 {
+    margin: 0 0 22px;
+
+    color: var(--ua-blue);
+
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+
+/* This section contains the application submission control. */
+.application-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    width: 100%;
+
+    padding: 8px 0 40px;
+}
+
+
+/* This section styles the primary application action. */
+.application-submit-button {
+    min-width: 190px;
+
+    padding: 13px 26px;
+
+    background-color: var(--ua-red);
+    color: var(--white);
+
+    border: 2px solid var(--ua-red);
+    border-radius: 5px;
+
+    font: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+.application-submit-button:hover {
+    background-color: #8c041a;
+    border-color: #8c041a;
+}
+
+
+.application-submit-button:focus {
+    outline: none;
+
+    box-shadow: 0 0 0 3px rgba(171, 5, 32, 0.18);
+}
+
+
+/* This keeps the application usable on smaller screens. */
+@media (max-width: 800px) {
+
+    .application-section {
+        padding: 28px 24px;
+    }
+
+
+    .application-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .application-field-full {
+        grid-column: auto;
+    }
+
+
+    .reference-entry,
+    .international-section {
+        padding: 20px;
+    }
+
+
+    .application-actions {
+        padding-bottom: 28px;
+    }
+
+
+    .application-submit-button {
+        width: 100%;
+    }
+}

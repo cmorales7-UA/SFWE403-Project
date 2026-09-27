@@ -7,3 +7,9 @@
 @import url("./pages/create-account.css");
 @import url("./pages/login.css");
 @import url("./pages/dashboard.css");
+
+@import url("./pages/student-application.css");
+@import url("./pages/graduate-degrees.css");
+@import url("./pages/change-password.css");
+
+@import url("./pages/manage-users.css");

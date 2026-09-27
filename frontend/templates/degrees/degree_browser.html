@@ -1,0 +1,439 @@
+<div class="degree-browser">
+
+    <!-- This panel allows users to find and select a Graduate Degree. -->
+    <section class="degree-list-panel">
+
+        <div class="degree-panel-heading">
+
+            <h2>Find Graduate Degrees</h2>
+
+            <p>
+                Search currently available Graduate Degree programs.
+            </p>
+
+        </div>
+
+
+        <!-- This section provides scalable degree search and filtering. -->
+        <form
+            class="degree-search-form"
+            method="get"
+            action="/applicant/graduate-degrees"
+        >
+
+            <div class="degree-search-field">
+
+                <label for="degree_search">
+                    Search
+                </label>
+
+                <input
+                    type="search"
+                    id="degree_search"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Degree name or college"
+                >
+
+            </div>
+
+
+            <div class="degree-filter-field">
+
+                <label for="degree_level">
+                    Degree Level
+                </label>
+
+                <select
+                    id="degree_level"
+                    name="level"
+                >
+
+                    <option
+                        value=""
+                        {% if selected_level == "" %}selected{% endif %}
+                    >
+                        All Levels
+                    </option>
+
+                    <option
+                        value="masters"
+                        {% if selected_level == "masters" %}selected{% endif %}
+                    >
+                        Masters
+                    </option>
+
+                    <option
+                        value="doctorate"
+                        {% if selected_level == "doctorate" %}selected{% endif %}
+                    >
+                        Doctorate
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="degree-filter-field">
+
+                <label for="degree_campus">
+                    Campus
+                </label>
+
+                <select
+                    id="degree_campus"
+                    name="campus"
+                >
+
+                    <option
+                        value=""
+                        {% if selected_campus == "" %}selected{% endif %}
+                    >
+                        All Campuses
+                    </option>
+
+                    <option
+                        value="main"
+                        {% if selected_campus == "main" %}selected{% endif %}
+                    >
+                        Main
+                    </option>
+
+                    <option
+                        value="online"
+                        {% if selected_campus == "online" %}selected{% endif %}
+                    >
+                        Online
+                    </option>
+
+                    <option
+                        value="distance"
+                        {% if selected_campus == "distance" %}selected{% endif %}
+                    >
+                        Distance
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="degree-search-button"
+            >
+                Search
+            </button>
+
+        </form>
+
+
+        <div class="degree-results-section">
+
+            <div class="degree-results-header">
+
+                <h3>
+                    Search Results
+                </h3>
+
+                {% if degrees %}
+
+                <span class="degree-results-count">
+                    {{ degrees|length }} shown
+                </span>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if degrees %}
+
+            <!-- Only the returned Degree programs scroll. -->
+            <div class="degree-results-list">
+
+                {% for degree in degrees %}
+
+                <a
+                    href="?degree={{ degree.id }}"
+                    class="degree-list-item"
+                >
+
+                    <span class="degree-list-name">
+                        {{ degree.name }}
+                    </span>
+
+                    <span class="degree-list-level">
+                        {{ degree.level }}
+                    </span>
+
+                    <span class="degree-list-college">
+                        {{ degree.college }}
+                    </span>
+
+                </a>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- Pagination stays outside the scrolling result list. -->
+            <div class="degree-pagination">
+
+                <a href="#" class="degree-pagination-control">
+                    Previous
+                </a>
+
+                <span class="degree-pagination-page">
+                    Page 1
+                </span>
+
+                <a href="#" class="degree-pagination-control">
+                    Next
+                </a>
+
+            </div>
+
+
+            {% else %}
+
+            <div class="degree-results-empty">
+
+                <div
+                    class="degree-results-empty-icon"
+                    aria-hidden="true"
+                >
+
+                    <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+                    </svg>
+
+                </div>
+
+                <p>
+                    Search to find available Graduate Degree programs.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- This panel displays information for the selected Graduate Degree. -->
+    <section class="degree-details-panel">
+
+        <div class="degree-details-panel-heading">
+
+            <span class="degree-details-label">
+                Graduate Degree
+            </span>
+
+            <h2>
+                Degree Information
+            </h2>
+
+        </div>
+
+
+        {% if selected_degree %}
+
+        <div class="degree-details-heading">
+
+            <h3>
+                {{ selected_degree.name }}
+            </h3>
+
+        </div>
+
+
+        <div class="degree-information-grid">
+
+            <div class="degree-information-item">
+
+                <span class="degree-information-label">
+                    Degree Level
+                </span>
+
+                <span class="degree-information-value">
+                    {{ selected_degree.level }}
+                </span>
+
+            </div>
+
+
+            <div class="degree-information-item">
+
+                <span class="degree-information-label">
+                    Graduate Degree College
+                </span>
+
+                <span class="degree-information-value">
+                    {{ selected_degree.college }}
+                </span>
+
+            </div>
+
+
+            <div class="degree-information-item">
+
+                <span class="degree-information-label">
+                    Campus Offered
+                </span>
+
+                <span class="degree-information-value">
+                    {{ selected_degree.campus }}
+                </span>
+
+            </div>
+
+
+            <div class="degree-information-item">
+
+                <span class="degree-information-label">
+                    Term Offered
+                </span>
+
+                <span class="degree-information-value">
+                    {{ selected_degree.term }}
+                </span>
+
+            </div>
+
+
+            <div class="degree-information-item">
+
+                <span class="degree-information-label">
+                    Application Deadline
+                </span>
+
+                <span class="degree-information-value">
+                    {{ selected_degree.application_deadline }}
+                </span>
+
+            </div>
+
+
+            <div class="degree-information-item">
+
+                <span class="degree-information-label">
+                    Application Fee Amount
+                </span>
+
+                <span class="degree-information-value">
+                    {{ selected_degree.application_fee }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="degree-information-section">
+
+            <h3>
+                Graduate Degree Description
+            </h3>
+
+            <p>
+                {{ selected_degree.description }}
+            </p>
+
+        </div>
+
+
+        <div class="degree-information-section">
+
+            <h3>
+                Graduate Degree Requirements
+            </h3>
+
+            <p>
+                {{ selected_degree.requirements }}
+            </p>
+
+        </div>
+
+
+        <div class="degree-information-section">
+
+            <h3>
+                Other Specific Requirements
+            </h3>
+
+            <p>
+                {{ selected_degree.other_requirements }}
+            </p>
+
+        </div>
+
+
+        <div class="degree-information-section">
+
+            <h3>
+                Degree Program Contact Information
+            </h3>
+
+            <p>
+                {{ selected_degree.contact_information }}
+            </p>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="degree-selection-empty">
+
+            <div
+                class="degree-selection-icon"
+                aria-hidden="true"
+            >
+
+                <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+
+            </div>
+
+            <h3>
+                No Degree Selected
+            </h3>
+
+            <p>
+                Select a degree from the search results to view its information.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</div>

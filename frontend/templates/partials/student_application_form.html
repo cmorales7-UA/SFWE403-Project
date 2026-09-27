@@ -1,0 +1,781 @@
+<form class="student-application-form">
+
+
+    <!-- This section collects the applicant's personal information. -->
+    <section class="application-section">
+
+        <div class="application-section-heading">
+            <span class="application-section-number">01</span>
+            <h2>Personal Information</h2>
+        </div>
+
+        <div class="application-form-grid">
+
+            <div class="application-field application-field-full">
+                <label for="full_name">Full Name</label>
+
+                <input
+                    type="text"
+                    id="full_name"
+                    name="full_name"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="preferred_pronoun">
+                    Preferred Pronoun
+                    <span class="optional">(Optional)</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="preferred_pronoun"
+                    name="preferred_pronoun"
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="date_of_birth">Date of Birth</label>
+
+                <input
+                    type="date"
+                    id="date_of_birth"
+                    name="date_of_birth"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field application-field-full">
+                <label for="mailing_address">Mailing Address</label>
+
+                <input
+                    type="text"
+                    id="mailing_address"
+                    name="mailing_address"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="email_address">Email Address</label>
+
+                <input
+                    type="email"
+                    id="email_address"
+                    name="email_address"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="phone">Phone</label>
+
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="citizenship">Citizenship</label>
+
+                <input
+                    type="text"
+                    id="citizenship"
+                    name="citizenship"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="country_of_birth">Country of Birth</label>
+
+                <input
+                    type="text"
+                    id="country_of_birth"
+                    name="country_of_birth"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="legal_residence_country">
+                    Legal Residence Country
+                </label>
+
+                <input
+                    type="text"
+                    id="legal_residence_country"
+                    name="legal_residence_country"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="visa">
+                    Visa
+                    <span class="optional">(If Applicable)</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="visa"
+                    name="visa"
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="military_affiliation">
+                    US Military Affiliation
+                </label>
+
+                <select
+                    id="military_affiliation"
+                    name="military_affiliation"
+                    required
+                >
+                    <option value="" selected disabled>Select</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+
+            <div class="application-field">
+                <label for="previous_ua_affiliation">
+                    Previous University of Arizona Affiliation
+                    <span class="optional">(If Applicable)</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="previous_ua_affiliation"
+                    name="previous_ua_affiliation"
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="resident_tuition_eligibility">
+                    Resident Tuition Eligibility
+                </label>
+
+                <input
+                    type="text"
+                    id="resident_tuition_eligibility"
+                    name="resident_tuition_eligibility"
+                    required
+                >
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- This section collects information about the requested degree program. -->
+    <section class="application-section">
+
+        <div class="application-section-heading">
+            <span class="application-section-number">02</span>
+            <h2>Application Information</h2>
+        </div>
+
+        <div class="application-form-grid">
+
+            <div class="application-field">
+                <label for="degree_program">Degree Program</label>
+
+                <select
+                    id="degree_program"
+                    name="degree_program"
+                    required
+                >
+                    <option value="" selected disabled>
+                        Select Degree Program
+                    </option>
+                </select>
+            </div>
+
+
+            <div class="application-field">
+                <label for="campus">Campus</label>
+
+                <select
+                    id="campus"
+                    name="campus"
+                    required
+                >
+                    <option value="" selected disabled>
+                        Select Campus
+                    </option>
+
+                    <option value="main">Main</option>
+                    <option value="online">Online</option>
+                    <option value="distance">Distance</option>
+                </select>
+            </div>
+
+
+            <div class="application-field">
+                <label for="term">Term</label>
+
+                <input
+                    type="text"
+                    id="term"
+                    name="term"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="payment">Payment</label>
+
+                <input
+                    type="text"
+                    id="payment"
+                    name="payment"
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="submission_date">
+                    Application Submittal Date
+                </label>
+
+                <input
+                    type="text"
+                    id="submission_date"
+                    name="submission_date"
+                    placeholder="Generated when submitted"
+                    readonly
+                >
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- This section collects the applicant's education history. -->
+    <section class="application-section">
+
+        <div class="application-section-heading">
+            <span class="application-section-number">03</span>
+            <h2>Education History</h2>
+        </div>
+
+        <div class="application-form-grid">
+
+            <div class="application-field">
+                <label for="education_degree_name">
+                    Name of Degree
+                </label>
+
+                <input
+                    type="text"
+                    id="education_degree_name"
+                    name="education_degree_name"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="university_name">
+                    University Name
+                </label>
+
+                <input
+                    type="text"
+                    id="university_name"
+                    name="university_name"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="degree_type">Degree Type</label>
+
+                <input
+                    type="text"
+                    id="degree_type"
+                    name="degree_type"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="degree_name">Degree Name</label>
+
+                <input
+                    type="text"
+                    id="degree_name"
+                    name="degree_name"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="total_credits">Total Credits</label>
+
+                <input
+                    type="number"
+                    id="total_credits"
+                    name="total_credits"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="degree_start_date">
+                    Date Degree Started
+                </label>
+
+                <input
+                    type="date"
+                    id="degree_start_date"
+                    name="degree_start_date"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="degree_received_date">
+                    Date Degree Received
+                </label>
+
+                <input
+                    type="date"
+                    id="degree_received_date"
+                    name="degree_received_date"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="cumulative_gpa">
+                    Cumulative GPA
+                </label>
+
+                <input
+                    type="number"
+                    id="cumulative_gpa"
+                    name="cumulative_gpa"
+                    step="0.01"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field application-field-full">
+                <label for="official_transcripts">
+                    Official Transcripts
+                </label>
+
+                <input
+                    type="file"
+                    id="official_transcripts"
+                    name="official_transcripts"
+                    required
+                >
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- This section collects the applicant's ethnicity. -->
+    <section class="application-section">
+
+        <div class="application-section-heading">
+            <span class="application-section-number">04</span>
+            <h2>Ethnicity</h2>
+        </div>
+
+        <div class="application-field">
+
+            <label for="ethnicity">Ethnicity</label>
+
+            <select
+                id="ethnicity"
+                name="ethnicity"
+                required
+            >
+                <option value="" selected disabled>
+                    Select Ethnicity
+                </option>
+
+                <option value="caucasian">Caucasian</option>
+                <option value="hispanic">Hispanic</option>
+                <option value="black">Black</option>
+                <option value="european">European</option>
+                <option value="asian">Asian</option>
+                <option value="indian">Indian</option>
+                <option value="american_indian">
+                    American Indian
+                </option>
+                <option value="arabic_middle_eastern">
+                    Arabic/Middle Eastern
+                </option>
+                <option value="other">Other</option>
+            </select>
+
+        </div>
+
+    </section>
+
+
+    <!-- This section collects the required application materials. -->
+    <section class="application-section">
+
+        <div class="application-section-heading">
+            <span class="application-section-number">05</span>
+            <h2>Application Materials</h2>
+        </div>
+
+        <div class="application-form-grid">
+
+            <div class="application-field application-field-full">
+                <label for="application_fee_information">
+                    Application Fee Payment Information
+                </label>
+
+                <input
+                    type="text"
+                    id="application_fee_information"
+                    name="application_fee_information"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="resume">
+                    Curriculum Vitae or Resume
+                </label>
+
+                <input
+                    type="file"
+                    id="resume"
+                    name="resume"
+                    required
+                >
+            </div>
+
+
+            <div class="application-field">
+                <label for="personal_statement">
+                    Personal Statement Essay
+                </label>
+
+                <input
+                    type="file"
+                    id="personal_statement"
+                    name="personal_statement"
+                    required
+                >
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- This section collects information for the three required references. -->
+    <section class="application-section">
+
+        <div class="application-section-heading">
+            <span class="application-section-number">06</span>
+            <h2>Letters of Recommendation</h2>
+        </div>
+
+
+        <div class="reference-entry">
+
+            <h3>Reference 1</h3>
+
+            <div class="application-form-grid">
+
+                <div class="application-field">
+                    <label for="reference_1_name">Name</label>
+                    <input
+                        type="text"
+                        id="reference_1_name"
+                        name="reference_1_name"
+                        required
+                    >
+                </div>
+
+                <div class="application-field">
+                    <label for="reference_1_title">Title</label>
+                    <input
+                        type="text"
+                        id="reference_1_title"
+                        name="reference_1_title"
+                        required
+                    >
+                </div>
+
+                <div class="application-field">
+                    <label for="reference_1_affiliation">
+                        Affiliation
+                    </label>
+                    <input
+                        type="text"
+                        id="reference_1_affiliation"
+                        name="reference_1_affiliation"
+                        required
+                    >
+                </div>
+
+                <div class="application-field">
+                    <label for="reference_1_contact">
+                        Contact Information
+                    </label>
+                    <input
+                        type="text"
+                        id="reference_1_contact"
+                        name="reference_1_contact"
+                        required
+                    >
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="reference-entry">
+
+            <h3>Reference 2</h3>
+
+            <div class="application-form-grid">
+
+                <div class="application-field">
+                    <label for="reference_2_name">Name</label>
+                    <input
+                        type="text"
+                        id="reference_2_name"
+                        name="reference_2_name"
+                        required
+                    >
+                </div>
+
+                <div class="application-field">
+                    <label for="reference_2_title">Title</label>
+                    <input
+                        type="text"
+                        id="reference_2_title"
+                        name="reference_2_title"
+                        required
+                    >
+                </div>
+
+                <div class="application-field">
+                    <label for="reference_2_affiliation">
+                        Affiliation
+                    </label>
+                    <input
+                        type="text"
+                        id="reference_2_affiliation"
+                        name="reference_2_affiliation"
+                        required
+                    >
+                </div>
+
+                <div class="application-field">
+                    <label for="reference_2_contact">
+                        Contact Information
+                    </label>
+                    <input
+                        type="text"
+                        id="reference_2_contact"
+                        name="reference_2_contact"
+                        required
+                    >
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="reference-entry">
+
+            <h3>Reference 3</h3>
+
+            <div class="application-form-grid">
+
+                <div class="application-field">
+                    <label for="reference_3_name">Name</label>
+                    <input
+                        type="text"
+                        id="reference_3_name"
+                        name="reference_3_name"
+                        required
+                    >
+                </div>
+
+                <div class="application-field">
+                    <label for="reference_3_title">Title</label>
+                    <input
+                        type="text"
+                        id="reference_3_title"
+                        name="reference_3_title"
+                        required
+                    >
+                </div>
+
+                <div class="application-field">
+                    <label for="reference_3_affiliation">
+                        Affiliation
+                    </label>
+                    <input
+                        type="text"
+                        id="reference_3_affiliation"
+                        name="reference_3_affiliation"
+                        required
+                    >
+                </div>
+
+                <div class="application-field">
+                    <label for="reference_3_contact">
+                        Contact Information
+                    </label>
+                    <input
+                        type="text"
+                        id="reference_3_contact"
+                        name="reference_3_contact"
+                        required
+                    >
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- This section collects the supplemental information required by the degree program. -->
+    <section class="application-section">
+
+        <div class="application-section-heading">
+            <span class="application-section-number">07</span>
+            <h2>Supplemental Questions</h2>
+        </div>
+
+
+        <div class="application-field">
+            <label for="sponsor_information">
+                Do you currently have a sponsor in the program that you are applying to?
+            </label>
+
+            <textarea
+                id="sponsor_information"
+                name="sponsor_information"
+                rows="4"
+            ></textarea>
+        </div>
+
+
+        <div class="application-field">
+            <label for="ta_ra_experience">
+                Do you have TA or RA experience?
+            </label>
+
+            <textarea
+                id="ta_ra_experience"
+                name="ta_ra_experience"
+                rows="4"
+            ></textarea>
+        </div>
+
+
+        <div class="application-field">
+            <label for="funding_information">
+                Do you require funding?
+            </label>
+
+            <textarea
+                id="funding_information"
+                name="funding_information"
+                rows="4"
+            ></textarea>
+        </div>
+
+
+        <div class="international-section">
+
+            <h3>International Applicants Only</h3>
+
+            <div class="application-form-grid">
+
+                <div class="application-field">
+                    <label for="english_test_date">
+                        English Proficiency Test Month and Year
+                    </label>
+
+                    <input
+                        type="month"
+                        id="english_test_date"
+                        name="english_test_date"
+                    >
+                </div>
+
+
+                <div class="application-field">
+                    <label for="english_proficiency_score">
+                        Proof of English Proficiency Score
+                    </label>
+
+                    <input
+                        type="file"
+                        id="english_proficiency_score"
+                        name="english_proficiency_score"
+                    >
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- This button represents application submission in the GUI only. -->
+    <div class="application-actions">
+
+        <button
+            type="submit"
+            class="application-submit-button"
+        >
+            {{ submit_button_text }}
+        </button>
+
+    </div>
+
+</form>

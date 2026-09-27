@@ -1,0 +1,666 @@
+/* This section creates the Graduate Degrees two-panel layout. */
+.degree-browser {
+    display: grid;
+    grid-template-columns: 420px minmax(0, 1fr);
+
+    gap: 24px;
+
+    align-items: stretch;
+}
+
+
+/* This section styles the main Graduate Degrees panels. */
+.degree-list-panel,
+.degree-details-panel {
+    background-color: var(--white);
+
+    border: 1px solid #dce1e7;
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+
+/* This keeps the left panel structured from top to bottom. */
+.degree-list-panel {
+    min-height: 680px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* This section styles the Find Graduate Degrees heading. */
+.degree-panel-heading {
+    flex-shrink: 0;
+
+    padding: 22px 24px 16px;
+
+    background-color: #fafbfc;
+
+    border-bottom: 1px solid #e4e8ed;
+}
+
+
+.degree-panel-heading h2 {
+    margin: 0 0 8px;
+
+    color: var(--ua-blue);
+
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+
+.degree-panel-heading p {
+    margin: 0;
+
+    color: #738196;
+
+    font-size: 0.92rem;
+
+    line-height: 1.5;
+}
+
+
+/* This section controls the search form area. */
+.degree-search-form {
+    flex-shrink: 0;
+
+    padding: 22px 20px;
+
+    background-color: #f8fafc;
+
+    border-bottom: 1px solid #e4e8ed;
+}
+
+
+.degree-search-field,
+.degree-filter-field {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 16px;
+}
+
+
+.degree-search-field label,
+.degree-filter-field label {
+    margin-bottom: 8px;
+
+    color: var(--ua-blue);
+
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+
+.degree-search-field input,
+.degree-filter-field select {
+    width: 100%;
+    min-height: 46px;
+
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    color: #1f2937;
+    background-color: var(--white);
+
+    border: 1px solid #a9b3c1;
+    border-radius: 5px;
+
+    font: inherit;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+.degree-search-field input:hover,
+.degree-filter-field select:hover {
+    border-color: #7d8da1;
+}
+
+
+.degree-search-field input:focus,
+.degree-filter-field select:focus {
+    border-color: var(--ua-blue);
+
+    outline: none;
+
+    box-shadow: 0 0 0 3px rgba(12, 35, 75, 0.13);
+}
+
+
+/* This section styles the Search action. */
+.degree-search-button {
+    width: 100%;
+    min-height: 46px;
+
+    padding: 12px 18px;
+
+    background-color: var(--ua-blue);
+    color: var(--white);
+
+    border: 1px solid var(--ua-blue);
+    border-radius: 5px;
+
+    font: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+.degree-search-button:hover {
+    background-color: #081b3b;
+}
+
+
+.degree-search-button:focus {
+    outline: none;
+
+    box-shadow: 0 0 0 3px rgba(12, 35, 75, 0.16);
+}
+
+
+/* This section controls the search results area. */
+.degree-results-section {
+    flex: 1;
+    min-height: 210px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* This section labels the results area. */
+.degree-results-header {
+    min-height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    flex-shrink: 0;
+
+    padding: 0 20px;
+
+    background-color: var(--white);
+
+    border-bottom: 1px solid #e4e8ed;
+}
+
+
+.degree-results-header h3 {
+    margin: 0;
+
+    color: var(--ua-blue);
+
+    font-size: 0.82rem;
+    font-weight: 700;
+
+    letter-spacing: 0.04em;
+
+    text-transform: uppercase;
+}
+
+
+.degree-results-count {
+    color: #7a8797;
+
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+
+/* Only returned degree programs scroll. */
+.degree-results-list {
+    flex: 1;
+    min-height: 0;
+
+    padding: 10px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+/* This section styles each returned degree program. */
+.degree-list-item {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    margin-bottom: 6px;
+    padding: 14px;
+
+    color: inherit;
+
+    border: 1px solid transparent;
+    border-radius: 6px;
+
+    text-decoration: none;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+
+.degree-list-item:hover {
+    background-color: #f3f6f9;
+
+    border-color: #dce3ea;
+}
+
+
+/* This identifies the currently selected degree. */
+.degree-list-item.active {
+    background-color: #eef2f7;
+
+    border-color: #cfd8e3;
+}
+
+
+.degree-list-name {
+    color: var(--ua-blue);
+
+    font-size: 0.94rem;
+    font-weight: 700;
+}
+
+
+.degree-list-level {
+    color: #53647a;
+
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+
+.degree-list-college {
+    color: #7a8797;
+
+    font-size: 0.8rem;
+}
+
+
+/* This section styles the empty search results state. */
+.degree-results-empty {
+    flex: 1;
+    min-height: 160px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    padding: 28px 24px;
+
+    box-sizing: border-box;
+
+    text-align: center;
+}
+
+
+.degree-results-empty-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 46px;
+
+    color: var(--ua-blue);
+    background-color: #eef2f7;
+
+    border: 1px solid #dce3ea;
+    border-radius: 50%;
+}
+
+
+.degree-results-empty p {
+    max-width: 250px;
+
+    margin: 0;
+
+    color: #7a8797;
+
+    font-size: 0.9rem;
+
+    line-height: 1.5;
+}
+
+
+/* Pagination stays visible below the scrolling result list. */
+.degree-pagination {
+    min-height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    flex-shrink: 0;
+
+    gap: 12px;
+
+    padding: 0 16px;
+
+    background-color: #fafbfc;
+
+    border-top: 1px solid #e4e8ed;
+}
+
+
+.degree-pagination-control {
+    color: var(--ua-blue);
+
+    font-size: 0.82rem;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+.degree-pagination-control:hover {
+    text-decoration: underline;
+}
+
+
+.degree-pagination-control:focus {
+    outline: none;
+
+    text-decoration: underline;
+}
+
+
+.degree-pagination-page {
+    color: #66768a;
+
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+
+/* This section controls the Degree Information panel. */
+.degree-details-panel {
+    min-height: 680px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* This section styles the main Degree Information heading. */
+.degree-details-panel-heading {
+    flex-shrink: 0;
+
+    padding: 20px 28px;
+
+    background-color: #fafbfc;
+
+    border-bottom: 1px solid #e4e8ed;
+}
+
+
+.degree-details-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #7a8797;
+
+    font-size: 0.7rem;
+    font-weight: 700;
+
+    letter-spacing: 0.07em;
+
+    text-transform: uppercase;
+}
+
+
+.degree-details-panel-heading h2 {
+    margin: 0;
+
+    color: var(--ua-blue);
+
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+
+/* This section identifies the selected Graduate Degree. */
+.degree-details-heading {
+    padding: 20px 30px;
+
+    background-color: #f8fafc;
+
+    border-bottom: 1px solid #e4e8ed;
+}
+
+
+.degree-details-heading h3 {
+    margin: 0;
+
+    color: var(--ua-blue);
+
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+
+/* This section displays primary degree information. */
+.degree-information-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    flex-shrink: 0;
+
+    border-bottom: 1px solid #e4e8ed;
+}
+
+
+.degree-information-item {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    padding: 21px 28px;
+
+    border-bottom: 1px solid #edf0f3;
+}
+
+
+.degree-information-item:nth-child(odd) {
+    border-right: 1px solid #edf0f3;
+}
+
+
+.degree-information-label {
+    color: #718096;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    letter-spacing: 0.03em;
+
+    text-transform: uppercase;
+}
+
+
+.degree-information-value {
+    color: #34465d;
+
+    font-size: 0.94rem;
+    font-weight: 600;
+}
+
+
+/* This section displays longer Graduate Degree information. */
+.degree-information-section {
+    padding: 24px 30px;
+
+    border-bottom: 1px solid #e4e8ed;
+}
+
+
+.degree-information-section:last-child {
+    border-bottom: none;
+}
+
+
+.degree-information-section h3 {
+    margin: 0 0 10px;
+
+    color: var(--ua-blue);
+
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+
+.degree-information-section p {
+    margin: 0;
+
+    color: #52647a;
+
+    font-size: 0.9rem;
+
+    line-height: 1.6;
+}
+
+
+/* This section displays the empty state before a degree is selected. */
+.degree-selection-empty {
+    flex: 1;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 40px;
+
+    text-align: center;
+}
+
+
+/* This section styles the Degree Information empty-state icon. */
+.degree-selection-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    margin-bottom: 6px;
+
+    color: var(--ua-blue);
+    background-color: #eef2f7;
+
+    border: 1px solid #dce3ea;
+    border-radius: 50%;
+}
+
+
+.degree-selection-empty h3 {
+    margin: 0;
+
+    color: var(--ua-blue);
+
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+
+.degree-selection-empty p {
+    max-width: 360px;
+
+    margin: 0;
+
+    color: #7a8797;
+
+    font-size: 0.88rem;
+
+    line-height: 1.5;
+}
+
+
+/* This keeps the Degree browser usable on medium-sized screens. */
+@media (max-width: 1100px) {
+
+    .degree-browser {
+        grid-template-columns: 360px minmax(0, 1fr);
+    }
+
+}
+
+
+/* This stacks the panels when space becomes limited. */
+@media (max-width: 850px) {
+
+    .degree-browser {
+        grid-template-columns: 1fr;
+    }
+
+
+    .degree-list-panel,
+    .degree-details-panel {
+        height: auto;
+        min-height: 500px;
+    }
+
+
+    .degree-results-list {
+        max-height: 360px;
+    }
+
+}
+
+
+/* This keeps Degree Information readable on smaller screens. */
+@media (max-width: 650px) {
+
+    .degree-information-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .degree-information-item:nth-child(odd) {
+        border-right: none;
+    }
+
+
+    .degree-details-panel-heading,
+    .degree-details-heading,
+    .degree-information-item,
+    .degree-information-section {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+
+    .degree-selection-empty {
+        padding: 32px 22px;
+    }
+
+}
