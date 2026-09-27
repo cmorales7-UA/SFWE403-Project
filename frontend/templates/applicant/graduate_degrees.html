@@ -13,53 +13,9 @@ Applicant
 
 {% block sidebar_navigation %}
 
-<div class="sidebar-main-navigation">
+{% set applicant_active_page = "graduate-degrees" %}
 
-    <a href="/applicant" class="sidebar-link">
-        Overview
-    </a>
-
-
-    <div class="sidebar-group">
-
-        <span class="sidebar-group-label">
-            Application
-        </span>
-
-        <a href="/applicant/application" class="sidebar-link">
-            Student Application
-        </a>
-
-        <a href="/applicant/modify-application" class="sidebar-link">
-            Modify Application
-        </a>
-
-    </div>
-
-
-    <div class="sidebar-group">
-
-        <span class="sidebar-group-label">
-            Resources
-        </span>
-
-        <a
-            href="/applicant/graduate-degrees"
-            class="sidebar-link active"
-        >
-            Graduate Degrees
-        </a>
-
-        <a href="#" class="sidebar-link">
-            Notifications
-        </a>
-
-    </div>
-
-</div>
-
-
-{% include "partials/sidebar_settings.html" %}
+{% include "partials/applicant_sidebar.html" %}
 
 {% endblock %}
 

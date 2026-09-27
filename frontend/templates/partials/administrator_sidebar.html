@@ -1,0 +1,77 @@
+<div class="sidebar-main-navigation">
+
+    <a href="/administrator" class="sidebar-link {% if admin_active_page == 'overview' %}active{% endif %}">
+        Overview
+    </a>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Management
+        </span>
+
+        <a href="/administrator/manage-users"
+            class="sidebar-link {% if admin_active_page == 'manage-users' %}active{% endif %}">
+            Manage Users
+        </a>
+
+        <span class="sidebar-link">
+            View Student Applications
+        </span>
+
+        <a href="/administrator/application-review"
+            class="sidebar-link {% if admin_active_page == 'application-review' %}active{% endif %}">
+            Application Review
+        </a>
+
+        <span class="sidebar-link">
+            Review Committee
+        </span>
+
+        <span class="sidebar-link">
+            Admissions Processing
+        </span>
+
+    </div>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Degree Programs
+        </span>
+
+        <a href="/administrator/create-degree-program"
+            class="sidebar-link {% if admin_active_page == 'create-degree-program' %}active{% endif %}">
+            Create Degree Program
+        </a>
+
+        <a href="/administrator/modify-degree-program"
+            class="sidebar-link {% if admin_active_page == 'modify-degree-program' %}active{% endif %}">
+            Modify Degree Program
+        </a>
+
+        <a href="/administrator/graduate-degrees"
+            class="sidebar-link {% if admin_active_page == 'graduate-degrees' %}active{% endif %}">
+            Graduate Degrees
+        </a>
+
+    </div>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Reporting
+        </span>
+
+        <span class="sidebar-link">
+            Generate Reports
+        </span>
+
+    </div>
+
+</div>
+
+{% include "partials/sidebar_settings.html" %}

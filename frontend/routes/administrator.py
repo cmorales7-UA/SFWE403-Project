@@ -8,7 +8,6 @@ router = APIRouter()
 
 templates = Jinja2Templates(directory="frontend/templates")
 
-
 # This route displays the Manage Users GUI.
 @router.get(
     "/administrator/manage-users",

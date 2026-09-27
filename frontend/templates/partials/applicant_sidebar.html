@@ -1,0 +1,55 @@
+<div class="sidebar-main-navigation">
+
+    <a
+        href="/applicant"
+        class="sidebar-link {% if applicant_active_page == 'overview' %}active{% endif %}"
+    >
+        Overview
+    </a>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Application
+        </span>
+
+        <a
+            href="/applicant/application"
+            class="sidebar-link {% if applicant_active_page == 'student-application' %}active{% endif %}"
+        >
+            Student Application
+        </a>
+
+        <a
+            href="/applicant/modify-application"
+            class="sidebar-link {% if applicant_active_page == 'modify-application' %}active{% endif %}"
+        >
+            Modify Application
+        </a>
+
+    </div>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Resources
+        </span>
+
+        <a
+            href="/applicant/graduate-degrees"
+            class="sidebar-link {% if applicant_active_page == 'graduate-degrees' %}active{% endif %}"
+        >
+            Graduate Degrees
+        </a>
+
+        <span class="sidebar-link">
+            Notifications
+        </span>
+
+    </div>
+
+</div>
+
+{% include "partials/sidebar_settings.html" %}

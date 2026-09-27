@@ -1,0 +1,41 @@
+<div class="sidebar-main-navigation">
+
+    <a
+        href="/reference"
+        class="sidebar-link {% if reference_active_page == 'overview' %}active{% endif %}"
+    >
+        Overview
+    </a>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Recommendation
+        </span>
+
+        <span class="sidebar-link">
+            Letter of Recommendation
+        </span>
+
+    </div>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Resources
+        </span>
+
+        <a
+            href="/reference/graduate-degrees"
+            class="sidebar-link {% if reference_active_page == 'graduate-degrees' %}active{% endif %}"
+        >
+            Graduate Degrees
+        </a>
+
+    </div>
+
+</div>
+
+{% include "partials/sidebar_settings.html" %}

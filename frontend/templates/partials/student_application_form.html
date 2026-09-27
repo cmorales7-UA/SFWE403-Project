@@ -1,3 +1,5 @@
+{% set form_mode = form_mode | default("create") %}
+
 <form class="student-application-form">
 
 
@@ -14,12 +16,7 @@
             <div class="application-field application-field-full">
                 <label for="full_name">Full Name</label>
 
-                <input
-                    type="text"
-                    id="full_name"
-                    name="full_name"
-                    required
-                >
+                <input type="text" id="full_name" name="full_name" required>
             </div>
 
 
@@ -29,83 +26,49 @@
                     <span class="optional">(Optional)</span>
                 </label>
 
-                <input
-                    type="text"
-                    id="preferred_pronoun"
-                    name="preferred_pronoun"
-                >
+                <input type="text" id="preferred_pronoun" name="preferred_pronoun">
             </div>
 
 
             <div class="application-field">
                 <label for="date_of_birth">Date of Birth</label>
 
-                <input
-                    type="date"
-                    id="date_of_birth"
-                    name="date_of_birth"
-                    required
-                >
+                <input type="date" id="date_of_birth" name="date_of_birth" required>
             </div>
 
 
             <div class="application-field application-field-full">
                 <label for="mailing_address">Mailing Address</label>
 
-                <input
-                    type="text"
-                    id="mailing_address"
-                    name="mailing_address"
-                    required
-                >
+                <input type="text" id="mailing_address" name="mailing_address" required>
             </div>
 
 
             <div class="application-field">
                 <label for="email_address">Email Address</label>
 
-                <input
-                    type="email"
-                    id="email_address"
-                    name="email_address"
-                    required
-                >
+                <input type="email" id="email_address" name="email_address" required>
             </div>
 
 
             <div class="application-field">
                 <label for="phone">Phone</label>
 
-                <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    required
-                >
+                <input type="tel" id="phone" name="phone" required>
             </div>
 
 
             <div class="application-field">
                 <label for="citizenship">Citizenship</label>
 
-                <input
-                    type="text"
-                    id="citizenship"
-                    name="citizenship"
-                    required
-                >
+                <input type="text" id="citizenship" name="citizenship" required>
             </div>
 
 
             <div class="application-field">
                 <label for="country_of_birth">Country of Birth</label>
 
-                <input
-                    type="text"
-                    id="country_of_birth"
-                    name="country_of_birth"
-                    required
-                >
+                <input type="text" id="country_of_birth" name="country_of_birth" required>
             </div>
 
 
@@ -114,12 +77,7 @@
                     Legal Residence Country
                 </label>
 
-                <input
-                    type="text"
-                    id="legal_residence_country"
-                    name="legal_residence_country"
-                    required
-                >
+                <input type="text" id="legal_residence_country" name="legal_residence_country" required>
             </div>
 
 
@@ -129,11 +87,7 @@
                     <span class="optional">(If Applicable)</span>
                 </label>
 
-                <input
-                    type="text"
-                    id="visa"
-                    name="visa"
-                >
+                <input type="text" id="visa" name="visa">
             </div>
 
 
@@ -142,11 +96,7 @@
                     US Military Affiliation
                 </label>
 
-                <select
-                    id="military_affiliation"
-                    name="military_affiliation"
-                    required
-                >
+                <select id="military_affiliation" name="military_affiliation" required>
                     <option value="" selected disabled>Select</option>
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
@@ -160,11 +110,7 @@
                     <span class="optional">(If Applicable)</span>
                 </label>
 
-                <input
-                    type="text"
-                    id="previous_ua_affiliation"
-                    name="previous_ua_affiliation"
-                >
+                <input type="text" id="previous_ua_affiliation" name="previous_ua_affiliation">
             </div>
 
 
@@ -173,12 +119,7 @@
                     Resident Tuition Eligibility
                 </label>
 
-                <input
-                    type="text"
-                    id="resident_tuition_eligibility"
-                    name="resident_tuition_eligibility"
-                    required
-                >
+                <input type="text" id="resident_tuition_eligibility" name="resident_tuition_eligibility" required>
             </div>
 
         </div>
@@ -199,11 +140,7 @@
             <div class="application-field">
                 <label for="degree_program">Degree Program</label>
 
-                <select
-                    id="degree_program"
-                    name="degree_program"
-                    required
-                >
+                <select id="degree_program" name="degree_program" required>
                     <option value="" selected disabled>
                         Select Degree Program
                     </option>
@@ -214,11 +151,7 @@
             <div class="application-field">
                 <label for="campus">Campus</label>
 
-                <select
-                    id="campus"
-                    name="campus"
-                    required
-                >
+                <select id="campus" name="campus" required>
                     <option value="" selected disabled>
                         Select Campus
                     </option>
@@ -233,23 +166,14 @@
             <div class="application-field">
                 <label for="term">Term</label>
 
-                <input
-                    type="text"
-                    id="term"
-                    name="term"
-                    required
-                >
+                <input type="text" id="term" name="term" required>
             </div>
 
 
             <div class="application-field">
                 <label for="payment">Payment</label>
 
-                <input
-                    type="text"
-                    id="payment"
-                    name="payment"
-                >
+                <input type="text" id="payment" name="payment">
             </div>
 
 
@@ -258,13 +182,8 @@
                     Application Submittal Date
                 </label>
 
-                <input
-                    type="text"
-                    id="submission_date"
-                    name="submission_date"
-                    placeholder="Generated when submitted"
-                    readonly
-                >
+                <input type="text" id="submission_date" name="submission_date" placeholder="Generated when submitted"
+                    readonly>
             </div>
 
         </div>
@@ -287,12 +206,7 @@
                     Name of Degree
                 </label>
 
-                <input
-                    type="text"
-                    id="education_degree_name"
-                    name="education_degree_name"
-                    required
-                >
+                <input type="text" id="education_degree_name" name="education_degree_name" required>
             </div>
 
 
@@ -301,48 +215,28 @@
                     University Name
                 </label>
 
-                <input
-                    type="text"
-                    id="university_name"
-                    name="university_name"
-                    required
-                >
+                <input type="text" id="university_name" name="university_name" required>
             </div>
 
 
             <div class="application-field">
                 <label for="degree_type">Degree Type</label>
 
-                <input
-                    type="text"
-                    id="degree_type"
-                    name="degree_type"
-                    required
-                >
+                <input type="text" id="degree_type" name="degree_type" required>
             </div>
 
 
             <div class="application-field">
                 <label for="degree_name">Degree Name</label>
 
-                <input
-                    type="text"
-                    id="degree_name"
-                    name="degree_name"
-                    required
-                >
+                <input type="text" id="degree_name" name="degree_name" required>
             </div>
 
 
             <div class="application-field">
                 <label for="total_credits">Total Credits</label>
 
-                <input
-                    type="number"
-                    id="total_credits"
-                    name="total_credits"
-                    required
-                >
+                <input type="number" id="total_credits" name="total_credits" required>
             </div>
 
 
@@ -351,12 +245,7 @@
                     Date Degree Started
                 </label>
 
-                <input
-                    type="date"
-                    id="degree_start_date"
-                    name="degree_start_date"
-                    required
-                >
+                <input type="date" id="degree_start_date" name="degree_start_date" required>
             </div>
 
 
@@ -365,12 +254,7 @@
                     Date Degree Received
                 </label>
 
-                <input
-                    type="date"
-                    id="degree_received_date"
-                    name="degree_received_date"
-                    required
-                >
+                <input type="date" id="degree_received_date" name="degree_received_date" required>
             </div>
 
 
@@ -379,13 +263,7 @@
                     Cumulative GPA
                 </label>
 
-                <input
-                    type="number"
-                    id="cumulative_gpa"
-                    name="cumulative_gpa"
-                    step="0.01"
-                    required
-                >
+                <input type="number" id="cumulative_gpa" name="cumulative_gpa" step="0.01" required>
             </div>
 
 
@@ -394,12 +272,8 @@
                     Official Transcripts
                 </label>
 
-                <input
-                    type="file"
-                    id="official_transcripts"
-                    name="official_transcripts"
-                    required
-                >
+                <input type="file" id="official_transcripts" name="official_transcripts" {% if form_mode=="create"
+                    %}required{% endif %}>
             </div>
 
         </div>
@@ -419,11 +293,7 @@
 
             <label for="ethnicity">Ethnicity</label>
 
-            <select
-                id="ethnicity"
-                name="ethnicity"
-                required
-            >
+            <select id="ethnicity" name="ethnicity" required>
                 <option value="" selected disabled>
                     Select Ethnicity
                 </option>
@@ -463,12 +333,7 @@
                     Application Fee Payment Information
                 </label>
 
-                <input
-                    type="text"
-                    id="application_fee_information"
-                    name="application_fee_information"
-                    required
-                >
+                <input type="text" id="application_fee_information" name="application_fee_information" required>
             </div>
 
 
@@ -477,12 +342,7 @@
                     Curriculum Vitae or Resume
                 </label>
 
-                <input
-                    type="file"
-                    id="resume"
-                    name="resume"
-                    required
-                >
+                <input type="file" id="resume" name="resume" {% if form_mode=="create" %}required{% endif %}>
             </div>
 
 
@@ -491,12 +351,8 @@
                     Personal Statement Essay
                 </label>
 
-                <input
-                    type="file"
-                    id="personal_statement"
-                    name="personal_statement"
-                    required
-                >
+                <input type="file" id="personal_statement" name="personal_statement" {% if form_mode=="create"
+                    %}required{% endif %}>
             </div>
 
         </div>
@@ -521,46 +377,26 @@
 
                 <div class="application-field">
                     <label for="reference_1_name">Name</label>
-                    <input
-                        type="text"
-                        id="reference_1_name"
-                        name="reference_1_name"
-                        required
-                    >
+                    <input type="text" id="reference_1_name" name="reference_1_name" required>
                 </div>
 
                 <div class="application-field">
                     <label for="reference_1_title">Title</label>
-                    <input
-                        type="text"
-                        id="reference_1_title"
-                        name="reference_1_title"
-                        required
-                    >
+                    <input type="text" id="reference_1_title" name="reference_1_title" required>
                 </div>
 
                 <div class="application-field">
                     <label for="reference_1_affiliation">
                         Affiliation
                     </label>
-                    <input
-                        type="text"
-                        id="reference_1_affiliation"
-                        name="reference_1_affiliation"
-                        required
-                    >
+                    <input type="text" id="reference_1_affiliation" name="reference_1_affiliation" required>
                 </div>
 
                 <div class="application-field">
                     <label for="reference_1_contact">
                         Contact Information
                     </label>
-                    <input
-                        type="text"
-                        id="reference_1_contact"
-                        name="reference_1_contact"
-                        required
-                    >
+                    <input type="text" id="reference_1_contact" name="reference_1_contact" required>
                 </div>
 
             </div>
@@ -576,46 +412,26 @@
 
                 <div class="application-field">
                     <label for="reference_2_name">Name</label>
-                    <input
-                        type="text"
-                        id="reference_2_name"
-                        name="reference_2_name"
-                        required
-                    >
+                    <input type="text" id="reference_2_name" name="reference_2_name" required>
                 </div>
 
                 <div class="application-field">
                     <label for="reference_2_title">Title</label>
-                    <input
-                        type="text"
-                        id="reference_2_title"
-                        name="reference_2_title"
-                        required
-                    >
+                    <input type="text" id="reference_2_title" name="reference_2_title" required>
                 </div>
 
                 <div class="application-field">
                     <label for="reference_2_affiliation">
                         Affiliation
                     </label>
-                    <input
-                        type="text"
-                        id="reference_2_affiliation"
-                        name="reference_2_affiliation"
-                        required
-                    >
+                    <input type="text" id="reference_2_affiliation" name="reference_2_affiliation" required>
                 </div>
 
                 <div class="application-field">
                     <label for="reference_2_contact">
                         Contact Information
                     </label>
-                    <input
-                        type="text"
-                        id="reference_2_contact"
-                        name="reference_2_contact"
-                        required
-                    >
+                    <input type="text" id="reference_2_contact" name="reference_2_contact" required>
                 </div>
 
             </div>
@@ -631,46 +447,26 @@
 
                 <div class="application-field">
                     <label for="reference_3_name">Name</label>
-                    <input
-                        type="text"
-                        id="reference_3_name"
-                        name="reference_3_name"
-                        required
-                    >
+                    <input type="text" id="reference_3_name" name="reference_3_name" required>
                 </div>
 
                 <div class="application-field">
                     <label for="reference_3_title">Title</label>
-                    <input
-                        type="text"
-                        id="reference_3_title"
-                        name="reference_3_title"
-                        required
-                    >
+                    <input type="text" id="reference_3_title" name="reference_3_title" required>
                 </div>
 
                 <div class="application-field">
                     <label for="reference_3_affiliation">
                         Affiliation
                     </label>
-                    <input
-                        type="text"
-                        id="reference_3_affiliation"
-                        name="reference_3_affiliation"
-                        required
-                    >
+                    <input type="text" id="reference_3_affiliation" name="reference_3_affiliation" required>
                 </div>
 
                 <div class="application-field">
                     <label for="reference_3_contact">
                         Contact Information
                     </label>
-                    <input
-                        type="text"
-                        id="reference_3_contact"
-                        name="reference_3_contact"
-                        required
-                    >
+                    <input type="text" id="reference_3_contact" name="reference_3_contact" required>
                 </div>
 
             </div>
@@ -692,39 +488,32 @@
         <div class="application-field">
             <label for="sponsor_information">
                 Do you currently have a sponsor in the program that you are applying to?
+                If so, provide their name and contact information.
             </label>
 
-            <textarea
-                id="sponsor_information"
-                name="sponsor_information"
-                rows="4"
-            ></textarea>
+            <textarea id="sponsor_information" name="sponsor_information" rows="4"></textarea>
         </div>
 
 
         <div class="application-field">
             <label for="ta_ra_experience">
                 Do you have TA or RA experience?
+                If so, provide where and the location or program.
             </label>
 
-            <textarea
-                id="ta_ra_experience"
-                name="ta_ra_experience"
-                rows="4"
-            ></textarea>
+            <textarea id="ta_ra_experience" name="ta_ra_experience" rows="4"></textarea>
         </div>
 
 
         <div class="application-field">
             <label for="funding_information">
-                Do you require funding?
+                <label for="funding_information">
+                    Do you require funding?
+                    If so, would a tuition scholarship be sufficient for funding you?
+                </label>
             </label>
 
-            <textarea
-                id="funding_information"
-                name="funding_information"
-                rows="4"
-            ></textarea>
+            <textarea id="funding_information" name="funding_information" rows="4"></textarea>
         </div>
 
 
@@ -739,11 +528,7 @@
                         English Proficiency Test Month and Year
                     </label>
 
-                    <input
-                        type="month"
-                        id="english_test_date"
-                        name="english_test_date"
-                    >
+                    <input type="month" id="english_test_date" name="english_test_date">
                 </div>
 
 
@@ -752,11 +537,7 @@
                         Proof of English Proficiency Score
                     </label>
 
-                    <input
-                        type="file"
-                        id="english_proficiency_score"
-                        name="english_proficiency_score"
-                    >
+                    <input type="file" id="english_proficiency_score" name="english_proficiency_score">
                 </div>
 
             </div>
@@ -769,10 +550,7 @@
     <!-- This button represents application submission in the GUI only. -->
     <div class="application-actions">
 
-        <button
-            type="submit"
-            class="application-submit-button"
-        >
+        <button type="submit" class="application-submit-button">
             {{ submit_button_text }}
         </button>
 

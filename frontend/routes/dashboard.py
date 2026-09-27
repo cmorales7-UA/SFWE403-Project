@@ -79,3 +79,20 @@ async def it_support_dashboard(request: Request):
         request=request,
         name="it_support/dashboard.html",
     )
+
+@router.get(
+    "/it-support/manage-users",
+    response_class=HTMLResponse,
+    name="it_support_manage_users",
+)
+async def it_support_manage_users(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="it_support/manage_users.html",
+        context={
+            "users": [],
+            "selected_user": None,
+            "search_query": "",
+            "selected_user_type": "",
+        },
+    )

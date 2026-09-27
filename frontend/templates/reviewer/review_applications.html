@@ -2,26 +2,26 @@
 
 
 {% block title %}
-Student Application | UA-GDAS
+Review Applications | UA-GDAS
 {% endblock %}
 
 
 {% block sidebar_role %}
-Applicant
+Application Reviewer
 {% endblock %}
 
 
 {% block sidebar_navigation %}
 
-{% set applicant_active_page = "student-application" %}
+{% set reviewer_active_page = "review-applications" %}
 
-{% include "partials/applicant_sidebar.html" %}
+{% include "partials/reviewer_sidebar.html" %}
 
 {% endblock %}
 
 
 {% block dashboard_heading %}
-Student Application
+Review Applications
 {% endblock %}
 
 
@@ -31,9 +31,6 @@ Student Application
 
 {% block dashboard_content %}
 
-{% set form_mode = "create" %}
-{% set submit_button_text = "Submit Application" %}
-
-{% include "partials/student_application_form.html" %}
+{% include "partials/application_review.html" %}
 
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends "dashboard_base.html" %}
 
+
 {% block title %}
 Reviewer Dashboard | UA-GDAS
 {% endblock %}
@@ -12,45 +13,9 @@ Application Reviewer
 
 {% block sidebar_navigation %}
 
-<div class="sidebar-main-navigation">
+{% set reviewer_active_page = "overview" %}
 
-    <a href="/reviewer" class="sidebar-link active">
-        Overview
-    </a>
-
-
-    <div class="sidebar-group">
-
-        <span class="sidebar-group-label">
-            Review
-        </span>
-
-        <a href="#" class="sidebar-link">
-            Review Applications
-        </a>
-
-        <a href="#" class="sidebar-link">
-            Advisor Communication
-        </a>
-
-    </div>
-
-
-    <div class="sidebar-group">
-
-        <span class="sidebar-group-label">
-            Resources
-        </span>
-
-        <a href="#" class="sidebar-link">
-            Graduate Degrees
-        </a>
-
-    </div>
-
-</div>
-
-{% include "partials/sidebar_settings.html" %}
+{% include "partials/reviewer_sidebar.html" %}
 
 {% endblock %}
 
