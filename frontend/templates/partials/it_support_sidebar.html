@@ -1,0 +1,41 @@
+<div class="sidebar-main-navigation">
+
+    <a href="/it-support" class="sidebar-link {% if it_support_active_page == 'overview' %}active{% endif %}">
+        Overview
+    </a>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Account Management
+        </span>
+
+        <a href="/it-support/manage-users"
+            class="sidebar-link {% if it_support_active_page == 'manage-users' %}active{% endif %}">
+            Manage User Accounts
+        </a>
+
+        <span class="sidebar-link">
+            Authorize Accounts
+        </span>
+
+    </div>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Resources
+        </span>
+
+        <a href="/it-support/graduate-degrees"
+            class="sidebar-link {% if it_support_active_page == 'graduate-degrees' %}active{% endif %}">
+            Graduate Degrees
+        </a>
+
+    </div>
+
+</div>
+
+{% include "partials/sidebar_settings.html" %}

@@ -1,6 +1,9 @@
+{% set degree_browser_action = degree_browser_action | default("/applicant/graduate-degrees") %}
+
 <div class="degree-browser">
 
-    <!-- This panel allows users to find and select a Graduate Degree. -->
+
+    <!-- Degree search -->
     <section class="degree-list-panel">
 
         <div class="degree-panel-heading">
@@ -14,11 +17,11 @@
         </div>
 
 
-        <!-- This section provides scalable degree search and filtering. -->
+        <!-- Search and filters -->
         <form
             class="degree-search-form"
             method="get"
-            action="/applicant/graduate-degrees"
+            action="{{ degree_browser_action }}"
         >
 
             <div class="degree-search-field">
@@ -129,6 +132,7 @@
         </form>
 
 
+        <!-- Degree results -->
         <div class="degree-results-section">
 
             <div class="degree-results-header">
@@ -150,7 +154,6 @@
 
             {% if degrees %}
 
-            <!-- Only the returned Degree programs scroll. -->
             <div class="degree-results-list">
 
                 {% for degree in degrees %}
@@ -179,20 +182,20 @@
             </div>
 
 
-            <!-- Pagination stays outside the scrolling result list. -->
+            <!-- Pagination -->
             <div class="degree-pagination">
 
-                <a href="#" class="degree-pagination-control">
+                <span class="degree-pagination-control">
                     Previous
-                </a>
+                </span>
 
                 <span class="degree-pagination-page">
                     Page 1
                 </span>
 
-                <a href="#" class="degree-pagination-control">
+                <span class="degree-pagination-control">
                     Next
-                </a>
+                </span>
 
             </div>
 
@@ -235,7 +238,7 @@
     </section>
 
 
-    <!-- This panel displays information for the selected Graduate Degree. -->
+    <!-- Degree information -->
     <section class="degree-details-panel">
 
         <div class="degree-details-panel-heading">
@@ -435,5 +438,6 @@
         {% endif %}
 
     </section>
+
 
 </div>

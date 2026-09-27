@@ -229,6 +229,7 @@
 .user-results-list {
     flex: 1;
     min-height: 0;
+    max-height: 220px;
 
     padding: 10px;
 

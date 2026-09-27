@@ -1,5 +1,6 @@
 {% extends "dashboard_base.html" %}
 
+
 {% block title %}
 Administrator Dashboard | UA-GDAS
 {% endblock %}
@@ -12,78 +13,9 @@ Administrator
 
 {% block sidebar_navigation %}
 
-<div class="sidebar-main-navigation">
+{% set admin_active_page = "overview" %}
 
-    <a href="/administrator" class="sidebar-link active">
-        Overview
-    </a>
-
-
-    <div class="sidebar-group">
-
-        <span class="sidebar-group-label">
-            Management
-        </span>
-
-        <a href="/administrator/manage-users" class="sidebar-link">
-            Manage Users
-        </a>
-
-        <a href="#" class="sidebar-link">
-            Student Applications
-        </a>
-
-        <a href="#" class="sidebar-link">
-            Application Review
-        </a>
-
-        <a href="#" class="sidebar-link">
-            Review Committee
-        </a>
-
-        <a href="#" class="sidebar-link">
-            Admissions Processing
-        </a>
-
-    </div>
-
-
-    <div class="sidebar-group">
-
-        <span class="sidebar-group-label">
-            Degree Programs
-        </span>
-
-        <a href="#" class="sidebar-link">
-            Create Degree Program
-        </a>
-
-        <a href="#" class="sidebar-link">
-            Modify Degree Program
-        </a>
-
-        <a href="#" class="sidebar-link">
-            Graduate Degrees
-        </a>
-
-    </div>
-
-
-    <div class="sidebar-group">
-
-        <span class="sidebar-group-label">
-            Reporting
-        </span>
-
-        <a href="#" class="sidebar-link">
-            Generate Reports
-        </a>
-
-    </div>
-
-</div>
-
-{% include "partials/sidebar_settings.html" %}
+{% include "partials/administrator_sidebar.html" %}
 
 {% endblock %}
 

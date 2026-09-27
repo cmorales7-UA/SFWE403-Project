@@ -1,0 +1,37 @@
+<div class="sidebar-main-navigation">
+
+    <a href="/reviewer" class="sidebar-link {% if reviewer_active_page == 'overview' %}active{% endif %}">
+        Overview
+    </a>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Review
+        </span>
+
+        <a href="/reviewer/applications"
+            class="sidebar-link {% if reviewer_active_page == 'review-applications' %}active{% endif %}">
+            Review Applications
+        </a>
+
+    </div>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Resources
+        </span>
+
+        <a href="/reviewer/graduate-degrees"
+            class="sidebar-link {% if reviewer_active_page == 'graduate-degrees' %}active{% endif %}">
+            Graduate Degrees
+        </a>
+
+    </div>
+
+</div>
+
+{% include "partials/sidebar_settings.html" %}

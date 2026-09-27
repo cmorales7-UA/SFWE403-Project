@@ -1,5 +1,6 @@
 {% extends "dashboard_base.html" %}
 
+
 {% block title %}
 Degree Advisor Dashboard | UA-GDAS
 {% endblock %}
@@ -12,57 +13,9 @@ Degree Advisor
 
 {% block sidebar_navigation %}
 
-<div class="sidebar-main-navigation">
+{% set advisor_active_page = "overview" %}
 
-    <a href="/advisor" class="sidebar-link active">
-        Overview
-    </a>
-
-
-    <div class="sidebar-group">
-
-        <span class="sidebar-group-label">
-            Applications
-        </span>
-
-        <a href="#" class="sidebar-link">
-            Student Applications
-        </a>
-
-        <a href="#" class="sidebar-link">
-            Application Review
-        </a>
-
-        <a href="#" class="sidebar-link">
-            Review Committee
-        </a>
-
-    </div>
-
-
-    <div class="sidebar-group">
-
-        <span class="sidebar-group-label">
-            Degree Programs
-        </span>
-
-        <a href="#" class="sidebar-link">
-            Create Degree Program
-        </a>
-
-        <a href="#" class="sidebar-link">
-            Modify Degree Program
-        </a>
-
-        <a href="#" class="sidebar-link">
-            Graduate Degrees
-        </a>
-
-    </div>
-
-</div>
-
-{% include "partials/sidebar_settings.html" %}
+{% include "partials/advisor_sidebar.html" %}
 
 {% endblock %}
 

@@ -8,7 +8,7 @@
     left: 0;
 
     display: grid;
-    grid-template-columns: 245px minmax(0, 1fr);
+    grid-template-columns: 280px minmax(0, 1fr);
 
     min-height: 0;
 

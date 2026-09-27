@@ -1,0 +1,258 @@
+<div class="application-review-workspace">
+
+
+    <!-- Assigned applications -->
+    <section class="review-application-list">
+
+        <div class="review-panel-heading">
+
+            <h2>Assigned Applications</h2>
+
+            <p>
+                Select an application to review.
+            </p>
+
+        </div>
+
+
+        <div class="review-results">
+
+            {% if applications %}
+
+                {% for application in applications %}
+
+                <a
+                    href="?application={{ application.id }}"
+                    class="review-application-item"
+                >
+
+                    <strong>
+                        {{ application.applicant_name }}
+                    </strong>
+
+                    <span>
+                        {{ application.degree_program }}
+                    </span>
+
+                    <span>
+                        {{ application.term }}
+                    </span>
+
+                </a>
+
+                {% endfor %}
+
+            {% else %}
+
+            <div class="review-empty">
+
+                <h3>No Applications</h3>
+
+                <p>
+                    Assigned applications will appear here.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Application review -->
+    <section class="review-details-panel">
+
+        <div class="review-panel-heading">
+
+            <span class="review-panel-label">
+                Application Review
+            </span>
+
+            <h2>
+                Review Details
+            </h2>
+
+        </div>
+
+
+        {% if selected_application %}
+
+
+        <!-- Applicant information -->
+        <div class="review-applicant-heading">
+
+            <span>
+                Applicant
+            </span>
+
+            <strong>
+                {{ selected_application.applicant_name }}
+            </strong>
+
+        </div>
+
+
+        <div class="review-information-grid">
+
+            <div class="review-information-item">
+
+                <span class="review-information-label">
+                    Degree Program
+                </span>
+
+                <span>
+                    {{ selected_application.degree_program }}
+                </span>
+
+            </div>
+
+
+            <div class="review-information-item">
+
+                <span class="review-information-label">
+                    Campus
+                </span>
+
+                <span>
+                    {{ selected_application.campus }}
+                </span>
+
+            </div>
+
+
+            <div class="review-information-item">
+
+                <span class="review-information-label">
+                    Term
+                </span>
+
+                <span>
+                    {{ selected_application.term }}
+                </span>
+
+            </div>
+
+
+            <div class="review-information-item">
+
+                <span class="review-information-label">
+                    Application Status
+                </span>
+
+                <span>
+                    {{ selected_application.status }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Internal review -->
+        <form class="review-form">
+
+            <div class="review-field">
+
+                <label for="review_comments">
+                    Internal Review Comments
+                </label>
+
+                <textarea
+                    id="review_comments"
+                    name="review_comments"
+                    rows="7"
+                >{{ selected_application.review_comments | default("") }}</textarea>
+
+                <span class="review-field-note">
+                    Internal comments are not visible to the applicant.
+                </span>
+
+            </div>
+
+
+            <div class="review-field">
+
+                <label for="recommendation">
+                    Final Recommendation
+                </label>
+
+                {% set current_recommendation = selected_application.recommendation | default("") %}
+
+                <select
+                    id="recommendation"
+                    name="recommendation"
+                    required
+                >
+
+                    <option
+                        value=""
+                        disabled
+                        {% if not current_recommendation %}selected{% endif %}
+                    >
+                        Select Recommendation
+                    </option>
+
+                    <option
+                        value="recommend"
+                        {% if current_recommendation == "recommend" %}selected{% endif %}
+                    >
+                        Recommend
+                    </option>
+
+                    <option
+                        value="deny"
+                        {% if current_recommendation == "deny" %}selected{% endif %}
+                    >
+                        Deny
+                    </option>
+
+                    <option
+                        value="defer"
+                        {% if current_recommendation == "defer" %}selected{% endif %}
+                    >
+                        Defer
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="review-actions">
+
+                <button
+                    type="submit"
+                    class="review-save-button"
+                >
+                    Save Review
+                </button>
+
+            </div>
+
+        </form>
+
+
+        {% else %}
+
+
+        <div class="review-selection-empty">
+
+            <h3>
+                No Application Selected
+            </h3>
+
+            <p>
+                Select an assigned application to begin the review.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+    </section>
+
+
+</div>

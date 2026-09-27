@@ -2,26 +2,26 @@
 
 
 {% block title %}
-Student Application | UA-GDAS
+Graduate Degrees | UA-GDAS
 {% endblock %}
 
 
 {% block sidebar_role %}
-Applicant
+Degree Advisor
 {% endblock %}
 
 
 {% block sidebar_navigation %}
 
-{% set applicant_active_page = "student-application" %}
+{% set advisor_active_page = "graduate-degrees" %}
 
-{% include "partials/applicant_sidebar.html" %}
+{% include "partials/advisor_sidebar.html" %}
 
 {% endblock %}
 
 
 {% block dashboard_heading %}
-Student Application
+Graduate Degrees
 {% endblock %}
 
 
@@ -31,9 +31,8 @@ Student Application
 
 {% block dashboard_content %}
 
-{% set form_mode = "create" %}
-{% set submit_button_text = "Submit Application" %}
+{% set degree_browser_action = "/advisor/graduate-degrees" %}
 
-{% include "partials/student_application_form.html" %}
+{% include "degrees/degree_browser.html" %}
 
 {% endblock %}

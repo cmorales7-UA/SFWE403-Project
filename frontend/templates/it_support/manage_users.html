@@ -1,27 +1,26 @@
 {% extends "dashboard_base.html" %}
 
-
 {% block title %}
-Manage Users | UA-GDAS
+Manage User Accounts | UA-GDAS
 {% endblock %}
 
 
 {% block sidebar_role %}
-Administrator
+IT Support
 {% endblock %}
 
 
 {% block sidebar_navigation %}
 
-{% set admin_active_page = "manage-users" %}
+{% set it_support_active_page = "manage-users" %}
 
-{% include "partials/administrator_sidebar.html" %}
+{% include "partials/it_support_sidebar.html" %}
 
 {% endblock %}
 
 
 {% block dashboard_heading %}
-Manage Users
+Manage User Accounts
 {% endblock %}
 
 
@@ -51,7 +50,7 @@ Manage Users
         <form
             class="user-search-form"
             method="get"
-            action="/administrator/manage-users"
+            action="/it-support/manage-users"
         >
 
             <div class="user-search-field">
@@ -173,7 +172,7 @@ Manage Users
                 {% for user in users %}
 
                 <a
-                    href="/administrator/manage-users?user={{ user.id }}"
+                    href="/it-support/manage-users?user={{ user.id }}"
                     class="user-list-item"
                 >
 
@@ -199,17 +198,17 @@ Manage Users
             <!-- Pagination -->
             <div class="user-pagination">
 
-                <a href="#" class="pagination-control">
+                <span class="pagination-control">
                     Previous
-                </a>
+                </span>
 
                 <span class="pagination-page">
                     Page 1
                 </span>
 
-                <a href="#" class="pagination-control">
+                <span class="pagination-control">
                     Next
-                </a>
+                </span>
 
             </div>
 
@@ -327,27 +326,45 @@ Manage Users
                             Select User Type
                         </option>
 
-                        <option value="applicant">
+                        <option
+                            value="applicant"
+                            {% if selected_user.user_type == "applicant" %}selected{% endif %}
+                        >
                             Graduate Student Applicant
                         </option>
 
-                        <option value="administrator">
+                        <option
+                            value="administrator"
+                            {% if selected_user.user_type == "administrator" %}selected{% endif %}
+                        >
                             Graduate College Administrator / Staff
                         </option>
 
-                        <option value="advisor">
+                        <option
+                            value="advisor"
+                            {% if selected_user.user_type == "advisor" %}selected{% endif %}
+                        >
                             Graduate Degree Advisor / Staff
                         </option>
 
-                        <option value="reviewer">
+                        <option
+                            value="reviewer"
+                            {% if selected_user.user_type == "reviewer" %}selected{% endif %}
+                        >
                             Applicant Reviewer
                         </option>
 
-                        <option value="reference">
+                        <option
+                            value="reference"
+                            {% if selected_user.user_type == "reference" %}selected{% endif %}
+                        >
                             Applicant Reference
                         </option>
 
-                        <option value="it_support">
+                        <option
+                            value="it_support"
+                            {% if selected_user.user_type == "it_support" %}selected{% endif %}
+                        >
                             IT Support Staff
                         </option>
 
@@ -440,30 +457,6 @@ Manage Users
                         name="email"
                         value="{{ selected_user.email }}"
                         required
-                    >
-
-                </div>
-
-            </div>
-
-
-            <!-- Password -->
-            <div class="user-password-section">
-
-                <h3>
-                    Password
-                </h3>
-
-                <div class="user-field">
-
-                    <label for="new_password">
-                        New Password
-                    </label>
-
-                    <input
-                        type="password"
-                        id="new_password"
-                        name="new_password"
                     >
 
                 </div>

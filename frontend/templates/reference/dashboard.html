@@ -12,26 +12,9 @@ Applicant Reference
 
 {% block sidebar_navigation %}
 
-<div class="sidebar-main-navigation">
+{% set reference_active_page = "overview" %}
 
-    <a href="/reference" class="sidebar-link active">
-        Overview
-    </a>
-
-
-    <div class="sidebar-group">
-
-        <span class="sidebar-group-label">
-            Recommendation
-        </span>
-
-        <a href="#" class="sidebar-link">
-            Letter of Recommendation
-        </a>
-
-    </div>
-
-</div>
+{% include "partials/reference_sidebar.html" %}
 
 {% endblock %}
 

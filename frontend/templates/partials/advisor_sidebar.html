@@ -1,0 +1,51 @@
+<div class="sidebar-main-navigation">
+
+    <a href="/advisor" class="sidebar-link {% if advisor_active_page == 'overview' %}active{% endif %}">
+        Overview
+    </a>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Applications
+        </span>
+
+        <a href="/advisor/application-review"
+            class="sidebar-link {% if advisor_active_page == 'application-review' %}active{% endif %}">
+            Review Applications
+        </a>
+
+        <span class="sidebar-link">
+            Review Committee
+        </span>
+
+    </div>
+
+
+    <div class="sidebar-group">
+
+        <span class="sidebar-group-label">
+            Degree Programs
+        </span>
+
+        <a href="/advisor/create-degree-program"
+            class="sidebar-link {% if advisor_active_page == 'create-degree-program' %}active{% endif %}">
+            Create Degree Program
+        </a>
+
+        <a href="/advisor/modify-degree-program"
+            class="sidebar-link {% if advisor_active_page == 'modify-degree-program' %}active{% endif %}">
+            Modify Degree Program
+        </a>
+
+        <a href="/advisor/graduate-degrees"
+            class="sidebar-link {% if advisor_active_page == 'graduate-degrees' %}active{% endif %}">
+            Graduate Degrees
+        </a>
+
+    </div>
+
+</div>
+
+{% include "partials/sidebar_settings.html" %}

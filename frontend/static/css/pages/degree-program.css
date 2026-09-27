@@ -1,0 +1,211 @@
+/* This section controls the graduate degree program form. */
+.degree-program-form {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+
+/* This section creates the cards used to organize the form. */
+.degree-program-section {
+    margin-bottom: 24px;
+    padding: 28px;
+
+    background: #ffffff;
+
+    border: 1px solid #d8dee8;
+    border-radius: 8px;
+}
+
+
+/* This section styles each form section heading. */
+.degree-program-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+
+    border-bottom: 1px solid #e5e9ef;
+}
+
+
+.degree-program-section-heading h2 {
+    margin: 0;
+
+    color: var(--ua-blue);
+
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+
+.degree-program-section-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    color: #ffffff;
+    background: var(--ua-red);
+
+    border-radius: 50%;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+
+/* This section creates the two-column form layout. */
+.degree-program-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+
+.degree-program-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin-bottom: 20px;
+}
+
+
+.degree-program-form-grid .degree-program-field {
+    margin-bottom: 0;
+}
+
+
+.degree-program-field-full {
+    grid-column: 1 / -1;
+}
+
+
+/* This section styles form labels and controls. */
+.degree-program-field label,
+.degree-program-label {
+    color: #263548;
+
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+
+.degree-program-field input,
+.degree-program-field select,
+.degree-program-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 11px 12px;
+
+    color: #263548;
+    background: #ffffff;
+
+    border: 1px solid #bcc6d3;
+    border-radius: 5px;
+
+    font: inherit;
+}
+
+
+.degree-program-field textarea {
+    resize: vertical;
+}
+
+
+.degree-program-field input:focus,
+.degree-program-field select:focus,
+.degree-program-field textarea:focus {
+    outline: 2px solid rgba(12, 35, 75, 0.15);
+    border-color: var(--ua-blue);
+}
+
+
+/* This section styles the campus options. */
+.degree-program-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    padding: 12px 0;
+}
+
+
+.degree-program-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #263548;
+
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+
+.degree-program-checkbox input {
+    width: auto;
+}
+
+
+/* This section contains the form action button. */
+.degree-program-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: 8px;
+    padding-bottom: 30px;
+}
+
+
+.degree-program-submit-button {
+    padding: 12px 22px;
+
+    color: #ffffff;
+    background: var(--ua-red);
+
+    border: none;
+    border-radius: 5px;
+
+    font: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.degree-program-submit-button:hover {
+    opacity: 0.9;
+}
+
+
+/* This section adjusts the form for smaller screens. */
+@media (max-width: 700px) {
+
+    .degree-program-section {
+        padding: 20px;
+    }
+
+
+    .degree-program-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .degree-program-field-full {
+        grid-column: auto;
+    }
+
+
+    .degree-program-checkbox-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+}
