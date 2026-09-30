@@ -1,0 +1,379 @@
+{% extends "dashboard_base.html" %}
+
+
+{% block title %}
+View Student Applications | UA-GDAS
+{% endblock %}
+
+
+{% block sidebar_role %}
+Administrator
+{% endblock %}
+
+
+{% block sidebar_navigation %}
+
+{% set admin_active_page = "student-applications" %}
+
+{% include "partials/administrator_sidebar.html" %}
+
+{% endblock %}
+
+
+{% block dashboard_heading %}
+View Student Applications
+{% endblock %}
+
+
+{% block dashboard_summary %}
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<div class="application-management">
+
+    <!-- Application search -->
+    <section class="application-list-panel">
+
+        <div class="application-panel-heading">
+
+            <h2>Find Applications</h2>
+
+            <p>
+                Search for an existing graduate application.
+            </p>
+
+        </div>
+
+
+        <!-- Search and filters -->
+        <form class="application-search-form" method="get" action="/administrator/student-applications">
+
+            <div class="application-search-field">
+
+                <label for="application_search">
+                    Search Applicant
+                </label>
+
+                <input type="search" id="application_search" name="q" value="{{ search_query }}"
+                    placeholder="Name, email, or application ID">
+
+            </div>
+
+
+            <div class="application-filter-field">
+
+                <label for="degree_filter">
+                    Degree Program
+                </label>
+
+                <select id="degree_filter" name="degree">
+                    <option value="">
+                        All Degree Programs
+                    </option>
+
+                    {% for degree in degree_options %}
+
+                    <option value="{{ degree }}" {% if selected_degree==degree %}selected{% endif %}>
+                        {{ degree }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="application-filter-field">
+
+                <label for="term_filter">
+                    Term
+                </label>
+
+                <select id="term_filter" name="term">
+                    <option value="">
+                        All Terms
+                    </option>
+
+                    {% for term in term_options %}
+
+                    <option value="{{ term }}" {% if selected_term==term %}selected{% endif %}>
+                        {{ term }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="application-filter-field">
+
+                <label for="status_filter">
+                    Application Status
+                </label>
+
+                <select id="status_filter" name="status">
+
+                    <option value="" {% if selected_status=="" %}selected{% endif %}>
+                        All Statuses
+                    </option>
+
+                    <option value="pending" {% if selected_status=="pending" %}selected{% endif %}>
+                        Pending
+                    </option>
+
+                    <option value="submitted" {% if selected_status=="submitted" %}selected{% endif %}>
+                        Submitted
+                    </option>
+
+                    <option value="in-review" {% if selected_status=="in-review" %}selected{% endif %}>
+                        In Review
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button type="submit" class="application-search-button">
+                Search
+            </button>
+
+        </form>
+
+
+        <!-- Application results -->
+        <div class="application-results-section">
+
+            <div class="application-results-header">
+
+                <h3>
+                    Applications
+                </h3>
+
+                {% if applications %}
+
+                <span class="application-results-count">
+                    {{ applications|length }} shown
+                </span>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if applications %}
+
+            <div class="application-results-list">
+
+                {% for application in applications %}
+
+                <a href="/administrator/student-applications?application={{ application.id }}"
+                    class="application-list-item">
+
+                    <span class="application-list-name">
+                        {{ application.full_name }}
+                    </span>
+
+                    <span class="application-list-email">
+                        {{ application.email }}
+                    </span>
+
+                    <span class="application-list-program">
+                        {{ application.degree_program }}
+                    </span>
+
+                    <span class="application-list-status">
+                        {{ application.status }}
+                    </span>
+
+                </a>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="application-results-empty">
+
+                <div class="application-results-empty-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </div>
+
+                <p>
+                    Search to find student applications.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Application details -->
+    <section class="application-details-panel">
+
+        <div class="application-details-heading">
+
+            <span class="application-details-label">
+                Application Management
+            </span>
+
+            <h2>
+                Application Details
+            </h2>
+
+        </div>
+
+
+        {% if selected_application %}
+
+        <div class="selected-application-heading">
+
+            <span>
+                Selected Applicant
+            </span>
+
+            <strong>
+                {{ selected_application.full_name }}
+            </strong>
+
+        </div>
+
+
+        <div class="application-details-grid">
+
+            <div class="application-detail">
+
+                <span class="application-detail-label">
+                    Email
+                </span>
+
+                <strong>
+                    {{ selected_application.email }}
+                </strong>
+
+            </div>
+
+
+            <div class="application-detail">
+
+                <span class="application-detail-label">
+                    Degree Program
+                </span>
+
+                <strong>
+                    {{ selected_application.degree_program }}
+                </strong>
+
+            </div>
+
+
+            <div class="application-detail">
+
+                <span class="application-detail-label">
+                    Campus
+                </span>
+
+                <strong>
+                    {{ selected_application.campus }}
+                </strong>
+
+            </div>
+
+
+            <div class="application-detail">
+
+                <span class="application-detail-label">
+                    Term
+                </span>
+
+                <strong>
+                    {{ selected_application.term }}
+                </strong>
+
+            </div>
+
+
+            <div class="application-detail">
+
+                <span class="application-detail-label">
+                    Application Status
+                </span>
+
+                <strong>
+                    {{ selected_application.status }}
+                </strong>
+
+            </div>
+
+
+            <div class="application-detail">
+
+                <span class="application-detail-label">
+                    Submission Date
+                </span>
+
+                <strong>
+                    {{ selected_application.submission_date }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="application-detail-actions">
+
+            <a href="/administrator/student-applications/{{ selected_application.id }}/modify"
+                class="application-modify-button">
+                Modify Application
+            </a>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="application-selection-empty">
+
+            <div class="application-selection-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M19 8v6"></path>
+                    <path d="M22 11h-6"></path>
+                </svg>
+            </div>
+
+
+            <h3>
+                No Application Selected
+            </h3>
+
+            <p>
+                Select an application from the search results to review its information.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+{% endblock %}

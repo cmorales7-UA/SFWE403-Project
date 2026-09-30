@@ -1,0 +1,433 @@
+.application-filter-page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+
+/* Filter toolbar */
+
+.application-filter-toolbar {
+    width: 100%;
+
+    padding: 24px;
+
+    background-color: var(--white);
+
+    border: 1px solid #dce1e7;
+    border-radius: 8px;
+}
+
+
+.primary-filter-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(260px, 1.5fr)
+        minmax(200px, 1fr)
+        minmax(160px, 0.7fr)
+        minmax(170px, 0.8fr);
+
+    gap: 18px;
+
+    align-items: end;
+}
+
+
+.filter-field {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.filter-field label {
+    color: var(--ua-blue);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.filter-field input,
+.filter-field select {
+    width: 100%;
+    height: 42px;
+
+    padding: 0 12px;
+
+    background-color: var(--white);
+
+    border: 1px solid #c7d0da;
+    border-radius: 6px;
+
+    color: #24364b;
+
+    font: inherit;
+    font-size: 14px;
+}
+
+
+.filter-field input::placeholder {
+    color: #8996a5;
+}
+
+
+.filter-field input:focus,
+.filter-field select:focus {
+    outline: none;
+
+    border-color: var(--ua-blue);
+
+    box-shadow:
+        0 0 0 2px rgba(12, 35, 75, 0.08);
+}
+
+
+/* Additional filters */
+
+.additional-filters {
+    margin-top: 18px;
+}
+
+
+.additional-filters summary {
+    list-style: none;
+}
+
+.additional-filters summary::-webkit-details-marker {
+    display: none;
+}
+
+
+.more-filters-button {
+    width: fit-content;
+
+    padding: 9px 14px;
+
+    background-color: #f5f7fa;
+
+    border: 1px solid #c7d0da;
+    border-radius: 6px;
+
+    color: var(--ua-blue);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    user-select: none;
+}
+
+
+.more-filters-button:hover {
+    background-color: #edf1f5;
+    border-color: #aeb9c6;
+}
+
+
+.filters-open-text {
+    display: none;
+}
+
+
+.additional-filters[open] .filters-closed-text {
+    display: none;
+}
+
+
+.additional-filters[open] .filters-open-text {
+    display: inline;
+}
+
+
+.additional-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-top: 18px;
+    padding: 18px;
+
+    background-color: #f7f9fb;
+
+    border: 1px solid #e0e5eb;
+    border-radius: 6px;
+}
+
+.additional-filter-description {
+    color: #718096;
+
+    font-size: 13px;
+    font-weight: 400;
+}
+
+
+.additional-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    padding: 4px 0 20px;
+}
+
+
+/* Actions */
+
+.filter-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 20px;
+    padding-top: 18px;
+
+    border-top: 1px solid #e1e6eb;
+}
+
+
+.clear-filter-button {
+    min-height: 40px;
+
+    padding: 0 14px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--ua-blue);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    border-radius: 6px;
+}
+
+
+.clear-filter-button:hover {
+    background-color: #f3f5f8;
+}
+
+
+.apply-filter-button {
+    min-height: 40px;
+
+    padding: 0 18px;
+
+    background-color: var(--ua-blue);
+
+    border: 1px solid var(--ua-blue);
+    border-radius: 6px;
+
+    color: var(--white);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.apply-filter-button:hover {
+    opacity: 0.92;
+}
+
+
+/* Results */
+
+.application-results {
+    width: 100%;
+
+    background-color: var(--white);
+
+    border: 1px solid #dce1e7;
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+
+.application-results-heading {
+    min-height: 74px;
+
+    padding: 18px 24px;
+
+    display: flex;
+    align-items: center;
+
+    border-bottom: 1px solid #dce1e7;
+}
+
+
+.application-results-heading h2 {
+    margin: 0 0 3px;
+
+    color: var(--ua-blue);
+
+    font-size: 19px;
+}
+
+
+.application-results-heading p {
+    margin: 0;
+
+    color: #65758a;
+
+    font-size: 13px;
+}
+
+
+/* Table */
+
+.application-results-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+
+.application-results-table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+
+.application-results-table th {
+    padding: 12px 18px;
+
+    background-color: #f5f7fa;
+
+    border-bottom: 1px solid #dce1e7;
+
+    color: #607085;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-align: left;
+
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+
+.application-results-table td {
+    padding: 15px 18px;
+
+    border-bottom: 1px solid #e5e9ee;
+
+    color: #34465a;
+
+    font-size: 14px;
+}
+
+
+.application-results-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+.application-results-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+
+.application-results-table .applicant-name {
+    color: var(--ua-blue);
+
+    font-weight: 600;
+}
+
+
+/* Empty results */
+
+.application-results-empty {
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 36px 24px;
+
+    text-align: center;
+}
+
+
+.application-results-empty h3 {
+    margin: 0 0 6px;
+
+    color: var(--ua-blue);
+
+    font-size: 17px;
+}
+
+
+.application-results-empty p {
+    margin: 0;
+
+    color: #718096;
+
+    font-size: 14px;
+}
+
+
+/* Responsive */
+
+@media (max-width: 1200px) {
+
+    .primary-filter-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+
+    .additional-filter-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .application-filter-toolbar {
+        padding: 18px;
+    }
+
+
+    .primary-filter-row,
+    .additional-filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .additional-filter-description {
+        display: none;
+    }
+
+
+    .filter-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+
+    .clear-filter-button,
+    .apply-filter-button {
+        width: 100%;
+    }
+
+}

@@ -2,15 +2,7 @@
 
 
 {% block title %}
-Application Review | UA-GDAS
-{% endblock %}
-
-
-{% block page_css %}
-<link
-    rel="stylesheet"
-    href="/static/css/pages/application-review.css"
->
+Modify Student Application | UA-GDAS
 {% endblock %}
 
 
@@ -21,7 +13,7 @@ Administrator
 
 {% block sidebar_navigation %}
 
-{% set admin_active_page = "application-review" %}
+{% set admin_active_page = "student-applications" %}
 
 {% include "partials/administrator_sidebar.html" %}
 
@@ -29,7 +21,7 @@ Administrator
 
 
 {% block dashboard_heading %}
-Application Review
+Modify Student Application
 {% endblock %}
 
 
@@ -39,6 +31,9 @@ Application Review
 
 {% block dashboard_content %}
 
-{% include "partials/application_review.html" %}
+{% set form_mode = "modify" %}
+{% set submit_button_text = "Save Changes" %}
+
+{% include "partials/student_application_form.html" %}
 
 {% endblock %}

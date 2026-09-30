@@ -23,7 +23,7 @@
 
                 <a
                     href="?application={{ application.id }}"
-                    class="review-application-item"
+                    class="review-application-item {% if selected_application and selected_application.id == application.id %}active{% endif %}"
                 >
 
                     <strong>

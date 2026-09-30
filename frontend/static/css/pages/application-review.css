@@ -1,6 +1,8 @@
 .application-review-workspace {
+    width: 100%;
+
     display: grid;
-    grid-template-columns: 340px minmax(0, 1fr);
+    grid-template-columns: 380px minmax(0, 1fr);
     gap: 24px;
     align-items: start;
 }
@@ -12,7 +14,7 @@
 .review-details-panel {
     background: #ffffff;
     border: 1px solid #d9e0e8;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
 }
 
@@ -41,7 +43,7 @@
 .review-panel-label {
     display: block;
     margin-bottom: 6px;
-    color: var(--ua-red, #AB0520);
+    color: var(--ua-blue, #0C234B);
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -249,8 +251,8 @@
 
 .review-field textarea:focus,
 .review-field select:focus {
-    border-color: var(--ua-red, #AB0520);
-    box-shadow: 0 0 0 3px rgba(171, 5, 32, 0.08);
+    border-color: var(--ua-blue, #0C234B);
+    box-shadow: 0 0 0 3px rgba(12, 35, 75, 0.08);
 }
 
 
@@ -273,7 +275,7 @@
 .review-save-button {
     border: none;
     border-radius: 8px;
-    background: var(--ua-red, #AB0520);
+    background: var(--ua-blue, #0C234B);
     color: #ffffff;
     padding: 11px 20px;
     font-family: inherit;
@@ -285,13 +287,18 @@
 
 
 .review-save-button:hover {
-    background: #8f041b;
+    background: var(--ua-blue, #0C234B);
 }
 
 
 .review-save-button:focus-visible {
     outline: 3px solid rgba(171, 5, 32, 0.2);
     outline-offset: 2px;
+}
+
+.review-application-item.active {
+    background-color: #eef2f7;
+    border-left: 3px solid var(--ua-red);
 }
 
 
