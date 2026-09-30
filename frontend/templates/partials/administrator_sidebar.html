@@ -16,9 +16,15 @@
             Manage Users
         </a>
 
-        <span class="sidebar-link">
+        <a href="/administrator/student-applications"
+            class="sidebar-link {% if admin_active_page == 'student-applications' %}active{% endif %}">
             View Student Applications
-        </span>
+        </a>
+
+        <a href="/administrator/filter-applications"
+            class="sidebar-link {% if admin_active_page == 'filter-applications' %}active{% endif %}">
+            Filter Applications
+        </a>
 
         <a href="/administrator/application-review"
             class="sidebar-link {% if admin_active_page == 'application-review' %}active{% endif %}">

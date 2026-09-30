@@ -30,3 +30,38 @@ if (sidebarToggle && sidebarToggleIcon && dashboardShell) {
     });
 
 }
+// Preserve scroll position when selecting an application for review.
+const reviewApplicationLinks = document.querySelectorAll(".review-application-item");
+const dashboardMain = document.querySelector(".dashboard-main");
+
+reviewApplicationLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+        if (dashboardMain) {
+            sessionStorage.setItem(
+                "applicationReviewScroll",
+                dashboardMain.scrollTop
+            );
+        }
+    });
+});
+
+
+const savedReviewScroll = sessionStorage.getItem(
+    "applicationReviewScroll"
+);
+
+const applicationSelected = new URLSearchParams(
+    window.location.search
+).has("application");
+
+
+if (
+    dashboardMain &&
+    savedReviewScroll !== null &&
+    applicationSelected
+) {
+    requestAnimationFrame(() => {
+        dashboardMain.scrollTop = Number(savedReviewScroll);
+        sessionStorage.removeItem("applicationReviewScroll");
+    });
+}
