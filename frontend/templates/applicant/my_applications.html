@@ -1,0 +1,163 @@
+{% extends "dashboard_base.html" %}
+
+
+{% block title %}
+My Applications | UA-GDAS
+{% endblock %}
+
+
+{% block page_css %}
+<link rel="stylesheet" href="/static/css/pages/applications/my-applications.css">
+{% endblock %}
+
+
+{% block sidebar_role %}
+Applicant
+{% endblock %}
+
+
+{% block sidebar_navigation %}
+
+{% set applicant_active_page = "my-applications" %}
+
+{% include "partials/navigation/applicant_sidebar.html" %}
+
+{% endblock %}
+
+
+{% block dashboard_heading %}
+My Applications
+{% endblock %}
+
+
+{% block dashboard_summary %}
+
+<div class="applications-page-intro">
+
+    <div>
+
+        <h2>
+            Graduate Applications
+        </h2>
+
+        <p>
+            View applications in progress, submitted applications,
+            and application status updates.
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+{% set applications = applications | default([]) %}
+
+<div class="applications-list">
+
+    {% if applications %}
+
+    <div class="applications-list-header">
+
+        <span>Degree Program</span>
+        <span>Campus / Term</span>
+        <span>Status</span>
+        <span>Last Updated</span>
+        <span></span>
+
+    </div>
+
+
+    {% for application in applications %}
+
+    <div class="application-list-row">
+
+        <div class="application-program">
+
+            <strong>
+                {{ application.degree_name }}
+            </strong>
+
+            <span>
+                Graduate Application
+            </span>
+
+        </div>
+
+
+        <div class="application-term">
+
+            <strong>
+                {{ application.campus }}
+            </strong>
+
+            <span>
+                {{ application.term }}
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <span class="application-status application-status-{{ application.status | lower | replace(' ', '-') }}">
+                {{ application.status }}
+            </span>
+
+        </div>
+
+
+        <div class="application-updated">
+
+            {{ application.last_updated }}
+
+        </div>
+
+
+        <div class="application-row-action">
+
+            <a href="/applicant/modify-application?application_id={{ application.id }}">
+                {% if application.status == "In Process" %}
+                Continue
+                {% else %}
+                Open Application
+                {% endif %}
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+
+    {% else %}
+
+    <div class="applications-empty-state">
+
+        <h3>
+            No Applications Yet
+        </h3>
+
+        <p>
+            Browse available graduate degrees and select a program
+            when you are ready to begin an application.
+        </p>
+
+        <a
+            href="/applicant/graduate-degrees"
+            class="applications-empty-button"
+        >
+            Browse Graduate Degrees
+        </a>
+
+    </div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

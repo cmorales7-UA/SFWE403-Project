@@ -1,0 +1,281 @@
+/* Applicant application list */
+
+.applications-page-intro {
+    width: 100%;
+    max-width: 1100px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 40px;
+
+    margin-bottom: 24px;
+}
+
+
+.applications-page-intro h2 {
+    margin: 0 0 7px;
+
+    color: var(--ua-blue);
+
+    font-size: 1.15rem;
+}
+
+
+.applications-page-intro p {
+    max-width: 650px;
+
+    margin: 0;
+
+    color: var(--text-secondary);
+
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+
+.applications-start-button,
+.applications-empty-button {
+    min-height: 44px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 22px;
+
+    background-color: var(--ua-red);
+    color: var(--white);
+
+    border-radius: 5px;
+
+    font-size: 0.86rem;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.applications-empty-button:hover {
+    background-color: #8c041a;
+}
+
+
+/* Application list */
+
+.applications-list {
+    width: 100%;
+    max-width: 1100px;
+
+    overflow: hidden;
+
+    background-color: var(--white);
+
+    border: 1px solid #dce1e7;
+    border-radius: 8px;
+}
+
+
+.applications-list-header,
+.application-list-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(220px, 1.6fr)
+        minmax(150px, 1fr)
+        minmax(120px, 0.8fr)
+        minmax(130px, 0.8fr)
+        130px;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+
+.applications-list-header {
+    padding: 14px 22px;
+
+    background-color: #f4f6f8;
+
+    border-bottom: 1px solid #dce1e7;
+
+    color: #68778a;
+
+    font-size: 0.72rem;
+    font-weight: 700;
+
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+
+.application-list-row {
+    padding: 20px 22px;
+
+    border-bottom: 1px solid #e2e6eb;
+}
+
+
+.application-list-row:last-child {
+    border-bottom: 0;
+}
+
+
+.application-program,
+.application-term {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+.application-program strong,
+.application-term strong {
+    color: var(--ua-blue);
+
+    font-size: 0.9rem;
+}
+
+
+.application-program span,
+.application-term span,
+.application-updated {
+    color: #68778a;
+
+    font-size: 0.82rem;
+}
+
+
+/* Status */
+
+.application-status {
+    display: inline-flex;
+
+    padding: 5px 9px;
+
+    background-color: #eef2f6;
+    color: var(--ua-blue);
+
+    border-radius: 4px;
+
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+
+.application-status-in-process {
+    background-color: #f2f4f7;
+}
+
+
+.application-status-submitted {
+    background-color: #edf3f8;
+}
+
+
+.application-status-in-review {
+    background-color: #f3f0e8;
+}
+
+
+/* Row action */
+
+.application-row-action {
+    text-align: right;
+}
+
+
+.application-row-action a {
+    color: var(--ua-red);
+
+    font-size: 0.82rem;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+.application-row-action a:hover {
+    text-decoration: underline;
+}
+
+
+/* Empty state */
+
+.applications-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 72px 30px;
+
+    text-align: center;
+}
+
+
+.applications-empty-state h3 {
+    margin: 0 0 8px;
+
+    color: var(--ua-blue);
+
+    font-size: 1.1rem;
+}
+
+
+.applications-empty-state p {
+    max-width: 440px;
+
+    margin: 0 0 24px;
+
+    color: var(--text-secondary);
+
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
+
+.applications-browse-link {
+    margin-top: 14px;
+
+    color: var(--ua-blue);
+
+    font-size: 0.82rem;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+.applications-browse-link:hover {
+    text-decoration: underline;
+}
+
+
+@media (max-width: 900px) {
+
+    .applications-page-intro {
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 20px;
+    }
+
+
+    .applications-list-header {
+        display: none;
+    }
+
+
+    .application-list-row {
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+    }
+
+
+    .application-row-action {
+        text-align: left;
+    }
+}

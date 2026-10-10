@@ -15,7 +15,7 @@ Administrator
 
 {% set admin_active_page = "student-applications" %}
 
-{% include "partials/administrator_sidebar.html" %}
+{% include "partials/navigation/administrator_sidebar.html" %}
 
 {% endblock %}
 
@@ -34,6 +34,6 @@ Modify Student Application
 {% set form_mode = "modify" %}
 {% set submit_button_text = "Save Changes" %}
 
-{% include "partials/student_application_form.html" %}
+{% include "partials/applications/student_application_form.html" %}
 
 {% endblock %}

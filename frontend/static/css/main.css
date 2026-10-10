@@ -1,17 +1,30 @@
-@import url("./base/variables.css");
-@import url("./base/global.css");
+/* Base */
+@import url("base/variables.css");
+@import url("base/global.css");
 
-@import url("./layout/header.css");
+/* Layout */
+@import url("layout/header.css");
+@import url("layout/dashboard.css");
 
-@import url("./pages/home.css");
-@import url("./pages/create-account.css");
-@import url("./pages/login.css");
-@import url("./pages/dashboard.css");
+/* Public */
+@import url("pages/public/home.css");
+@import url("pages/public/public-degree-browser.css");
 
-@import url("./pages/student-application.css");
-@import url("./pages/graduate-degrees.css");
-@import url("./pages/change-password.css");
+/* Authentication */
+@import url("pages/auth/login.css");
+@import url("pages/auth/create-account.css");
+@import url("pages/auth/change-password.css");
 
-@import url("./pages/manage-users.css");
-@import url("./pages/degree-program.css");
-@import url("./pages/student-application-management.css");
+/* Applications */
+@import url("pages/applications/my-applications.css");
+@import url("pages/applications/student-application.css");
+@import url("pages/applications/student-application-management.css");
+@import url("pages/applications/application-review.css");
+@import url("pages/applications/application-filter.css");
+
+/* Degrees */
+@import url("pages/degrees/graduate-degrees.css");
+@import url("pages/degrees/degree-program.css");
+
+/* Administration */
+@import url("pages/admin/manage-users.css");

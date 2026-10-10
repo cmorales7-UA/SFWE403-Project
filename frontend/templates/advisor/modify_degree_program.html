@@ -15,7 +15,7 @@ Degree Advisor
 
 {% set advisor_active_page = "modify-degree-program" %}
 
-{% include "partials/advisor_sidebar.html" %}
+{% include "partials/navigation/advisor_sidebar.html" %}
 
 {% endblock %}
 
@@ -34,6 +34,6 @@ Modify Degree Program
 {% set form_mode = "modify" %}
 {% set submit_button_text = "Save Changes" %}
 
-{% include "partials/degree_program_form.html" %}
+{% include "partials/degrees/degree_program_form.html" %}
 
 {% endblock %}

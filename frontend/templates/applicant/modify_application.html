@@ -15,7 +15,7 @@ Applicant
 
 {% set applicant_active_page = "modify-application" %}
 
-{% include "partials/applicant_sidebar.html" %}
+{% include "partials/navigation/applicant_sidebar.html" %}
 
 {% endblock %}
 
@@ -34,6 +34,6 @@ Modify Application
 {% set form_mode = "modify" %}
 {% set submit_button_text = "Save Changes" %}
 
-{% include "partials/student_application_form.html" %}
+{% include "partials/applications/student_application_form.html" %}
 
 {% endblock %}

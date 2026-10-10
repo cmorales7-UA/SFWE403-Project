@@ -450,6 +450,40 @@
     border-bottom: 1px solid #e4e8ed;
 }
 
+/* Selected degree heading */
+
+.degree-details-heading-with-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+
+.degree-selected-program {
+    min-width: 0;
+}
+
+
+.degree-selected-program h3 {
+    margin: 0 0 6px;
+}
+
+
+.degree-selected-meta {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    margin: 0;
+
+    color: #66768a;
+
+    font-size: 0.84rem;
+    font-weight: 600;
+}
 
 .degree-details-heading h3 {
     margin: 0;
@@ -591,6 +625,42 @@
     font-weight: 700;
 }
 
+.degree-application-button {
+    min-height: 44px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    box-sizing: border-box;
+
+    padding: 0 20px;
+
+    background-color: var(--ua-blue);
+    color: var(--white);
+
+    border: 2px solid var(--ua-blue);
+    border-radius: 5px;
+
+    font-size: 0.84rem;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+.degree-application-button:focus {
+    outline: none;
+
+    box-shadow: 0 0 0 3px rgba(171, 5, 32, 0.18);
+}
 
 .degree-selection-empty p {
     max-width: 360px;
@@ -602,6 +672,16 @@
     font-size: 0.88rem;
 
     line-height: 1.5;
+}
+
+.degree-information-section p {
+    margin: 0;
+
+    color: #52647a;
+
+    font-size: 0.9rem;
+
+    line-height: 1.6;
 }
 
 
@@ -663,4 +743,27 @@
         padding: 32px 22px;
     }
 
+
+    .degree-application-action {
+        align-items: flex-start;
+        flex-direction: column;
+
+        margin-left: 22px;
+        margin-right: 22px;
+    }
+
+
+    .degree-application-button {
+        width: 100%;
+    }
+
+    .degree-details-heading-with-action {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+
+    .degree-application-button {
+        width: 100%;
+    }
 }

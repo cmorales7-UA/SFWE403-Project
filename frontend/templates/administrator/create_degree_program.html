@@ -15,7 +15,7 @@ Administrator
 
 {% set admin_active_page = "create-degree-program" %}
 
-{% include "partials/administrator_sidebar.html" %}
+{% include "partials/navigation/administrator_sidebar.html" %}
 
 {% endblock %}
 
@@ -34,6 +34,6 @@ Create Degree Program
 {% set form_mode = "create" %}
 {% set submit_button_text = "Create Degree Program" %}
 
-{% include "partials/degree_program_form.html" %}
+{% include "partials/degrees/degree_program_form.html" %}
 
 {% endblock %}

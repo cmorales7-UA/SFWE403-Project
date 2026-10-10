@@ -9,7 +9,24 @@ router = APIRouter()
 templates = Jinja2Templates(directory="frontend/templates")
 
 
-# This route displays the Student Application GUI.
+# This route displays the applicant's existing applications.
+@router.get(
+    "/applicant/applications",
+    response_class=HTMLResponse,
+    name="my_applications",
+)
+async def my_applications(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="applicant/my_applications.html",
+        context={
+            # Application data will be supplied by the backend.
+            "applications": [],
+        },
+    )
+
+
+# This route displays the form for starting a new application.
 @router.get(
     "/applicant/application",
     response_class=HTMLResponse,
@@ -22,7 +39,7 @@ async def student_application(request: Request):
     )
 
 
-# This route displays the Modify Student Application GUI.
+# This route displays an existing application for modification.
 @router.get(
     "/applicant/modify-application",
     response_class=HTMLResponse,

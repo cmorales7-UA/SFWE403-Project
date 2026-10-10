@@ -2,7 +2,7 @@
 
 
 {% block title %}
-Student Application | UA-GDAS
+Start New Application | UA-GDAS
 {% endblock %}
 
 
@@ -13,15 +13,15 @@ Applicant
 
 {% block sidebar_navigation %}
 
-{% set applicant_active_page = "student-application" %}
+{% set applicant_active_page = "start-application" %}
 
-{% include "partials/applicant_sidebar.html" %}
+{% include "partials/navigation/applicant_sidebar.html" %}
 
 {% endblock %}
 
 
 {% block dashboard_heading %}
-Student Application
+Start New Application
 {% endblock %}
 
 
@@ -34,6 +34,6 @@ Student Application
 {% set form_mode = "create" %}
 {% set submit_button_text = "Submit Application" %}
 
-{% include "partials/student_application_form.html" %}
+{% include "partials/applications/student_application_form.html" %}
 
 {% endblock %}

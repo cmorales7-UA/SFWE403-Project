@@ -15,7 +15,7 @@ Applicant
 
 {% set applicant_active_page = "graduate-degrees" %}
 
-{% include "partials/applicant_sidebar.html" %}
+{% include "partials/navigation/applicant_sidebar.html" %}
 
 {% endblock %}
 
@@ -32,5 +32,11 @@ Graduate Degrees
 {% block dashboard_content %}
 
 {% include "degrees/degree_browser.html" %}
+
+
+<script
+    src="/static/js/pages/degrees/graduate-degrees.js"
+    defer
+></script>
 
 {% endblock %}
