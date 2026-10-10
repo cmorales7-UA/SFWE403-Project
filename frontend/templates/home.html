@@ -4,68 +4,408 @@
 UA-GDAS
 {% endblock %}
 
+{% block page_css %}
+<link rel="stylesheet" href="/static/css/pages/home.css">
+{% endblock %}
+
 {% block content %}
 
-<section class="hero">
+<div class="home-page">
 
-    <img
-        src="/static/images/ua-students.jpg"
-        alt="University of Arizona students"
-        class="hero-image"
-    >
+    <!-- Hero -->
+    <section class="home-hero">
 
-    <div class="hero-overlay">
+        <img
+            src="/static/images/ua-students.jpg"
+            alt="University of Arizona graduate students"
+            class="home-hero-image"
+        >
 
-        <h1>Apply to Graduate Programs</h1>
+        <div class="home-hero-shade"></div>
 
-        <p>
-            Submit your application, upload required documents,
-            and track your application status.
-        </p>
+        <div class="home-hero-inner">
 
-    </div>
+            <div class="home-hero-panel">
 
-</section>
+                <span class="home-eyebrow home-eyebrow-light">
+                    Graduate Admissions
+                </span>
 
-<section class="how-it-works">
+                <h1>
+                    Find the graduate program
+                    that moves you forward.
+                </h1>
 
-    <div class="how-it-works-container">
-
-        <h2>How It Works</h2>
-
-        <div class="steps">
-
-            <div class="step">
-                <span class="step-number">01</span>
-                <h3>Explore Programs</h3>
                 <p>
-                    Review available graduate programs
-                    and requirements.
+                    Explore graduate programs, compare requirements,
+                    and apply when you're ready.
                 </p>
-            </div>
 
-            <div class="step">
-                <span class="step-number">02</span>
-                <h3>Submit Your Application</h3>
-                <p>
-                    Complete your application and
-                    upload required documents.
-                </p>
-            </div>
+                <a
+                    href="/graduate-degrees"
+                    class="home-button home-button-light"
+                >
+                    Explore Graduate Programs
 
-            <div class="step">
-                <span class="step-number">03</span>
-                <h3>Track Your Status</h3>
-                <p>
-                    Check the status of your
-                    submitted application.
-                </p>
+                    <span aria-hidden="true">→</span>
+                </a>
+
             </div>
 
         </div>
 
-    </div>
+    </section>
 
-</section>
+
+    <!-- Program overview -->
+    <section class="home-overview">
+
+        <div
+            class="home-overview-inner"
+            data-reveal
+        >
+
+            <div class="home-overview-item">
+
+                <span>
+                    Degree Options
+                </span>
+
+                <strong>
+                    Master's & Doctorate
+                </strong>
+
+            </div>
+
+            <div class="home-overview-item">
+
+                <span>
+                    Study Options
+                </span>
+
+                <strong>
+                    Main, Online & Distance
+                </strong>
+
+            </div>
+
+            <div class="home-overview-item">
+
+                <span>
+                    Before You Apply
+                </span>
+
+                <strong>
+                    Requirements, Deadlines & Fees
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Start application -->
+    <section class="home-start">
+
+        <div class="home-container">
+
+            <div
+                class="home-start-inner"
+                data-reveal
+            >
+
+                <div class="home-start-copy">
+
+                    <span class="home-start-label">
+                        Already know your program?
+                    </span>
+
+                    <h2>
+                        Ready to apply?
+                    </h2>
+
+                    <p>
+                        Create an account and start your graduate application.
+                    </p>
+
+                </div>
+
+                <a
+                    href="/create-account"
+                    class="home-start-button"
+                >
+                    Start Your Application
+
+                    <span aria-hidden="true">→</span>
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Application process -->
+    <section class="home-process">
+
+        <div
+            class="home-container home-process-layout"
+            data-reveal
+        >
+
+            <div class="home-process-intro">
+
+                <span class="home-eyebrow">
+                    Application Process
+                </span>
+
+                <h2>
+                    How applying works.
+                </h2>
+
+                <p>
+                    Explore your options, prepare your materials,
+                    and track your application after submission.
+                </p>
+
+            </div>
+
+            <div class="home-process-steps">
+
+                <article class="home-process-step">
+
+                    <span class="home-process-number">
+                        01
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Explore Programs
+                        </h3>
+
+                        <p>
+                            Review graduate programs, requirements,
+                            deadlines, fees, and campus options.
+                        </p>
+
+                    </div>
+
+                </article>
+
+                <article class="home-process-step">
+
+                    <span class="home-process-number">
+                        02
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Prepare & Submit
+                        </h3>
+
+                        <p>
+                            Complete your application and provide
+                            the required supporting documents.
+                        </p>
+
+                    </div>
+
+                </article>
+
+                <article class="home-process-step">
+
+                    <span class="home-process-number">
+                        03
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Track Your Status
+                        </h3>
+
+                        <p>
+                            Return anytime to check the status
+                            of your submitted application.
+                        </p>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Graduate programs -->
+    <section class="home-programs">
+
+        <div
+            class="home-container home-programs-layout"
+            data-reveal
+        >
+
+            <div class="home-programs-copy">
+
+                <span class="home-eyebrow">
+                    Graduate Programs
+                </span>
+
+                <h2>
+                    Discover more than
+                    a degree name.
+                </h2>
+
+                <p>
+                    Compare the information that matters before
+                    deciding where to apply.
+                </p>
+
+                <a
+                    href="/graduate-degrees"
+                    class="home-button home-button-outline"
+                >
+                    Browse Graduate Degrees
+
+                    <span aria-hidden="true">→</span>
+                </a>
+
+            </div>
+
+            <div class="home-programs-details">
+
+                <div class="home-programs-details-heading">
+
+                    <span>
+                        What You Can Compare
+                    </span>
+
+                    <p>
+                        Review the details for each available graduate program.
+                    </p>
+
+                </div>
+
+                <div class="home-program-detail">
+
+                    <span class="home-program-number">
+                        01
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Program Requirements
+                        </h3>
+
+                        <p>
+                            Review the academic and application
+                            requirements for each program.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="home-program-detail">
+
+                    <span class="home-program-number">
+                        02
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Campus & Term
+                        </h3>
+
+                        <p>
+                            See where programs are offered
+                            and which terms are available.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="home-program-detail">
+
+                    <span class="home-program-number">
+                        03
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Deadlines & Fees
+                        </h3>
+
+                        <p>
+                            Review application deadlines
+                            and program fees before applying.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="home-program-detail">
+
+                    <span class="home-program-number">
+                        04
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Program Contact
+                        </h3>
+
+                        <p>
+                            Find contact information for
+                            program-specific questions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Returning applicant -->
+    <section class="home-return">
+
+        <div class="home-container home-return-inner">
+
+            <span>
+                Already started an application?
+            </span>
+
+            <a href="/login">
+                Log in to continue
+
+                <span aria-hidden="true">→</span>
+            </a>
+
+        </div>
+
+    </section>
+
+</div>
+
+<script src="/static/js/pages/home.js" defer></script>
 
 {% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}
+Graduate Degrees | UA-GDAS
+{% endblock %}
+
+{% block page_css %}
+<link
+    rel="stylesheet"
+    href="/static/css/pages/public-degree-browser.css"
+>
+{% endblock %}
+
+{% block content %}
+
+<main class="public-degree-page">
+
+    <div class="public-degree-container">
+
+        <!-- Page heading -->
+        <div class="public-degree-heading">
+
+            <a
+                href="/"
+                class="public-degree-back"
+            >
+                <span aria-hidden="true">←</span>
+                Back to Home
+            </a>
+
+            <div class="public-degree-intro">
+
+                <div class="public-degree-intro-copy">
+
+                    <h1>
+                        Explore Graduate Degrees
+                    </h1>
+
+                    <p>
+                        Search available programs and compare requirements,
+                        deadlines, campus options, and program details.
+                    </p>
+
+                </div>
+
+                <div class="public-degree-intro-action">
+
+                    <span>
+                        Found the right program?
+                    </span>
+
+                    <a
+                        href="/create-account"
+                        class="public-degree-apply"
+                    >
+                        Start Your Application
+
+                        <span aria-hidden="true">→</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Degree browser -->
+        {% set degree_browser_action = "/graduate-degrees" %}
+
+        <div class="public-degree-browser-wrapper">
+            {% include "degrees/degree_browser.html" %}
+        </div>
+
+    </div>
+
+</main>
+
+{% endblock %}

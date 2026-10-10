@@ -265,10 +265,40 @@
 .application-actions {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+
+    gap: 12px;
 
     width: 100%;
 
     padding: 8px 0 40px;
+}
+
+.application-secondary-button {
+    min-width: 160px;
+
+    padding: 13px 26px;
+
+    background-color: var(--white);
+    color: var(--ua-blue);
+
+    border: 2px solid var(--ua-blue);
+    border-radius: 5px;
+
+    font: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+}
+
+
+.application-secondary-button:hover {
+    background-color: var(--ua-blue);
+    color: var(--white);
 }
 
 
@@ -308,6 +338,96 @@
     box-shadow: 0 0 0 3px rgba(171, 5, 32, 0.18);
 }
 
+/* International applicant */
+
+.application-choice-group {
+    margin: 28px 0 0;
+
+    padding: 0;
+
+    border: 0;
+}
+
+
+.application-choice-group legend {
+    margin-bottom: 12px;
+
+    color: var(--ua-blue);
+
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+
+.application-choice-options {
+    display: flex;
+    align-items: center;
+
+    gap: 26px;
+}
+
+
+.application-choice-option {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: var(--text-primary);
+
+    font-size: 0.9rem;
+
+    cursor: pointer;
+}
+
+
+.application-choice-option input {
+    width: auto;
+    margin: 0;
+}
+
+
+.international-section {
+    margin-top: 28px;
+
+    padding: 26px;
+
+    background-color: #f7f9fb;
+
+    border: 1px solid #d8dfe7;
+    border-left: 4px solid var(--ua-blue);
+
+    border-radius: 5px;
+}
+
+
+.international-section[hidden] {
+    display: none;
+}
+
+
+.international-section-heading {
+    margin-bottom: 22px;
+}
+
+
+.international-section-heading h3 {
+    margin: 0 0 6px;
+
+    color: var(--ua-blue);
+
+    font-size: 1rem;
+}
+
+
+.international-section-heading p {
+    margin: 0;
+
+    color: var(--text-secondary);
+
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
 
 /* This keeps the application usable on smaller screens. */
 @media (max-width: 800px) {

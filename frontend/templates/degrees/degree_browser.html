@@ -1,7 +1,7 @@
 {% set degree_browser_action = degree_browser_action | default("/applicant/graduate-degrees") %}
+{% set degree_apply_action = degree_apply_action | default(none) %}
 
 <div class="degree-browser">
-
 
     <!-- Degree search -->
     <section class="degree-list-panel">
@@ -18,11 +18,7 @@
 
 
         <!-- Search and filters -->
-        <form
-            class="degree-search-form"
-            method="get"
-            action="{{ degree_browser_action }}"
-        >
+        <form class="degree-search-form" method="get" action="{{ degree_browser_action }}">
 
             <div class="degree-search-field">
 
@@ -30,13 +26,8 @@
                     Search
                 </label>
 
-                <input
-                    type="search"
-                    id="degree_search"
-                    name="q"
-                    value="{{ search_query }}"
-                    placeholder="Degree name or college"
-                >
+                <input type="search" id="degree_search" name="q" value="{{ search_query }}"
+                    placeholder="Degree name or college">
 
             </div>
 
@@ -47,29 +38,17 @@
                     Degree Level
                 </label>
 
-                <select
-                    id="degree_level"
-                    name="level"
-                >
+                <select id="degree_level" name="level">
 
-                    <option
-                        value=""
-                        {% if selected_level == "" %}selected{% endif %}
-                    >
+                    <option value="" {% if selected_level=="" %}selected{% endif %}>
                         All Levels
                     </option>
 
-                    <option
-                        value="masters"
-                        {% if selected_level == "masters" %}selected{% endif %}
-                    >
+                    <option value="masters" {% if selected_level=="masters" %}selected{% endif %}>
                         Masters
                     </option>
 
-                    <option
-                        value="doctorate"
-                        {% if selected_level == "doctorate" %}selected{% endif %}
-                    >
+                    <option value="doctorate" {% if selected_level=="doctorate" %}selected{% endif %}>
                         Doctorate
                     </option>
 
@@ -84,36 +63,21 @@
                     Campus
                 </label>
 
-                <select
-                    id="degree_campus"
-                    name="campus"
-                >
+                <select id="degree_campus" name="campus">
 
-                    <option
-                        value=""
-                        {% if selected_campus == "" %}selected{% endif %}
-                    >
+                    <option value="" {% if selected_campus=="" %}selected{% endif %}>
                         All Campuses
                     </option>
 
-                    <option
-                        value="main"
-                        {% if selected_campus == "main" %}selected{% endif %}
-                    >
+                    <option value="main" {% if selected_campus=="main" %}selected{% endif %}>
                         Main
                     </option>
 
-                    <option
-                        value="online"
-                        {% if selected_campus == "online" %}selected{% endif %}
-                    >
+                    <option value="online" {% if selected_campus=="online" %}selected{% endif %}>
                         Online
                     </option>
 
-                    <option
-                        value="distance"
-                        {% if selected_campus == "distance" %}selected{% endif %}
-                    >
+                    <option value="distance" {% if selected_campus=="distance" %}selected{% endif %}>
                         Distance
                     </option>
 
@@ -122,10 +86,7 @@
             </div>
 
 
-            <button
-                type="submit"
-                class="degree-search-button"
-            >
+            <button type="submit" class="degree-search-button">
                 Search
             </button>
 
@@ -158,10 +119,8 @@
 
                 {% for degree in degrees %}
 
-                <a
-                    href="?degree={{ degree.id }}"
-                    class="degree-list-item"
-                >
+                <a href="?degree={{ degree.id }}"
+                    class="degree-list-item {% if selected_degree and selected_degree.id == degree.id %}active{% endif %}">
 
                     <span class="degree-list-name">
                         {{ degree.name }}
@@ -204,21 +163,10 @@
 
             <div class="degree-results-empty">
 
-                <div
-                    class="degree-results-empty-icon"
-                    aria-hidden="true"
-                >
+                <div class="degree-results-empty-icon" aria-hidden="true">
 
-                    <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="7"></circle>
                         <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
                     </svg>
@@ -256,11 +204,30 @@
 
         {% if selected_degree %}
 
-        <div class="degree-details-heading">
+        <div class="degree-details-heading degree-details-heading-with-action">
 
-            <h3>
-                {{ selected_degree.name }}
-            </h3>
+            <div class="degree-selected-program">
+
+                <h3>
+                    {{ selected_degree.name }}
+                </h3>
+
+                <p class="degree-selected-meta">
+                    {{ selected_degree.level }}
+                    <span aria-hidden="true">·</span>
+                    {{ selected_degree.college }}
+                </p>
+
+            </div>
+
+
+            {% if degree_apply_action %}
+
+            <a href="{{ degree_apply_action }}?degree_id={{ selected_degree.id }}" class="degree-application-button">
+                Start Application
+            </a>
+
+            {% endif %}
 
         </div>
 
@@ -403,21 +370,10 @@
 
         <div class="degree-selection-empty">
 
-            <div
-                class="degree-selection-icon"
-                aria-hidden="true"
-            >
+            <div class="degree-selection-icon" aria-hidden="true">
 
-                <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
                     <line x1="12" y1="16" x2="12" y2="12"></line>
                     <line x1="12" y1="8" x2="12.01" y2="8"></line>
@@ -438,6 +394,5 @@
         {% endif %}
 
     </section>
-
 
 </div>

@@ -1,5 +1,5 @@
 .site-header {
-    background-color: var(--white);
+    background-color: var(--ua-blue);
 
     border-top: 4px solid var(--ua-red);
     border-bottom: 4px solid var(--ua-blue);
@@ -30,7 +30,7 @@
     align-items: center;
     gap: 12px;
 
-    color: var(--ua-blue);
+    color: var(--white);
 
     font-size: 1rem;
     font-weight: 700;
@@ -48,7 +48,7 @@
 .system-title {
     text-align: center;
 
-    color: var(--ua-blue);
+    color: var(--white);
 
     font-size: 1.25rem;
     font-weight: 700;
@@ -65,7 +65,7 @@
 
 
 .account-navigation a {
-    color: var(--ua-blue);
+    color: var(--white);
 
     font-weight: 600;
 

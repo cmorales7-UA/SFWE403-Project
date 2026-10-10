@@ -209,3 +209,58 @@
     }
 
 }
+/* Supplemental questions */
+
+.degree-program-section-description {
+    margin: -4px 0 26px;
+
+    color: var(--text-secondary);
+
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+
+.degree-program-question-group {
+    display: grid;
+
+    gap: 22px;
+}
+
+
+.degree-program-subsection {
+    margin-top: 34px;
+
+    padding: 28px 26px;
+
+    background-color: #f7f9fb;
+
+    border: 1px solid #d8dfe7;
+    border-left: 4px solid var(--ua-blue);
+
+    border-radius: 5px;
+}
+
+
+.degree-program-subsection-heading {
+    margin-bottom: 22px;
+}
+
+
+.degree-program-subsection-heading h3 {
+    margin: 0 0 6px;
+
+    color: var(--ua-blue);
+
+    font-size: 1rem;
+}
+
+
+.degree-program-subsection-heading p {
+    margin: 0;
+
+    color: var(--text-secondary);
+
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
