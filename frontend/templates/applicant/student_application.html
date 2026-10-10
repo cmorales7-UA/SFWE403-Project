@@ -15,7 +15,7 @@ Applicant
 
 {% set applicant_active_page = "start-application" %}
 
-{% include "partials/applicant_sidebar.html" %}
+{% include "partials/navigation/applicant_sidebar.html" %}
 
 {% endblock %}
 
@@ -34,6 +34,6 @@ Start New Application
 {% set form_mode = "create" %}
 {% set submit_button_text = "Submit Application" %}
 
-{% include "partials/student_application_form.html" %}
+{% include "partials/applications/student_application_form.html" %}
 
 {% endblock %}

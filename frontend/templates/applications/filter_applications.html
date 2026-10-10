@@ -25,12 +25,12 @@ Degree Advisor
 {% if user_role == "administrator" %}
 
 {% set admin_active_page = "filter-applications" %}
-{% include "partials/administrator_sidebar.html" %}
+{% include "partials/navigation/administrator_sidebar.html" %}
 
 {% elif user_role == "advisor" %}
 
 {% set advisor_active_page = "filter-applications" %}
-{% include "partials/advisor_sidebar.html" %}
+{% include "partials/navigation/advisor_sidebar.html" %}
 
 {% endif %}
 
