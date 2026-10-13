@@ -8,89 +8,22 @@ router = APIRouter()
 templates = Jinja2Templates(directory="frontend/templates")
 
 
-# Temporary frontend data.
-# Replace this list with backend degree-program data later.
-MOCK_DEGREES = [
-    {
-        "id": 1,
-        "name": "Computer Science",
-        "level": "Masters",
-        "level_value": "masters",
-        "college": "College of Science",
-        "campus": "Main, Online",
-        "campus_values": ["main", "online"],
-        "term": "Fall 2027",
-        "application_deadline": "January 15, 2027",
-        "application_fee": "$90",
-        "description": (
-            "Graduate study focused on advanced computing topics, "
-            "software systems, and computer science research."
+# Backend integration point.
+def get_degree_programs():
+    return []
+
+
+def get_degree_program(degree_id: int):
+    degree_programs = get_degree_programs()
+
+    return next(
+        (
+            degree
+            for degree in degree_programs
+            if degree["id"] == degree_id
         ),
-        "requirements": (
-            "Applicants must provide required academic history, "
-            "transcripts, application materials, and program-specific "
-            "information."
-        ),
-        "other_requirements": (
-            "Additional requirements may be specified by the degree program."
-        ),
-        "contact_information": (
-            "Graduate Program Office"
-        ),
-    },
-    {
-        "id": 2,
-        "name": "Software Engineering",
-        "level": "Masters",
-        "level_value": "masters",
-        "college": "College of Engineering",
-        "campus": "Main, Online",
-        "campus_values": ["main", "online"],
-        "term": "Spring 2028",
-        "application_deadline": "October 15, 2027",
-        "application_fee": "$90",
-        "description": (
-            "Graduate study focused on software design, development, "
-            "architecture, testing, and engineering practices."
-        ),
-        "requirements": (
-            "Applicants must provide academic history, transcripts, "
-            "application materials, and all required supplemental information."
-        ),
-        "other_requirements": (
-            "Program-specific supplemental questions may apply."
-        ),
-        "contact_information": (
-            "Graduate Program Office"
-        ),
-    },
-    {
-        "id": 3,
-        "name": "Data Science",
-        "level": "Doctorate",
-        "level_value": "doctorate",
-        "college": "Graduate College",
-        "campus": "Main",
-        "campus_values": ["main"],
-        "term": "Fall 2028",
-        "application_deadline": "December 1, 2027",
-        "application_fee": "$90",
-        "description": (
-            "Doctoral study involving advanced data analysis, "
-            "computational methods, and research."
-        ),
-        "requirements": (
-            "Applicants must provide the required academic background, "
-            "supporting documents, and program-specific application materials."
-        ),
-        "other_requirements": (
-            "Additional research or academic information may be requested."
-        ),
-        "contact_information": (
-            "Graduate Program Office"
-        ),
-    },
-]
+        None,
+    )
 
 
 def degree_browser_context(
@@ -99,12 +32,12 @@ def degree_browser_context(
     campus: str,
     degree: int | None,
 ):
-    # Start with all available degree programs.
-    filtered_degrees = MOCK_DEGREES.copy()
+    degree_programs = get_degree_programs()
+
+    filtered_degrees = degree_programs.copy()
 
     search_query = q.strip().lower()
 
-    # Filter by degree name or college.
     if search_query:
         filtered_degrees = [
             item
@@ -113,7 +46,6 @@ def degree_browser_context(
             or search_query in item["college"].lower()
         ]
 
-    # Filter by degree level.
     if level:
         filtered_degrees = [
             item
@@ -121,7 +53,6 @@ def degree_browser_context(
             if item["level_value"] == level
         ]
 
-    # Filter by campus.
     if campus:
         filtered_degrees = [
             item
@@ -129,14 +60,13 @@ def degree_browser_context(
             if campus in item["campus_values"]
         ]
 
-    # Retrieve the selected degree.
     selected_degree = None
 
     if degree is not None:
         selected_degree = next(
             (
                 item
-                for item in MOCK_DEGREES
+                for item in degree_programs
                 if item["id"] == degree
             ),
             None,

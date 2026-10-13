@@ -126,70 +126,120 @@
 
     </section>
 
-
-    <!-- This section collects information about the requested degree program. -->
+    <!-- This section displays the selected degree program and its available application options. -->
     <section class="application-section">
 
         <div class="application-section-heading">
             <span class="application-section-number">02</span>
-            <h2>Application Information</h2>
+            <h2>Program & Submission Information</h2>
         </div>
+
+        {% if selected_degree %}
+
+        <input type="hidden" name="degree_program_id" value="{{ selected_degree.id }}">
 
         <div class="application-form-grid">
 
             <div class="application-field">
-                <label for="degree_program">Degree Program</label>
 
-                <select id="degree_program" name="degree_program" required>
-                    <option value="" selected disabled>
-                        Select Degree Program
-                    </option>
-                </select>
+                <label for="degree_program_display">
+                    Degree Program
+                </label>
+
+                <input type="text" id="degree_program_display" value="{{ selected_degree.name }}" readonly>
+
             </div>
 
 
             <div class="application-field">
-                <label for="campus">Campus</label>
+
+                <label for="campus">
+                    Campus
+                </label>
 
                 <select id="campus" name="campus" required>
+
                     <option value="" selected disabled>
                         Select Campus
                     </option>
 
-                    <option value="main">Main</option>
-                    <option value="online">Online</option>
-                    <option value="distance">Distance</option>
+                    {% for campus in selected_degree.campus_offered %}
+
+                    <option value="{{ campus }}">
+                        {{ campus | title }}
+                    </option>
+
+                    {% endfor %}
+
                 </select>
+
             </div>
 
 
             <div class="application-field">
-                <label for="term">Term</label>
 
-                <input type="text" id="term" name="term" required>
+                <label for="term">
+                    Term
+                </label>
+
+                <select id="term" name="term" required>
+
+                    <option value="" selected disabled>
+                        Select Term
+                    </option>
+
+                    {% for term in selected_degree.terms_offered %}
+
+                    <option value="{{ term }}">
+                        {{ term }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
             </div>
 
 
             <div class="application-field">
-                <label for="payment">Payment</label>
 
-                <input type="text" id="payment" name="payment">
+                <label for="application_fee">
+                    Application Fee
+                </label>
+
+                <input type="text" id="application_fee" value="{{ selected_degree.application_fee }}" readonly>
+
             </div>
 
 
             <div class="application-field">
+
                 <label for="submission_date">
                     Application Submittal Date
                 </label>
 
                 <input type="text" id="submission_date" name="submission_date" placeholder="Generated when submitted"
                     readonly>
+
             </div>
 
         </div>
 
-    </section>
+        {% else %}
 
+        <div class="application-field">
+            <p>
+                Select a graduate degree program before starting an application.
+            </p>
+
+            <a href="/applicant/graduate-degrees">
+                Browse Graduate Degrees
+            </a>
+        </div>
+
+        {% endif %}
+
+    </section>
 
     <!-- This section collects the applicant's education history. -->
     <section class="application-section">
@@ -333,11 +383,16 @@
         <div class="application-form-grid">
 
             <div class="application-field application-field-full">
-                <label for="application_fee_information">
-                    Application Fee Payment Information
+
+                <label>
+                    Application Fee Payment
                 </label>
 
-                <input type="text" id="application_fee_information" name="application_fee_information" required>
+                <p class="application-field-note">
+                    The application fee shown above applies to this application.
+                    Final payment is collected before the start of the semester.
+                </p>
+
             </div>
 
 
@@ -604,7 +659,8 @@
 
         {% if form_mode == "create" %}
 
-        <button type="submit" name="application_action" value="save_draft" class="application-secondary-button" formnovalidate>
+        <button type="submit" name="application_action" value="save_draft" class="application-secondary-button"
+            formnovalidate>
             Save Draft
         </button>
 

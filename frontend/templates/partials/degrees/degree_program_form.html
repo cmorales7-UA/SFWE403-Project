@@ -19,25 +19,15 @@
                 Degree Program
             </label>
 
-            <select
-                id="degree_program_id"
-                name="degree_program_id"
-                required
-            >
-                <option
-                    value=""
-                    disabled
-                    {% if not selected_degree %}selected{% endif %}
-                >
+            <select id="degree_program_id" name="degree_program_id" required>
+                <option value="" disabled {% if not selected_degree %}selected{% endif %}>
                     Select Existing Degree Program
                 </option>
 
                 {% for degree in degree_programs %}
 
-                <option
-                    value="{{ degree.id }}"
-                    {% if selected_degree and selected_degree.id == degree.id %}selected{% endif %}
-                >
+                <option value="{{ degree.id }}" {% if selected_degree and selected_degree.id==degree.id %}selected{%
+                    endif %}>
                     {{ degree.degree_name }}
                 </option>
 
@@ -75,13 +65,8 @@
                     Graduate Degree Name
                 </label>
 
-                <input
-                    type="text"
-                    id="degree_name"
-                    name="degree_name"
-                    value="{{ selected_degree.degree_name if selected_degree else '' }}"
-                    required
-                >
+                <input type="text" id="degree_name" name="degree_name"
+                    value="{{ selected_degree.degree_name if selected_degree else '' }}" required>
 
             </div>
 
@@ -92,30 +77,18 @@
                     Graduate Degree Level
                 </label>
 
-                <select
-                    id="degree_level"
-                    name="degree_level"
-                    required
-                >
-                    <option
-                        value=""
-                        disabled
-                        {% if not selected_degree %}selected{% endif %}
-                    >
+                <select id="degree_level" name="degree_level" required>
+                    <option value="" disabled {% if not selected_degree %}selected{% endif %}>
                         Select Degree Level
                     </option>
 
-                    <option
-                        value="masters"
-                        {% if selected_degree and selected_degree.degree_level == "masters" %}selected{% endif %}
-                    >
+                    <option value="masters" {% if selected_degree and selected_degree.degree_level=="masters"
+                        %}selected{% endif %}>
                         Masters
                     </option>
 
-                    <option
-                        value="doctorate"
-                        {% if selected_degree and selected_degree.degree_level == "doctorate" %}selected{% endif %}
-                    >
+                    <option value="doctorate" {% if selected_degree and selected_degree.degree_level=="doctorate"
+                        %}selected{% endif %}>
                         Doctorate
                     </option>
                 </select>
@@ -129,13 +102,8 @@
                     Graduate Degree College
                 </label>
 
-                <input
-                    type="text"
-                    id="degree_college"
-                    name="degree_college"
-                    value="{{ selected_degree.degree_college if selected_degree else '' }}"
-                    required
-                >
+                <input type="text" id="degree_college" name="degree_college"
+                    value="{{ selected_degree.degree_college if selected_degree else '' }}" required>
 
             </div>
 
@@ -146,12 +114,8 @@
                     Graduate Degree Description
                 </label>
 
-                <textarea
-                    id="degree_description"
-                    name="degree_description"
-                    rows="5"
-                    required
-                >{{ selected_degree.degree_description if selected_degree else '' }}</textarea>
+                <textarea id="degree_description" name="degree_description" rows="5"
+                    required>{{ selected_degree.degree_description if selected_degree else '' }}</textarea>
 
             </div>
 
@@ -186,12 +150,9 @@
 
                 <label class="degree-program-checkbox">
 
-                    <input
-                        type="checkbox"
-                        name="campus_offered"
-                        value="main"
-                        {% if selected_degree and selected_degree.campus_offered and "main" in selected_degree.campus_offered %}checked{% endif %}
-                    >
+                    <input type="checkbox" name="campus_offered" value="main" {% if selected_degree and
+                        selected_degree.campus_offered and "main" in selected_degree.campus_offered %}checked{% endif
+                        %}>
 
                     Main
 
@@ -200,12 +161,9 @@
 
                 <label class="degree-program-checkbox">
 
-                    <input
-                        type="checkbox"
-                        name="campus_offered"
-                        value="online"
-                        {% if selected_degree and selected_degree.campus_offered and "online" in selected_degree.campus_offered %}checked{% endif %}
-                    >
+                    <input type="checkbox" name="campus_offered" value="online" {% if selected_degree and
+                        selected_degree.campus_offered and "online" in selected_degree.campus_offered %}checked{% endif
+                        %}>
 
                     Online
 
@@ -214,12 +172,9 @@
 
                 <label class="degree-program-checkbox">
 
-                    <input
-                        type="checkbox"
-                        name="campus_offered"
-                        value="distance"
-                        {% if selected_degree and selected_degree.campus_offered and "distance" in selected_degree.campus_offered %}checked{% endif %}
-                    >
+                    <input type="checkbox" name="campus_offered" value="distance" {% if selected_degree and
+                        selected_degree.campus_offered and "distance" in selected_degree.campus_offered %}checked{%
+                        endif %}>
 
                     Distance
 
@@ -232,66 +187,55 @@
 
         <div class="degree-program-field">
 
-            <label for="term_offered">
-                Term Offered
-            </label>
+            <span class="degree-program-label">
+                Terms Offered
+            </span>
 
-            <select
-                id="term_offered"
-                name="term_offered"
-                required
-            >
-                <option
-                    value=""
-                    disabled
-                    {% if not selected_degree or not selected_degree.term_offered %}selected{% endif %}
-                >
-                    Select Term
-                </option>
+            <div class="degree-program-checkbox-group">
 
-                <option
-                    value="Spring 2027"
-                    {% if selected_degree and selected_degree.term_offered == "Spring 2027" %}selected{% endif %}
-                >
+                <label class="degree-program-checkbox">
+                    <input type="checkbox" name="terms_offered" value="Spring 2027" {% if selected_degree and
+                        selected_degree.terms_offered and "Spring 2027" in selected_degree.terms_offered %}checked{%
+                        endif %}>
                     Spring 2027
-                </option>
+                </label>
 
-                <option
-                    value="Summer 2027"
-                    {% if selected_degree and selected_degree.term_offered == "Summer 2027" %}selected{% endif %}
-                >
+                <label class="degree-program-checkbox">
+                    <input type="checkbox" name="terms_offered" value="Summer 2027" {% if selected_degree and
+                        selected_degree.terms_offered and "Summer 2027" in selected_degree.terms_offered %}checked{%
+                        endif %}>
                     Summer 2027
-                </option>
+                </label>
 
-                <option
-                    value="Fall 2027"
-                    {% if selected_degree and selected_degree.term_offered == "Fall 2027" %}selected{% endif %}
-                >
+                <label class="degree-program-checkbox">
+                    <input type="checkbox" name="terms_offered" value="Fall 2027" {% if selected_degree and
+                        selected_degree.terms_offered and "Fall 2027" in selected_degree.terms_offered %}checked{% endif
+                        %}>
                     Fall 2027
-                </option>
+                </label>
 
-                <option
-                    value="Spring 2028"
-                    {% if selected_degree and selected_degree.term_offered == "Spring 2028" %}selected{% endif %}
-                >
+                <label class="degree-program-checkbox">
+                    <input type="checkbox" name="terms_offered" value="Spring 2028" {% if selected_degree and
+                        selected_degree.terms_offered and "Spring 2028" in selected_degree.terms_offered %}checked{%
+                        endif %}>
                     Spring 2028
-                </option>
+                </label>
 
-                <option
-                    value="Summer 2028"
-                    {% if selected_degree and selected_degree.term_offered == "Summer 2028" %}selected{% endif %}
-                >
+                <label class="degree-program-checkbox">
+                    <input type="checkbox" name="terms_offered" value="Summer 2028" {% if selected_degree and
+                        selected_degree.terms_offered and "Summer 2028" in selected_degree.terms_offered %}checked{%
+                        endif %}>
                     Summer 2028
-                </option>
+                </label>
 
-                <option
-                    value="Fall 2028"
-                    {% if selected_degree and selected_degree.term_offered == "Fall 2028" %}selected{% endif %}
-                >
+                <label class="degree-program-checkbox">
+                    <input type="checkbox" name="terms_offered" value="Fall 2028" {% if selected_degree and
+                        selected_degree.terms_offered and "Fall 2028" in selected_degree.terms_offered %}checked{% endif
+                        %}>
                     Fall 2028
-                </option>
+                </label>
 
-            </select>
+            </div>
 
         </div>
 
@@ -320,12 +264,8 @@
                 Graduate Degree Requirements
             </label>
 
-            <textarea
-                id="degree_requirements"
-                name="degree_requirements"
-                rows="6"
-                required
-            >{{ selected_degree.degree_requirements if selected_degree else '' }}</textarea>
+            <textarea id="degree_requirements" name="degree_requirements" rows="6"
+                required>{{ selected_degree.degree_requirements if selected_degree else '' }}</textarea>
 
         </div>
 
@@ -338,13 +278,8 @@
                     Application Deadline
                 </label>
 
-                <input
-                    type="date"
-                    id="application_deadline"
-                    name="application_deadline"
-                    value="{{ selected_degree.application_deadline if selected_degree else '' }}"
-                    required
-                >
+                <input type="date" id="application_deadline" name="application_deadline"
+                    value="{{ selected_degree.application_deadline if selected_degree else '' }}" required>
 
             </div>
 
@@ -355,15 +290,8 @@
                     Application Fee Amount
                 </label>
 
-                <input
-                    type="number"
-                    id="application_fee"
-                    name="application_fee"
-                    min="0"
-                    step="0.01"
-                    value="{{ selected_degree.application_fee if selected_degree else '' }}"
-                    required
-                >
+                <input type="number" id="application_fee" name="application_fee" min="0" step="0.01"
+                    value="{{ selected_degree.application_fee if selected_degree else '' }}" required>
 
             </div>
 
@@ -402,11 +330,8 @@
                     Sponsor Question
                 </label>
 
-                <textarea
-                    id="sponsor_question"
-                    name="sponsor_question"
-                    rows="3"
-                >{{ selected_degree.sponsor_question if selected_degree else "Do you currently have a sponsor in the program that you are applying to? If so, provide their name and contact information." }}</textarea>
+                <textarea id="sponsor_question" name="sponsor_question"
+                    rows="3">{{ selected_degree.sponsor_question if selected_degree else "Do you currently have a sponsor in the program that you are applying to? If so, provide their name and contact information." }}</textarea>
 
             </div>
 
@@ -417,11 +342,8 @@
                     TA or RA Experience Question
                 </label>
 
-                <textarea
-                    id="ta_ra_question"
-                    name="ta_ra_question"
-                    rows="3"
-                >{{ selected_degree.ta_ra_question if selected_degree else "Do you have TA or RA experience? If so, provide where and the location or program." }}</textarea>
+                <textarea id="ta_ra_question" name="ta_ra_question"
+                    rows="3">{{ selected_degree.ta_ra_question if selected_degree else "Do you have TA or RA experience? If so, provide where and the location or program." }}</textarea>
 
             </div>
 
@@ -432,11 +354,8 @@
                     Funding Question
                 </label>
 
-                <textarea
-                    id="funding_question"
-                    name="funding_question"
-                    rows="3"
-                >{{ selected_degree.funding_question if selected_degree else "Do you require funding? If so, would a tuition scholarship be sufficient for funding you?" }}</textarea>
+                <textarea id="funding_question" name="funding_question"
+                    rows="3">{{ selected_degree.funding_question if selected_degree else "Do you require funding? If so, would a tuition scholarship be sufficient for funding you?" }}</textarea>
 
             </div>
 
@@ -467,11 +386,8 @@
                         English Proficiency Test Question
                     </label>
 
-                    <textarea
-                        id="english_test_question"
-                        name="english_test_question"
-                        rows="3"
-                    >{{ selected_degree.english_test_question if selected_degree else "What month and year did you complete an English Proficiency test?" }}</textarea>
+                    <textarea id="english_test_question" name="english_test_question"
+                        rows="3">{{ selected_degree.english_test_question if selected_degree else "What month and year did you complete an English Proficiency test?" }}</textarea>
 
                 </div>
 
@@ -482,11 +398,8 @@
                         English Proficiency Score Question
                     </label>
 
-                    <textarea
-                        id="english_score_question"
-                        name="english_score_question"
-                        rows="3"
-                    >{{ selected_degree.english_score_question if selected_degree else "Provide proof of your English Proficiency score." }}</textarea>
+                    <textarea id="english_score_question" name="english_score_question"
+                        rows="3">{{ selected_degree.english_score_question if selected_degree else "Provide proof of your English Proficiency score." }}</textarea>
 
                 </div>
 
@@ -519,11 +432,8 @@
                 Other Specific Requirements
             </label>
 
-            <textarea
-                id="other_requirements"
-                name="other_requirements"
-                rows="5"
-            >{{ selected_degree.other_requirements if selected_degree else '' }}</textarea>
+            <textarea id="other_requirements" name="other_requirements"
+                rows="5">{{ selected_degree.other_requirements if selected_degree else '' }}</textarea>
 
         </div>
 
@@ -534,12 +444,8 @@
                 Degree Program Contact Information
             </label>
 
-            <textarea
-                id="program_contact"
-                name="program_contact"
-                rows="5"
-                required
-            >{{ selected_degree.program_contact if selected_degree else '' }}</textarea>
+            <textarea id="program_contact" name="program_contact" rows="5"
+                required>{{ selected_degree.program_contact if selected_degree else '' }}</textarea>
 
         </div>
 
@@ -549,10 +455,7 @@
     <!-- Form actions -->
     <div class="degree-program-actions">
 
-        <button
-            type="submit"
-            class="degree-program-submit-button"
-        >
+        <button type="submit" class="degree-program-submit-button">
             {{ submit_button_text }}
         </button>
 
