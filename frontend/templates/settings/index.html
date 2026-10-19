@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Settings | UA-GDAS
+{% endblock %}
+
+
+{% block page_css %}
+<link
+    rel="stylesheet"
+    href="/static/css/pages/settings/settings.css"
+>
+{% endblock %}
+
+
+{% block content %}
+
+<main class="settings-page">
+
+    <div class="settings-container">
+
+        <div class="settings-navigation">
+
+            <a
+                href="{{ return_to }}"
+                class="settings-back-link"
+            >
+                <span aria-hidden="true">←</span>
+                Back
+            </a>
+
+        </div>
+
+
+        <div class="settings-heading">
+
+            <h1>
+                Settings
+            </h1>
+
+        </div>
+
+
+        <section class="settings-section">
+
+            <h2>
+                Security
+            </h2>
+
+
+            <div class="settings-option">
+
+                <div class="settings-option-content">
+
+                    <h3>
+                        Change Password
+                    </h3>
+
+                    <p>
+                        Update your account password by verifying
+                        your security questions.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{{ change_password_url }}"
+                    class="settings-option-button"
+                >
+                    Change Password
+                </a>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+{% endblock %}

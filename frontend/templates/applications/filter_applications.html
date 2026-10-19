@@ -12,11 +12,13 @@ Filter Applications | UA-GDAS
 
 
 {% block sidebar_role %}
+
 {% if user_role == "administrator" %}
 Administrator
 {% elif user_role == "advisor" %}
 Degree Advisor
 {% endif %}
+
 {% endblock %}
 
 
@@ -50,23 +52,34 @@ Filter Applications
 
 <div class="application-filter-page">
 
-    <form class="application-filter-toolbar" method="get"
-        action="{% if user_role == 'administrator' %}/administrator/filter-applications{% else %}/advisor/filter-applications{% endif %}">
+    <form
+        class="application-filter-toolbar"
+        method="get"
+        action="{{ filter_action }}"
+    >
 
         <!-- Primary filters -->
         <div class="primary-filter-row">
 
             <div class="filter-field applicant-search-field">
+
                 <label for="applicant_name">
                     Applicant Name
                 </label>
 
-                <input type="search" id="applicant_name" name="applicant_name" value="{{ filters.applicant_name }}"
-                    placeholder="Search by applicant name">
+                <input
+                    type="search"
+                    id="applicant_name"
+                    name="applicant_name"
+                    value="{{ filters.applicant_name }}"
+                    placeholder="Search by applicant name"
+                >
+
             </div>
 
 
             <div class="filter-field">
+
                 <label for="degree">
                     Degree Program
                 </label>
@@ -79,17 +92,22 @@ Filter Applications
 
                     {% for degree in degree_options %}
 
-                    <option value="{{ degree }}" {% if filters.degree==degree %}selected{% endif %}>
+                    <option
+                        value="{{ degree }}"
+                        {% if filters.degree == degree %}selected{% endif %}
+                    >
                         {{ degree }}
                     </option>
 
                     {% endfor %}
 
                 </select>
+
             </div>
 
 
             <div class="filter-field">
+
                 <label for="term">
                     Term
                 </label>
@@ -102,17 +120,22 @@ Filter Applications
 
                     {% for term in term_options %}
 
-                    <option value="{{ term }}" {% if filters.term==term %}selected{% endif %}>
+                    <option
+                        value="{{ term }}"
+                        {% if filters.term == term %}selected{% endif %}
+                    >
                         {{ term }}
                     </option>
 
                     {% endfor %}
 
                 </select>
+
             </div>
 
 
             <div class="filter-field">
+
                 <label for="status">
                     Status
                 </label>
@@ -123,29 +146,34 @@ Filter Applications
                         All Statuses
                     </option>
 
-                    <option value="Pending" {% if filters.status=="Pending" %}selected{% endif %}>
-                        Pending
+                    {% for status in status_options %}
+
+                    <option
+                        value="{{ status }}"
+                        {% if filters.status == status %}selected{% endif %}
+                    >
+                        {{ status }}
                     </option>
 
-                    <option value="Submitted" {% if filters.status=="Submitted" %}selected{% endif %}>
-                        Submitted
-                    </option>
-
-                    <option value="In Review" {% if filters.status=="In Review" %}selected{% endif %}>
-                        In Review
-                    </option>
+                    {% endfor %}
 
                 </select>
+
             </div>
 
         </div>
 
 
         <!-- Additional filters -->
-        <details class="additional-filters" {% if filters.gender or filters.country or filters.campus or
-            filters.decision %} open {% endif %}>
+        <details
+            class="additional-filters"
+            {% if filters.gender or filters.country or filters.campus or filters.decision %}
+            open
+            {% endif %}
+        >
 
             <summary class="more-filters-button">
+
                 <span class="filters-closed-text">
                     + More Filters
                 </span>
@@ -153,88 +181,110 @@ Filter Applications
                 <span class="filters-open-text">
                     − Hide Filters
                 </span>
+
             </summary>
 
 
             <div class="additional-filter-grid">
 
                 <div class="filter-field">
+
                     <label for="gender">
                         Applicant Gender
                     </label>
 
                     <select id="gender" name="gender">
-                        <option value="">All</option>
 
-                        <option value="Male" {% if filters.gender=="Male" %}selected{% endif %}>
-                            Male
+                        <option value="">
+                            All
                         </option>
 
-                        <option value="Female" {% if filters.gender=="Female" %}selected{% endif %}>
-                            Female
+                        {% for gender in gender_options %}
+
+                        <option
+                            value="{{ gender }}"
+                            {% if filters.gender == gender %}selected{% endif %}
+                        >
+                            {{ gender }}
                         </option>
+
+                        {% endfor %}
+
                     </select>
+
                 </div>
 
 
                 <div class="filter-field">
+
                     <label for="country">
                         Country of Legal Residence
                     </label>
 
-                    <input type="search" id="country" name="country" value="{{ filters.country }}"
-                        placeholder="Enter country">
+                    <input
+                        type="search"
+                        id="country"
+                        name="country"
+                        value="{{ filters.country }}"
+                        placeholder="Enter country"
+                    >
+
                 </div>
 
 
                 <div class="filter-field">
+
                     <label for="campus">
                         Campus
                     </label>
 
                     <select id="campus" name="campus">
-                        <option value="">All Campuses</option>
 
-                        <option value="Main" {% if filters.campus=="Main" %}selected{% endif %}>
-                            Main
+                        <option value="">
+                            All Campuses
                         </option>
 
-                        <option value="Online" {% if filters.campus=="Online" %}selected{% endif %}>
-                            Online
+                        {% for campus in campus_options %}
+
+                        <option
+                            value="{{ campus }}"
+                            {% if filters.campus == campus %}selected{% endif %}
+                        >
+                            {{ campus }}
                         </option>
 
-                        <option value="Distance" {% if filters.campus=="Distance" %}selected{% endif %}>
-                            Distance
-                        </option>
+                        {% endfor %}
+
                     </select>
+
                 </div>
 
 
                 <div class="filter-field">
+
                     <label for="decision">
                         Decision
                     </label>
 
                     <select id="decision" name="decision">
-                        <option value="">All Decisions</option>
 
-                        <option value="Recommend" {% if filters.decision=="Recommend" %}selected{% endif %}>
-                            Recommend
+                        <option value="">
+                            All Decisions
                         </option>
 
-                        <option value="Deny" {% if filters.decision=="Deny" %}selected{% endif %}>
-                            Deny
+                        {% for decision in decision_options %}
+
+                        <option
+                            value="{{ decision }}"
+                            {% if filters.decision == decision %}selected{% endif %}
+                        >
+                            {{ decision }}
                         </option>
 
-                        <option value="Defer" {% if filters.decision=="Defer" %}selected{% endif %}>
-                            Defer
-                        </option>
+                        {% endfor %}
 
-                        <option value="Intent to Matriculate" {% if filters.decision=="Intent to Matriculate"
-                            %}selected{% endif %}>
-                            Intent to Matriculate
-                        </option>
                     </select>
+
                 </div>
 
             </div>
@@ -245,12 +295,17 @@ Filter Applications
         <!-- Filter actions -->
         <div class="filter-actions">
 
-            <a href="{% if user_role == 'administrator' %}/administrator/filter-applications{% else %}/advisor/filter-applications{% endif %}"
-                class="clear-filter-button">
+            <a
+                href="{{ filter_action }}"
+                class="clear-filter-button"
+            >
                 Clear Filters
             </a>
 
-            <button type="submit" class="apply-filter-button">
+            <button
+                type="submit"
+                class="apply-filter-button"
+            >
                 Apply Filters
             </button>
 
@@ -265,17 +320,29 @@ Filter Applications
         <div class="application-results-heading">
 
             <div>
-                <h2>Applications</h2>
+
+                <h2>
+                    Applications
+                </h2>
 
                 {% if has_filters %}
+
                 <p>
-                    Results matching your selected filters.
+                    {{ result_count }}
+                    application{% if result_count != 1 %}s{% endif %}
+                    matching your selected filters.
                 </p>
+
                 {% else %}
+
                 <p>
-                    Use the filters above to find applications.
+                    {{ result_count }}
+                    application{% if result_count != 1 %}s{% endif %}
+                    available to your account.
                 </p>
+
                 {% endif %}
+
             </div>
 
         </div>
@@ -288,6 +355,7 @@ Filter Applications
             <table class="application-results-table">
 
                 <thead>
+
                     <tr>
                         <th>Applicant</th>
                         <th>Degree Program</th>
@@ -296,13 +364,16 @@ Filter Applications
                         <th>Status</th>
                         <th>Decision</th>
                     </tr>
+
                 </thead>
+
 
                 <tbody>
 
                     {% for application in applications %}
 
                     <tr>
+
                         <td class="applicant-name">
                             {{ application.applicant_name }}
                         </td>
@@ -326,6 +397,7 @@ Filter Applications
                         <td>
                             {{ application.decision or "—" }}
                         </td>
+
                     </tr>
 
                     {% endfor %}
@@ -342,7 +414,9 @@ Filter Applications
 
             {% if has_filters %}
 
-            <h3>No Matching Applications</h3>
+            <h3>
+                No Matching Applications
+            </h3>
 
             <p>
                 Try changing or clearing one of your filters.
@@ -350,10 +424,12 @@ Filter Applications
 
             {% else %}
 
-            <h3>No Applications Displayed</h3>
+            <h3>
+                No Applications Available
+            </h3>
 
             <p>
-                Select one or more filters and choose Apply Filters.
+                There are currently no applications available to your account.
             </p>
 
             {% endif %}

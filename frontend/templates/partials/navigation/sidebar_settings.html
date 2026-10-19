@@ -1,6 +1,10 @@
 <!-- This control opens account settings. -->
-<a href="/settings/change-password?return_to=/{{ request.url.path.strip('/').split('/')[0] }}" class="sidebar-settings"
-    aria-label="Settings" title="Settings">
+<a
+    href="/settings?return_to=/{{ request.url.path.strip('/').split('/')[0] }}"
+    class="sidebar-settings"
+    aria-label="Settings"
+    title="Settings"
+>
 
     <svg class="settings-icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M19.14 12.94a7.43 7.43 0 0 0 .05-.94

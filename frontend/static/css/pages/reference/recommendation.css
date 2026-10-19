@@ -1,0 +1,379 @@
+.recommendation-page {
+    width: 100%;
+}
+
+
+.recommendation-panel {
+    width: 100%;
+
+    background-color: var(--white);
+
+    border: 1px solid #dce1e7;
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+
+/* Recommendation request */
+
+.recommendation-request-summary {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    border-bottom: 1px solid #e1e6eb;
+}
+
+
+.request-detail {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    padding: 18px 24px;
+}
+
+
+.request-detail span {
+    color: #65758a;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+.request-detail strong {
+    color: #24364b;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.recommendation-request-empty {
+    padding: 18px 24px;
+
+    border-bottom: 1px solid #e1e6eb;
+
+    color: #65758a;
+
+    font-size: 14px;
+}
+
+
+/* Form */
+
+.recommendation-form {
+    padding: 24px;
+}
+
+
+/* Submission method */
+
+.submission-method {
+    margin: 0;
+    padding: 0;
+
+    border: none;
+}
+
+
+.submission-method legend {
+    margin-bottom: 10px;
+
+    color: var(--ua-blue);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.submission-method-options {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 24px;
+}
+
+
+.submission-method-options label {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #34465a;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+
+.submission-method-options input {
+    margin: 0;
+
+    accent-color: var(--ua-blue);
+
+    cursor: pointer;
+}
+
+
+.submission-method-options input:checked + span {
+    color: var(--ua-blue);
+
+    font-weight: 600;
+}
+
+
+/* Recommendation input */
+
+.recommendation-input-section {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-top: 22px;
+}
+
+
+/* Completely remove hidden section from layout */
+
+.recommendation-input-section[hidden] {
+    display: none !important;
+}
+
+
+.recommendation-input-section label {
+    color: var(--ua-blue);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.recommendation-input-section textarea {
+    width: 100%;
+    min-height: 160px;
+
+    box-sizing: border-box;
+
+    padding: 12px 14px;
+
+    background-color: var(--white);
+
+    border: 1px solid #c7d0da;
+    border-radius: 6px;
+
+    color: #24364b;
+
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+
+    resize: vertical;
+}
+
+
+.recommendation-input-section textarea::placeholder {
+    color: #8996a5;
+}
+
+
+.recommendation-input-section textarea:focus,
+.recommendation-input-section input[type="file"]:focus {
+    outline: none;
+
+    border-color: var(--ua-blue);
+
+    box-shadow:
+        0 0 0 2px rgba(12, 35, 75, 0.08);
+}
+
+
+/* File upload */
+
+.recommendation-input-section input[type="file"] {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 8px;
+
+    background-color: var(--white);
+
+    border: 1px solid #c7d0da;
+    border-radius: 6px;
+
+    color: #34465a;
+
+    font: inherit;
+    font-size: 14px;
+}
+
+
+.recommendation-input-section
+input[type="file"]::file-selector-button {
+    margin-right: 12px;
+
+    padding: 8px 12px;
+
+    background-color: #f3f5f8;
+
+    border: 1px solid #c7d0da;
+    border-radius: 5px;
+
+    color: var(--ua-blue);
+
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.recommendation-input-section
+input[type="file"]::file-selector-button:hover {
+    background-color: #e9edf2;
+}
+
+
+.recommendation-file-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 16px;
+
+    color: #65758a;
+
+    font-size: 12px;
+}
+
+
+/* Confidentiality */
+
+.recommendation-confidentiality {
+    margin: 20px 0 0;
+
+    color: #65758a;
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* Actions */
+
+.recommendation-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    margin-top: 20px;
+    padding-top: 18px;
+
+    border-top: 1px solid #e1e6eb;
+}
+
+
+.recommendation-submit-button {
+    min-height: 40px;
+
+    padding: 0 18px;
+
+    background-color: var(--ua-blue);
+
+    border: 1px solid var(--ua-blue);
+    border-radius: 6px;
+
+    color: var(--white);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.recommendation-submit-button:hover:not(:disabled) {
+    opacity: 0.92;
+}
+
+
+.recommendation-submit-button:focus-visible {
+    outline: 2px solid var(--ua-blue);
+    outline-offset: 2px;
+}
+
+
+.recommendation-submit-button:disabled {
+    background-color: #d5d9de;
+    border-color: #d5d9de;
+
+    color: #7a8491;
+
+    cursor: not-allowed;
+}
+
+
+/* Responsive */
+
+@media (max-width: 800px) {
+
+    .recommendation-request-summary {
+        grid-template-columns: 1fr;
+    }
+
+
+    .request-detail {
+        padding: 12px 18px;
+
+        border-bottom: 1px solid #e8ecf0;
+    }
+
+
+    .request-detail:last-child {
+        border-bottom: none;
+    }
+
+
+    .recommendation-form {
+        padding: 20px 18px;
+    }
+
+
+    .recommendation-file-info {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 4px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .submission-method-options {
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+
+    .recommendation-actions {
+        align-items: stretch;
+    }
+
+
+    .recommendation-submit-button {
+        width: 100%;
+    }
+
+}

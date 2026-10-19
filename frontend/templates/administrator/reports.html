@@ -1,0 +1,355 @@
+{% extends "dashboard_base.html" %}
+
+
+{% block title %}
+Generate Reports | UA-GDAS
+{% endblock %}
+
+
+{% block page_css %}
+<link rel="stylesheet" href="/static/css/pages/admin/reports.css">
+{% endblock %}
+
+
+{% block sidebar_role %}
+Administrator
+{% endblock %}
+
+
+{% block sidebar_navigation %}
+
+{% set admin_active_page = "reports" %}
+
+{% include "partials/navigation/administrator_sidebar.html" %}
+
+{% endblock %}
+
+
+{% block dashboard_heading %}
+Generate Reports
+{% endblock %}
+
+
+{% block dashboard_summary %}
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<div class="reports-page">
+
+
+    <form class="reports-controls" method="get" action="/administrator/reports">
+
+        <input type="hidden" name="generate" value="1">
+
+
+        <div class="report-type-field">
+
+            <label for="report_type">
+                Report Type
+            </label>
+
+            <select id="report_type" name="report_type">
+
+                {% for value, label in report_types.items() %}
+
+                <option value="{{ value }}" {% if selected_report_type==value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <div class="report-filter-heading">
+
+            <h2>
+                Report Filters
+            </h2>
+
+            <p>
+                Filters apply to the Degree Applicant Status Report.
+            </p>
+
+        </div>
+
+
+        <div class="report-filter-grid">
+
+            <div class="report-field">
+
+                <label for="term">
+                    Term
+                </label>
+
+                <select id="term" name="term">
+
+                    <option value="">
+                        All Terms
+                    </option>
+
+                    {% for term in term_options %}
+
+                    <option value="{{ term }}" {% if filters.term==term %}selected{% endif %}>
+                        {{ term }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="report-field">
+
+                <label for="campus">
+                    Campus
+                </label>
+
+                <select id="campus" name="campus">
+
+                    <option value="">
+                        All Campuses
+                    </option>
+
+                    {% for campus in campus_options %}
+
+                    <option value="{{ campus }}" {% if filters.campus==campus %}selected{% endif %}>
+                        {{ campus }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="report-field">
+
+                <label for="status">
+                    Application Status
+                </label>
+
+                <select id="status" name="status">
+
+                    <option value="">
+                        All Statuses
+                    </option>
+
+                    {% for status in status_options %}
+
+                    <option value="{{ status }}" {% if filters.status==status %}selected{% endif %}>
+                        {{ status }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="report-field">
+
+                <label for="decision">
+                    Decision
+                </label>
+
+                <select id="decision" name="decision">
+
+                    <option value="">
+                        All Decisions
+                    </option>
+
+                    {% for decision in decision_options %}
+
+                    <option value="{{ decision }}" {% if filters.decision==decision %}selected{% endif %}>
+                        {{ decision }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="report-actions">
+
+            <a href="/administrator/reports" class="report-clear-button">
+                Clear
+            </a>
+
+            <button type="submit" class="report-generate-button">
+                Generate Report
+            </button>
+
+        </div>
+
+    </form>
+
+
+    <section class="report-results">
+
+        <div class="report-results-heading">
+
+            <div>
+
+                <span class="report-label">
+                    Report
+                </span>
+
+                <h2>
+                    {{ report_types[selected_report_type] }}
+                </h2>
+
+                {% if report_requested %}
+
+                <p>
+                    {{ result_count }}
+                    record{% if result_count != 1 %}s{% endif %}
+                    found.
+                </p>
+
+                {% else %}
+
+                <p>
+                    Select a report and choose Generate Report.
+                </p>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if report_requested %}
+
+            {% if report_rows %}
+
+            <a href="/administrator/reports.csv?report_type={{ selected_report_type }}&term={{ filters.term }}&campus={{ filters.campus }}&status={{ filters.status }}&decision={{ filters.decision }}"
+                class="report-download-button">
+                Download CSV
+            </a>
+
+            {% else %}
+
+            <span class="report-download-button report-download-disabled" aria-disabled="true"
+                title="No report data is available to download.">
+                Download CSV
+            </span>
+
+            {% endif %}
+
+            {% endif %}
+
+        </div>
+
+
+        {% if report_requested %}
+
+        {% if report_rows %}
+
+        <div class="report-table-wrapper">
+
+            <table class="report-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Applicant</th>
+                        <th>Degree Program</th>
+                        <th>Campus</th>
+                        <th>Term</th>
+                        <th>Status</th>
+                        <th>Decision</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for application in report_rows %}
+
+                    <tr>
+
+                        <td class="report-applicant">
+                            {{ application.applicant_name }}
+                        </td>
+
+                        <td>
+                            {{ application.degree_program }}
+                        </td>
+
+                        <td>
+                            {{ application.campus }}
+                        </td>
+
+                        <td>
+                            {{ application.term }}
+                        </td>
+
+                        <td>
+                            {{ application.status }}
+                        </td>
+
+                        <td>
+                            {{ application.decision or "—" }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="report-empty">
+
+            <h3>
+                No Report Data
+            </h3>
+
+            <p>
+                No applications matched the selected report criteria.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+        {% else %}
+
+        <div class="report-empty">
+
+            <h3>
+                Generate a Report
+            </h3>
+
+            <p>
+                Choose a report type and generate the report to view results.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+</div>
+
+{% endblock %}
