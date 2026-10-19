@@ -1,9 +1,6 @@
 <div class="sidebar-main-navigation">
 
-    <a
-        href="/reference"
-        class="sidebar-link {% if reference_active_page == 'overview' %}active{% endif %}"
-    >
+    <a href="/reference" class="sidebar-link {% if reference_active_page == 'overview' %}active{% endif %}">
         Overview
     </a>
 
@@ -14,10 +11,10 @@
             Recommendation
         </span>
 
-        <span class="sidebar-link">
+        <a href="/reference/recommendation"
+            class="sidebar-link {% if reference_active_page == 'recommendation' %}active{% endif %}">
             Letter of Recommendation
-        </span>
-
+        </a>
     </div>
 
 
@@ -27,10 +24,8 @@
             Resources
         </span>
 
-        <a
-            href="/reference/graduate-degrees"
-            class="sidebar-link {% if reference_active_page == 'graduate-degrees' %}active{% endif %}"
-        >
+        <a href="/reference/graduate-degrees"
+            class="sidebar-link {% if reference_active_page == 'graduate-degrees' %}active{% endif %}">
             Graduate Degrees
         </a>
 

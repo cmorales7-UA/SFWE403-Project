@@ -1,0 +1,242 @@
+{% extends "dashboard_base.html" %}
+
+
+{% block title %}
+Letter of Recommendation | UA-GDAS
+{% endblock %}
+
+
+{% block page_css %}
+<link
+    rel="stylesheet"
+    href="/static/css/pages/reference/recommendation.css"
+>
+{% endblock %}
+
+
+{% block sidebar_role %}
+Applicant Reference
+{% endblock %}
+
+
+{% block sidebar_navigation %}
+
+{% set reference_active_page = "recommendation" %}
+
+{% include "partials/navigation/reference_sidebar.html" %}
+
+{% endblock %}
+
+
+{% block dashboard_heading %}
+Letter of Recommendation
+{% endblock %}
+
+
+{% block dashboard_summary %}
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<div class="recommendation-page">
+
+    <section class="recommendation-panel">
+
+
+        {% if recommendation_request %}
+
+        <div class="recommendation-request-summary">
+
+            <div class="request-detail">
+
+                <span>
+                    Applicant
+                </span>
+
+                <strong>
+                    {{ recommendation_request.applicant_name }}
+                </strong>
+
+            </div>
+
+
+            <div class="request-detail">
+
+                <span>
+                    Degree Program
+                </span>
+
+                <strong>
+                    {{ recommendation_request.degree_program }}
+                </strong>
+
+            </div>
+
+
+            {% if recommendation_request.status %}
+
+            <div class="request-detail">
+
+                <span>
+                    Status
+                </span>
+
+                <strong>
+                    {{ recommendation_request.status }}
+                </strong>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        {% else %}
+
+        <div class="recommendation-request-empty">
+            No recommendation request is currently available.
+        </div>
+
+        {% endif %}
+
+
+        <form
+            class="recommendation-form"
+            method="post"
+            action="/reference/recommendation"
+            enctype="multipart/form-data"
+        >
+
+
+            <fieldset class="submission-method">
+
+                <legend>
+                    Submission Method
+                </legend>
+
+
+                <div class="submission-method-options">
+
+                    <label>
+
+                        <input
+                            type="radio"
+                            name="submission_method"
+                            value="typed"
+                            checked
+                        >
+
+                        <span>
+                            Type Recommendation
+                        </span>
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="radio"
+                            name="submission_method"
+                            value="upload"
+                        >
+
+                        <span>
+                            Upload Recommendation
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </fieldset>
+
+
+            <!-- Type recommendation -->
+
+            <div
+                class="recommendation-input-section"
+                id="typed-recommendation-section"
+            >
+
+                <label for="recommendation_text">
+                    Recommendation
+                </label>
+
+                <textarea
+                    id="recommendation_text"
+                    name="recommendation_text"
+                    rows="8"
+                    placeholder="Type your recommendation."
+                ></textarea>
+
+            </div>
+
+
+            <!-- Upload recommendation -->
+
+            <div
+                class="recommendation-input-section"
+                id="upload-recommendation-section"
+                hidden
+            >
+
+                <label for="recommendation_file">
+                    Recommendation File
+                </label>
+
+                <input
+                    type="file"
+                    id="recommendation_file"
+                    name="recommendation_file"
+                    accept=".doc,.docx,.pdf"
+                >
+
+
+                <div class="recommendation-file-info">
+
+                    <span>
+                        Accepted formats: .doc, .docx, .pdf
+                    </span>
+
+                    <span id="selected-file-name">
+                        No file selected.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <p class="recommendation-confidentiality">
+                Recommendation letters are confidential and will
+                not be visible to the applicant.
+            </p>
+
+
+            <div class="recommendation-actions">
+
+                <button
+                    type="submit"
+                    class="recommendation-submit-button"
+                    {% if not submission_enabled or not recommendation_request %}
+                    disabled
+                    {% endif %}
+                >
+                    Submit Recommendation
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+
+<script src="/static/js/pages/reference/recommendation.js"></script>
+
+{% endblock %}

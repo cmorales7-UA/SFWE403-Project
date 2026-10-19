@@ -11,6 +11,8 @@ from frontend.routes.administrator import router as administrator_router
 from frontend.routes.degree_programs import router as degree_programs_router
 from frontend.routes.reviews import router as reviews_router
 from frontend.routes.application_filters import router as application_filters_router
+from frontend.routes.reports import router as reports_router
+from frontend.routes.recommendations import router as recommendations_router
 
 # This router combines all routes that belong to the Front End subsystem.
 router = APIRouter()
@@ -25,3 +27,5 @@ router.include_router(settings_router)
 router.include_router(administrator_router)
 router.include_router(degree_programs_router)
 router.include_router(application_filters_router)
+router.include_router(reports_router)
+router.include_router(recommendations_router)

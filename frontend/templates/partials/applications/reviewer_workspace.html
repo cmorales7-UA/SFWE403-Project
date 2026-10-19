@@ -1,0 +1,541 @@
+<div class="application-review-workspace">
+
+
+    <!-- Assigned applications -->
+    <section class="review-application-list">
+
+        <div class="review-panel-heading">
+
+            <h2>Assigned Applications</h2>
+
+            <p>
+                Select an application to review.
+            </p>
+
+        </div>
+
+
+        <div class="review-results">
+
+            {% if applications %}
+
+            {% for application in applications %}
+
+            <a href="?application={{ application.id }}"
+                class="review-application-item {% if selected_application and selected_application.id == application.id %}active{% endif %}">
+
+                <div class="review-application-item-heading">
+
+                    <strong>
+                        {{ application.applicant_name }}
+                    </strong>
+
+                    {% if application.review_completed %}
+                    <span class="review-progress review-progress-complete">
+                        Reviewed
+                    </span>
+                    {% else %}
+                    <span class="review-progress">
+                        Pending
+                    </span>
+                    {% endif %}
+
+                </div>
+
+                <span>
+                    {{ application.degree_program }}
+                </span>
+
+                <span>
+                    {{ application.term }}
+                </span>
+
+            </a>
+
+            {% endfor %}
+
+            {% else %}
+
+            <div class="review-empty">
+
+                <h3>No Applications</h3>
+
+                <p>
+                    Assigned applications will appear here.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Application review -->
+    <section class="review-details-panel">
+
+        <div class="review-panel-heading">
+
+            <span class="review-panel-label">
+                Application Review
+            </span>
+
+            <h2>
+                Review Details
+            </h2>
+
+        </div>
+
+
+        {% if selected_application %}
+
+
+        <!-- Applicant information -->
+        <div class="review-applicant-heading">
+
+            <span>
+                Applicant
+            </span>
+
+            <strong>
+                {{ selected_application.applicant_name }}
+            </strong>
+
+        </div>
+
+
+        <div class="review-information-grid">
+
+            <div class="review-information-item">
+
+                <span class="review-information-label">
+                    Degree Program
+                </span>
+
+                <span>
+                    {{ selected_application.degree_program }}
+                </span>
+
+            </div>
+
+
+            <div class="review-information-item">
+
+                <span class="review-information-label">
+                    Campus
+                </span>
+
+                <span>
+                    {{ selected_application.campus }}
+                </span>
+
+            </div>
+
+
+            <div class="review-information-item">
+
+                <span class="review-information-label">
+                    Term
+                </span>
+
+                <span>
+                    {{ selected_application.term }}
+                </span>
+
+            </div>
+
+
+            <div class="review-information-item">
+
+                <span class="review-information-label">
+                    Application Status
+                </span>
+
+                <span>
+                    {{ selected_application.status }}
+                </span>
+
+            </div>
+
+        </div>
+        <div class="review-application-details">
+
+            <div class="review-section-heading">
+                <h3>Application Details</h3>
+
+                <p>
+                    Review the applicant information and submitted materials.
+                </p>
+            </div>
+
+
+            <details class="review-detail-section" open>
+
+                <summary>
+                    Applicant Information
+                </summary>
+
+                <div class="review-detail-grid">
+
+                    <div>
+                        <span class="review-detail-label">Email</span>
+                        <span>{{ selected_application.email | default("Not available") }}</span>
+                    </div>
+
+                    <div>
+                        <span class="review-detail-label">Citizenship</span>
+                        <span>{{ selected_application.citizenship | default("Not available") }}</span>
+                    </div>
+
+                    <div>
+                        <span class="review-detail-label">Country of Legal Residence</span>
+                        <span>{{ selected_application.legal_residence_country | default("Not available") }}</span>
+                    </div>
+
+                    <div>
+                        <span class="review-detail-label">Previous UA Affiliation</span>
+                        <span>{{ selected_application.previous_ua_affiliation | default("Not available") }}</span>
+                    </div>
+
+                </div>
+
+            </details>
+
+
+            <details class="review-detail-section">
+
+                <summary>
+                    Education History
+                </summary>
+
+                {% if selected_application.education_history %}
+
+                {% for education in selected_application.education_history %}
+
+                <div class="review-education-entry">
+
+                    <strong>
+                        {{ education.degree_name }}
+                    </strong>
+
+                    <span>
+                        {{ education.university_name }}
+                    </span>
+
+                    <div class="review-detail-grid">
+
+                        <div>
+                            <span class="review-detail-label">Degree Type</span>
+                            <span>{{ education.degree_type }}</span>
+                        </div>
+
+                        <div>
+                            <span class="review-detail-label">Cumulative GPA</span>
+                            <span>{{ education.cumulative_gpa }}</span>
+                        </div>
+
+                        <div>
+                            <span class="review-detail-label">Total Credits</span>
+                            <span>{{ education.total_credits }}</span>
+                        </div>
+
+                        <div>
+                            <span class="review-detail-label">Degree Received</span>
+                            <span>{{ education.date_degree_received }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+                {% else %}
+
+                <p class="review-unavailable">
+                    Education history is not available.
+                </p>
+
+                {% endif %}
+
+            </details>
+
+
+            <details class="review-detail-section">
+
+                <summary>
+                    Personal Statement
+                </summary>
+
+                {% if selected_application.personal_statement %}
+
+                <p class="review-statement">
+                    {{ selected_application.personal_statement }}
+                </p>
+
+                {% else %}
+
+                <p class="review-unavailable">
+                    Personal statement is not available.
+                </p>
+
+                {% endif %}
+
+            </details>
+
+
+            <details class="review-detail-section">
+
+                <summary>
+                    Supplemental Questions
+                </summary>
+
+                {% if selected_application.supplemental_responses %}
+
+                {% for response in selected_application.supplemental_responses %}
+
+                <div class="review-response">
+
+                    <strong>
+                        {{ response.question }}
+                    </strong>
+
+                    <p>
+                        {{ response.answer }}
+                    </p>
+
+                </div>
+
+                {% endfor %}
+
+                {% else %}
+
+                <p class="review-unavailable">
+                    No supplemental responses are available.
+                </p>
+
+                {% endif %}
+
+            </details>
+
+
+            <details class="review-detail-section">
+
+                <summary>
+                    Submitted Documents
+                </summary>
+
+                <div class="review-document-list">
+
+                    {% if selected_application.transcripts %}
+
+                    {% for transcript in selected_application.transcripts %}
+
+                    <a href="{{ transcript.url }}" class="review-document-link" target="_blank" rel="noopener">
+                        {{ transcript.name }}
+                    </a>
+
+                    {% endfor %}
+
+                    {% endif %}
+
+
+                    {% if selected_application.resume %}
+
+                    <a href="{{ selected_application.resume.url }}" class="review-document-link" target="_blank"
+                        rel="noopener">
+                        {{ selected_application.resume.name }}
+                    </a>
+
+                    {% endif %}
+
+
+                    {% if selected_application.recommendation_letters %}
+
+                    {% for letter in selected_application.recommendation_letters %}
+
+                    <a href="{{ letter.url }}" class="review-document-link" target="_blank" rel="noopener">
+                        Recommendation Letter {{ loop.index }}
+                    </a>
+
+                    {% endfor %}
+
+                    {% endif %}
+
+
+                    {% if not selected_application.transcripts
+                    and not selected_application.resume
+                    and not selected_application.recommendation_letters %}
+
+                    <p class="review-unavailable">
+                        No submitted documents are currently available.
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            </details>
+
+        </div>
+
+        <!-- Internal review -->
+        <form class="review-form">
+
+            <div class="review-field">
+
+                <label for="review_comments">
+                    Internal Review Comments
+                </label>
+
+                <textarea id="review_comments" name="review_comments"
+                    rows="5">{{ selected_application.review_comments | default("") }}</textarea>
+
+                <span class="review-field-note">
+                    Internal comments are not visible to the applicant.
+                </span>
+
+            </div>
+
+
+            <div class="review-field">
+
+                <label for="recommendation">
+                    Final Recommendation
+                </label>
+
+                {% set current_recommendation = selected_application.recommendation | default("") %}
+
+                <select id="recommendation" name="recommendation" required>
+
+                    <option value="" disabled {% if not current_recommendation %}selected{% endif %}>
+                        Select Recommendation
+                    </option>
+
+                    <option value="recommend" {% if current_recommendation=="recommend" %}selected{% endif %}>
+                        Recommend
+                    </option>
+
+                    <option value="deny" {% if current_recommendation=="deny" %}selected{% endif %}>
+                        Deny
+                    </option>
+
+                    <option value="defer" {% if current_recommendation=="defer" %}selected{% endif %}>
+                        Defer
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="review-actions">
+
+                <button type="submit" class="review-save-button">
+                    Submit Recommendation
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <!-- Advisor communication -->
+        <section class="review-advisor-messages">
+
+            <div class="review-section-heading">
+
+                <h3>
+                    Advisor Messages
+                </h3>
+
+                <p>
+                    Communicate with the graduate program advisor about this application.
+                </p>
+
+            </div>
+
+
+            <div class="review-message-history">
+
+                {% if advisor_messages %}
+
+                {% for message in advisor_messages %}
+
+                <article class="review-message">
+
+                    <div class="review-message-heading">
+
+                        <strong>
+                            {{ message.sender_name }}
+                        </strong>
+
+                        {% if message.timestamp %}
+                        <span>
+                            {{ message.timestamp }}
+                        </span>
+                        {% endif %}
+
+                    </div>
+
+                    <p>
+                        {{ message.content }}
+                    </p>
+
+                </article>
+
+                {% endfor %}
+
+                {% else %}
+
+                <p class="review-unavailable">
+                    No advisor messages for this application.
+                </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <form class="review-message-form" method="post"
+                action="/reviewer/applications/{{ selected_application.id }}/messages">
+
+                <label for="advisor_message">
+                    Message to Graduate Program Advisor
+                </label>
+
+                <textarea id="advisor_message" name="message" rows="3" required></textarea>
+
+
+                <div class="review-actions">
+
+                    <button type="submit" class="review-secondary-button">
+                        Send Message
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        {% else %}
+
+
+        <div class="review-selection-empty">
+
+            <h3>
+                No Application Selected
+            </h3>
+
+            <p>
+                Select an assigned application to begin the review.
+            </p>
+
+        </div>
+
+
+        {% endif %}
