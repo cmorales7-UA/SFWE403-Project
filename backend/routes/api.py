@@ -1,7 +1,11 @@
 """HTTP endpoints; business rules live in service, database access in clients."""
 from fastapi import APIRouter, Depends, Request, Response
 from backend.models.schemas import Login, ProgramCreate, Registration, UserUpdate
-from backend.service import accounts, programs
+from backend.service import accounts, programs, applications
+from backend.models.application_schemas import (
+    ApplicationCreate, ApplicationUpdate, PreliminaryReview,
+    ApplicantMessage, ReferenceRequest,
+)
 
 router = APIRouter(prefix='/api')
 
@@ -57,3 +61,46 @@ def get_program(program_id: int, actor=Depends(current_user)):
 @router.put('/programs/{program_id}')
 def update_program(program_id: int, payload: ProgramCreate, actor=Depends(current_user)):
     return programs.update_program(program_id, payload, actor)
+
+
+# SRS 9.4.1: retrieve and update only authorized applications.
+@router.post('/applications', status_code=201)
+def create_application(payload: ApplicationCreate, actor=Depends(current_user)):
+    return applications.create_application(payload, actor)
+
+
+@router.get('/applications')
+def list_applications(actor=Depends(current_user)):
+    return applications.list_applications(actor)
+
+
+@router.get('/applications/{application_id}')
+def get_application(application_id: int, actor=Depends(current_user)):
+    return applications.get_application(application_id, actor)
+
+
+@router.patch('/applications/{application_id}')
+def update_application(application_id: int, payload: ApplicationUpdate, actor=Depends(current_user)):
+    return applications.update_application(application_id, payload, actor)
+
+
+# SRS 9.4.2: advisor preliminary review, missing information, and references.
+@router.post('/applications/{application_id}/preliminary-review')
+def preliminary_review(application_id: int, payload: PreliminaryReview, actor=Depends(current_user)):
+    return applications.preliminary_review(application_id, payload, actor)
+
+
+@router.post('/applications/{application_id}/request-information')
+def request_information(application_id: int, actor=Depends(current_user)):
+    return applications.request_information(application_id, actor)
+
+
+@router.post('/applications/{application_id}/recommendation-requests')
+def request_recommendation(application_id: int, payload: ReferenceRequest, actor=Depends(current_user)):
+    return applications.request_recommendation(application_id, payload, actor)
+
+
+# SRS 9.4.3: send email to applicant before a final decision.
+@router.post('/applications/{application_id}/messages')
+def send_application_message(application_id: int, payload: ApplicantMessage, actor=Depends(current_user)):
+    return applications.message_applicant(application_id, payload, actor)
