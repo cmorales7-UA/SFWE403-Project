@@ -1,3 +1,4 @@
+
 {% extends "dashboard_base.html" %}
 
 
@@ -39,6 +40,26 @@ Application Review
 
 {% block dashboard_content %}
 
+<!-- Existing Administrator application review -->
 {% include "partials/application_review.html" %}
+
+
+<!-- SRS 9.4.3: Application communication with applicant -->
+{% if selected_application %}
+
+<section class="review-details-panel admin-email-panel">
+
+    {% include "partials/applicant_communication.html" %}
+
+</section>
+
+{% endif %}
+
+
+<!-- Applicant communication JavaScript -->
+<script
+    src="/static/js/pages/applications/applicant-communication.js"
+    defer>
+</script>
 
 {% endblock %}

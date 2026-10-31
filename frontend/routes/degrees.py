@@ -10,7 +10,39 @@ templates = Jinja2Templates(directory="frontend/templates")
 
 # Backend integration point.
 def get_degree_programs():
-    return []
+    """Retrieve graduate degree programs from the database."""
+
+    from backend.clients import database
+
+    degree_programs = []
+
+    for program in database.programs():
+        campuses = program.get("campus_offered", [])
+        terms = program.get("terms_offered", [])
+
+        degree_programs.append({
+            "id": program["id"],
+            "name": program["degree_name"],
+            "level": program["degree_level"].title(),
+            "level_value": program["degree_level"],
+            "college": program["degree_college"],
+            "description": program["degree_description"],
+            "campus_offered": campuses,
+            "campus_values": campuses,
+            "campus": ", ".join(c.title() for c in campuses),
+            "terms_offered": terms,
+            "term": ", ".join(terms),
+            "requirements": program["degree_requirements"],
+            "application_deadline": program["application_deadline"],
+            "application_fee": program["application_fee"],
+            "other_requirements": program.get(
+                "other_requirements", ""
+            ),
+            "contact_information": program["program_contact"],
+        })
+
+    return degree_programs
+
 
 
 def get_degree_program(degree_id: int):

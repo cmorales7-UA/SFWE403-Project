@@ -1,15 +1,18 @@
+
 from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
+from backend.service import accounts
 
-# This router handles account and authentication pages.
+
+# Account and authentication pages.
 router = APIRouter()
 
 templates = Jinja2Templates(directory="frontend/templates")
 
 
-# This route displays the Create Account page.
+# Create Account
 @router.get(
     "/create-account",
     response_class=HTMLResponse,
@@ -21,7 +24,8 @@ async def create_account(request: Request):
         name="auth/create_account.html",
     )
 
-# This route displays the Login page.
+
+# Login
 @router.get(
     "/login",
     response_class=HTMLResponse,
@@ -32,3 +36,29 @@ async def login(request: Request):
         request=request,
         name="auth/login.html",
     )
+
+
+# Sign Out
+@router.post(
+    "/logout",
+    name="sign_out",
+)
+async def sign_out(request: Request):
+
+    token = request.cookies.get("gdas_session", "")
+
+    if token:
+        accounts.logout(token)
+
+    response = RedirectResponse(
+        url="/login",
+        status_code=303
+    )
+
+    # Remove the authentication cookie.
+    response.delete_cookie(
+        key="gdas_session",
+        path="/"
+    )
+
+    return response

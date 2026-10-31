@@ -1,3 +1,4 @@
+
 /* This section creates the main dashboard layout. */
 .dashboard-shell {
     position: fixed;
@@ -254,6 +255,87 @@
 }
 
 
+/* Expandable sidebar navigation groups. */
+.sidebar-submenu {
+    margin-bottom: 4px;
+}
+
+
+/* This styles expandable menu headings. */
+.sidebar-submenu summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    cursor: pointer;
+    list-style: none;
+}
+
+
+/* This removes the browser's default disclosure arrow. */
+.sidebar-submenu summary::-webkit-details-marker {
+    display: none;
+}
+
+
+/* This adds a consistent expandable menu arrow. */
+.sidebar-submenu summary::after {
+    content: "›";
+
+    margin-left: 8px;
+
+    font-size: 1.15rem;
+    font-weight: 400;
+
+    transition: transform 0.15s ease;
+}
+
+
+/* Rotate the arrow when the menu is open. */
+.sidebar-submenu[open] summary::after {
+    transform: rotate(90deg);
+}
+
+
+/* This contains the nested navigation links. */
+.sidebar-submenu-content {
+    padding: 4px 0 6px 12px;
+}
+
+
+/* This styles links inside expanded navigation groups. */
+.sidebar-sublink {
+    padding: 10px 12px;
+
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+
+/* This highlights the selected nested page. */
+.sidebar-sublink.active {
+    background-color: #eef2f7;
+    color: var(--ua-blue);
+}
+
+
+/* This styles unavailable sidebar functions. */
+.sidebar-link-disabled {
+    color: #9aa5b3;
+
+    cursor: default;
+    pointer-events: none;
+
+    user-select: none;
+}
+
+
+.sidebar-link-disabled:hover {
+    background-color: transparent;
+    color: #9aa5b3;
+}
+
+
 /* This section styles the Settings control at the bottom of the sidebar. */
 .sidebar-settings {
     display: flex;
@@ -312,6 +394,44 @@
     padding-right: 0;
 
     border-top: none;
+}
+
+
+/* This section styles the Sign Out button below Settings. */
+.sidebar-signout-form {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+
+.sidebar-signout {
+    width: 100%;
+
+    margin-top: 0;
+
+    background-color: transparent;
+
+    border: none;
+
+    font-family: inherit;
+    text-align: left;
+
+    cursor: pointer;
+}
+
+
+.sidebar-signout svg {
+    fill: none;
+    stroke: currentColor;
+}
+
+
+/* This keeps the Sign Out icon visible when the sidebar is collapsed. */
+.sidebar-collapsed .sidebar-signout {
+    justify-content: center;
+
+    padding-left: 0;
+    padding-right: 0;
 }
 
 

@@ -1,3 +1,4 @@
+
 {% extends "dashboard_base.html" %}
 
 
@@ -27,46 +28,50 @@ Applicant Dashboard
 
 {% block dashboard_summary %}
 
+<!-- Application Status -->
 <div class="summary-card">
     <span class="summary-label">
         Application Status
     </span>
 
     <strong class="summary-value">
-        —
+        {{ current_application.status if current_application else "—" }}
     </strong>
 </div>
 
 
+<!-- Degree Program -->
 <div class="summary-card">
     <span class="summary-label">
         Degree Program
     </span>
 
     <strong class="summary-value">
-        —
+        {{ current_application.degree_name if current_application else "—" }}
     </strong>
 </div>
 
 
+<!-- Campus -->
 <div class="summary-card">
     <span class="summary-label">
         Campus
     </span>
 
     <strong class="summary-value">
-        —
+        {{ current_application.campus | title if current_application else "—" }}
     </strong>
 </div>
 
 
+<!-- Term -->
 <div class="summary-card">
     <span class="summary-label">
         Term
     </span>
 
     <strong class="summary-value">
-        —
+        {{ current_application.term if current_application else "—" }}
     </strong>
 </div>
 
@@ -87,25 +92,50 @@ Applicant Dashboard
         <table class="dashboard-table">
 
             <thead>
-
                 <tr>
                     <th>Degree Program</th>
                     <th>Campus</th>
                     <th>Term</th>
                     <th>Status</th>
                 </tr>
-
             </thead>
 
 
             <tbody>
 
-                <tr class="empty-row">
-                    <td>—</td>
-                    <td>—</td>
-                    <td>—</td>
-                    <td>—</td>
-                </tr>
+                {% if applications %}
+
+                    {% for application in applications %}
+
+                    <tr>
+                        <td>
+                            {{ application.degree_name }}
+                        </td>
+
+                        <td>
+                            {{ application.campus | title }}
+                        </td>
+
+                        <td>
+                            {{ application.term }}
+                        </td>
+
+                        <td>
+                            {{ application.status }}
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr class="empty-row">
+                        <td colspan="4">
+                            No applications available.
+                        </td>
+                    </tr>
+
+                {% endif %}
 
             </tbody>
 

@@ -6,3 +6,4 @@ httpx==0.28.1
 # Needed only for running the original frontend tests alongside backend tests:
 jinja2==3.1.6
 python-multipart==0.0.32
+aiosmtpd==1.4.6
