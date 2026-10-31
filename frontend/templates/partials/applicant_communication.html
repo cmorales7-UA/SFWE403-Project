@@ -1,0 +1,86 @@
+
+{% if selected_application %}
+
+<section class="review-advisor-messages">
+
+    <div class="review-section-heading">
+        <h3>Communicate with Applicant</h3>
+        <p>
+            Send an email regarding this application.
+        </p>
+    </div>
+
+    {% if selected_application.status not in ["Accepted", "Denied"] %}
+
+    <form
+        id="applicant-message-form"
+        class="review-message-form"
+        data-application-id="{{ selected_application.id }}"
+    >
+
+        <div class="review-field">
+            <label>Recipient</label>
+            <span>{{ selected_application.email }}</span>
+        </div>
+
+        <div class="review-field">
+            <label for="application-message-subject">
+                Subject
+            </label>
+
+            <input
+                type="text"
+                id="application-message-subject"
+                name="subject"
+                maxlength="200"
+                required
+                placeholder="Enter email subject"
+            >
+        </div>
+
+        <div class="review-field">
+            <label for="application-message-body">
+                Message
+            </label>
+
+            <textarea
+                id="application-message-body"
+                name="body"
+                rows="5"
+                maxlength="10000"
+                required
+                placeholder="Write your message to the applicant"
+            ></textarea>
+        </div>
+
+        <div class="review-actions">
+            <button
+                type="submit"
+                id="send-application-message"
+                class="review-save-button"
+            >
+                Send Email
+            </button>
+        </div>
+
+        <p
+            id="application-message-feedback"
+            class="review-feedback"
+            role="status"
+            aria-live="polite"
+        ></p>
+
+    </form>
+
+    {% else %}
+
+    <p class="review-unavailable">
+        Communication is unavailable because a final
+        application decision has already been made.
+    </p>
+
+    {% endif %}
+
+</section>
+
+{% endif %}

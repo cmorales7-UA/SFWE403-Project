@@ -1,3 +1,4 @@
+
 <div class="sidebar-main-navigation">
 
     <a href="/advisor" class="sidebar-link {% if advisor_active_page == 'overview' %}active{% endif %}">
@@ -10,6 +11,11 @@
         <span class="sidebar-group-label">
             Applications
         </span>
+
+        <a href="/advisor/applications"
+            class="sidebar-link {% if advisor_active_page == 'manage-applications' %}active{% endif %}">
+            Manage Applications
+        </a>
 
         <a href="/advisor/application-review"
             class="sidebar-link {% if advisor_active_page == 'application-review' %}active{% endif %}">

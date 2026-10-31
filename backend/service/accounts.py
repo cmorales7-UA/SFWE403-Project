@@ -64,6 +64,11 @@ def update_user(user_id, payload, actor):
     changes = payload.model_dump(exclude_none=True)
     if changes.get('user_type', user['user_type']) != user['user_type']:
         require_role(actor, {'administrator'})
+    if 'assigned_program_ids' in changes:
+        require_role(actor, {'administrator'})
+        valid_ids = {p['id'] for p in database.programs()}
+        if any(pid not in valid_ids for pid in changes['assigned_program_ids']):
+            raise HTTPException(422, 'Unknown assigned degree program')
     password = changes.pop('new_password', None)
     if password:
         changes['password_hash'] = hash_secret(password)

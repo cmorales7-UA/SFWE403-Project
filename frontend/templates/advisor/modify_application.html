@@ -1,0 +1,31 @@
+
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Modify Application | UA-GDAS
+{% endblock %}
+
+{% block sidebar_role %}
+Degree Advisor
+{% endblock %}
+
+{% block sidebar_navigation %}
+{% set advisor_active_page = "manage-applications" %}
+{% include "partials/navigation/advisor_sidebar.html" %}
+{% endblock %}
+
+{% block dashboard_heading %}
+Modify Student Application
+{% endblock %}
+
+{% block dashboard_summary %}
+{% endblock %}
+
+{% block dashboard_content %}
+
+{% set form_mode = "modify" %}
+{% set return_url = "/advisor/applications" %}
+
+{% include "partials/applications/student_application_form.html" %}
+
+{% endblock %}

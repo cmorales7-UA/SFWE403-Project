@@ -1,0 +1,76 @@
+
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Manage Applications | UA-GDAS
+{% endblock %}
+
+{% block sidebar_role %}
+Degree Advisor
+{% endblock %}
+
+{% block sidebar_navigation %}
+{% set advisor_active_page = "manage-applications" %}
+{% include "partials/navigation/advisor_sidebar.html" %}
+{% endblock %}
+
+{% block dashboard_heading %}
+Manage Applications
+{% endblock %}
+
+{% block dashboard_summary %}
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="dashboard-panel">
+
+    <div class="panel-heading">
+        <h2>Assigned Degree Program Applications</h2>
+    </div>
+
+    <div class="table-container">
+        <table class="dashboard-table">
+
+            <thead>
+                <tr>
+                    <th>Applicant</th>
+                    <th>Degree Program</th>
+                    <th>Term</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% if applications %}
+
+                    {% for application in applications %}
+                    <tr>
+                        <td>{{ application.applicant_name }}</td>
+                        <td>{{ application.degree_program }}</td>
+                        <td>{{ application.term }}</td>
+                        <td>{{ application.status }}</td>
+                        <td>
+                            <a href="/advisor/applications/{{ application.id }}/modify">
+                                Modify
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                {% else %}
+                    <tr>
+                        <td colspan="5">
+                            No applications assigned to your degree programs.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

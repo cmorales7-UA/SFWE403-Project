@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,23 +22,29 @@
         <div class="header-content">
 
             <a href="/" class="university-brand">
-                <img src="/static/images/ua_logo_white.png" alt="University of Arizona" class="ua-logo">
+                <img
+                    src="/static/images/ua_logo_white.png"
+                    alt="University of Arizona"
+                    class="ua-logo"
+                >
             </a>
-
 
             <div class="system-title">
                 Graduate Degree Application System
             </div>
 
+            <!-- Show Log In only on the homepage. -->
+            {% if request.url.path == "/" %}
 
             <nav class="account-navigation">
                 <a href="/login">Log In</a>
             </nav>
 
+            {% endif %}
+
         </div>
 
     </header>
-
 
     <main>
         {% block content %}

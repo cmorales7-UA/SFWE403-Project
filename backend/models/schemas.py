@@ -39,6 +39,7 @@ class UserUpdate(BaseModel):
     phone: str | None = Field(default=None, min_length=1)
     net_id: str | None = None
     user_type: Role | None = None
+    assigned_program_ids: list[int] | None = None
     new_password: str | None = Field(default=None, min_length=8, max_length=256)
 
     @field_validator('email')
