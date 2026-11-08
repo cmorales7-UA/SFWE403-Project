@@ -1,0 +1,304 @@
+
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Review Committee | UA-GDAS
+{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="/static/css/pages/reviews/review-committee.css">
+{% endblock %}
+
+{% block sidebar_role %}
+Degree Advisor
+{% endblock %}
+
+{% block sidebar_navigation %}
+{% set advisor_active_page = "review-committee" %}
+{% include "partials/navigation/advisor_sidebar.html" %}
+{% endblock %}
+
+{% block dashboard_heading %}
+Review Committee
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="committee-page">
+
+    <section class="committee-panel">
+
+        <div class="committee-panel-heading">
+            <h2>Assign Reviewers</h2>
+            <p>Select the applications and committee members for a degree program.</p>
+        </div>
+
+        <form id="review-assignment-form" class="committee-form" novalidate>
+
+            <div class="committee-field">
+                <label for="committee-program">Degree Program</label>
+                <select id="committee-program" name="program_id" required>
+                    <option value="">Select a degree program</option>
+                    {% for program in programs %}
+                    <option value="{{ program.id }}">
+                        {{ program.degree_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="committee-selection-grid">
+
+                <fieldset class="committee-fieldset">
+                    <legend>Applications Ready for Review</legend>
+                    <p class="committee-field-note">
+                        Applications marked In Review.
+                        <span id="committee-application-count"></span>
+                    </p>
+
+                    <div id="committee-application-list"
+                         class="committee-choice-list">
+
+                        {% for application in applications %}
+                        <label
+                            class="committee-choice committee-application-option"
+                            data-program-id="{{ application.program_id }}"
+                            hidden
+                        >
+                            <input
+                                type="checkbox"
+                                class="committee-application-checkbox"
+                                value="{{ application.id }}"
+                                name="application_ids"
+                            >
+
+                            <span class="committee-choice-details">
+                                <strong>{{ application.applicant_name }}</strong>
+                                <span>{{ application.term }}</span>
+                            </span>
+                        </label>
+                        {% endfor %}
+
+                        <div id="committee-no-applications"
+                             class="committee-empty">
+                            <p id="committee-no-applications-text">
+                                Select a degree program to view applications.
+                            </p>
+                            <a id="committee-review-app-link"
+                               href="/advisor/application-review"
+                               hidden>
+                                Review Applications
+                            </a>
+                        </div>
+
+                    </div>
+                </fieldset>
+
+                <fieldset class="committee-fieldset">
+                    <legend>Committee Members</legend>
+                    <p class="committee-field-note">
+                        Reviewers assigned to this program.
+                        <span id="committee-reviewer-count"></span>
+                    </p>
+
+                    <div id="committee-reviewer-list"
+                         class="committee-choice-list">
+
+                        {% for reviewer in reviewers %}
+                        <label
+                            class="committee-choice committee-reviewer-option"
+                            data-program-ids="{{ (reviewer.assigned_program_ids | default([], true)) | join(',') }}"
+                            hidden
+                        >
+                            <input
+                                type="checkbox"
+                                class="committee-reviewer-checkbox"
+                                value="{{ reviewer.id }}"
+                                name="reviewer_ids"
+                            >
+
+                            <span class="committee-choice-details">
+                                <strong>{{ reviewer.name }}</strong>
+                                <span>{{ reviewer.email }}</span>
+                            </span>
+                        </label>
+                        {% endfor %}
+
+                        <div id="committee-no-reviewers"
+                             class="committee-empty">
+                            <p id="committee-no-reviewers-text">
+                                Select a degree program to view reviewers.
+                            </p>
+                        </div>
+
+                    </div>
+                </fieldset>
+
+            </div>
+
+            <div class="committee-form-footer">
+                <div class="committee-field">
+                    <label for="committee-deadline">
+                        Review Deadline
+                    </label>
+                    <input
+                        type="date"
+                        id="committee-deadline"
+                        name="due_date"
+                        required
+                    >
+                </div>
+
+                <button
+                    type="submit"
+                    id="save-review-assignments"
+                    class="committee-primary-button"
+                    disabled
+                >
+                    Save Assignments
+                </button>
+            </div>
+
+            <p id="committee-assignment-feedback"
+               class="committee-feedback"
+               role="status"
+               aria-live="polite"></p>
+
+        </form>
+    </section>
+
+    <section class="committee-panel">
+
+        <div class="committee-panel-heading">
+            <h2>Current Assignments</h2>
+            <p>Update review deadlines and notify assigned reviewers.</p>
+        </div>
+
+        <form id="review-notification-form">
+
+            <div class="committee-table-container">
+                <table class="committee-table">
+
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <input
+                                    type="checkbox"
+                                    id="committee-select-all"
+                                    aria-label="Select all assignments awaiting notification"
+                                >
+                            </th>
+                            <th scope="col">Applicant</th>
+                            <th scope="col">Reviewer</th>
+                            <th scope="col">Degree Program</th>
+                            <th scope="col">Deadline</th>
+                            <th scope="col">Email</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="committee-assignments-body">
+
+                        {% for assignment in assignments %}
+                        <tr>
+                            <td>
+                                <input
+                                    type="checkbox"
+                                    class="committee-assignment-checkbox"
+                                    name="assignment_ids"
+                                    value="{{ assignment.id }}"
+                                    data-reviewer-email="{{ assignment.reviewer_email }}"
+                                    aria-label="Notify {{ assignment.reviewer_name }} about {{ assignment.applicant_name }}"
+                                    {% if assignment.notified_at %}disabled{% endif %}
+                                >
+                            </td>
+
+                            <td>
+                                <strong>{{ assignment.applicant_name }}</strong>
+                            </td>
+
+                            <td>
+                                <div class="committee-table-person">
+                                    <span>{{ assignment.reviewer_name }}</span>
+                                    <small>{{ assignment.reviewer_email }}</small>
+                                </div>
+                            </td>
+
+                            <td>{{ assignment.degree_program }}</td>
+
+                            <td>
+                                <div class="committee-deadline-edit">
+                                    <input
+                                        type="date"
+                                        class="committee-deadline-input"
+                                        value="{{ assignment.due_date }}"
+                                        data-original-date="{{ assignment.due_date }}"
+                                        aria-label="Review deadline for {{ assignment.applicant_name }} assigned to {{ assignment.reviewer_name }}"
+                                    >
+
+                                    <button
+                                        type="button"
+                                        class="committee-inline-button committee-update-deadline"
+                                        data-application-id="{{ assignment.application_id }}"
+                                        data-reviewer-id="{{ assignment.reviewer_id }}"
+                                        hidden
+                                        disabled
+                                    >
+                                        Update
+                                    </button>
+                                </div>
+                            </td>
+
+                            <td>
+                                {% if assignment.notified_at %}
+                                <span class="committee-status committee-status-sent">
+                                    Sent
+                                </span>
+                                {% else %}
+                                <span class="committee-status committee-status-pending">
+                                    Not sent
+                                </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="committee-table-empty">
+                                No assignments have been created.
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="committee-notification-footer">
+                <span id="committee-notification-selection"
+                      class="committee-field-note">
+                    Select assignments to notify reviewers.
+                </span>
+
+                <button
+                    type="submit"
+                    id="send-review-notifications"
+                    class="committee-primary-button"
+                    disabled
+                >
+                    Send Notifications
+                </button>
+            </div>
+
+            <p id="committee-table-feedback"
+               class="committee-feedback committee-table-feedback"
+               role="status"
+               aria-live="polite"></p>
+
+        </form>
+    </section>
+
+</div>
+
+<script src="/static/js/pages/reviews/review-committee.js" defer></script>
+
+{% endblock %}

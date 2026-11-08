@@ -25,9 +25,7 @@ def _now():
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
-# --------------------------------------------------
 # Application Access and Permissions
-# --------------------------------------------------
 
 def _access(application, actor):
     role = actor["user_type"]
@@ -83,9 +81,7 @@ def list_applications(actor):
     return authorized
 
 
-# --------------------------------------------------
 # SRS 9.4.1 - Create and Update Applications
-# --------------------------------------------------
 
 def create_application(payload, actor):
     require_role(actor, {"applicant"})
@@ -158,9 +154,7 @@ def update_application(application_id, payload, actor):
     return get_application(application_id, actor)
 
 
-# --------------------------------------------------
 # SRS 9.4.2 - Preliminary Review Validation
-# --------------------------------------------------
 
 def _require_preliminary_review_status(application):
 
@@ -174,9 +168,7 @@ def _require_preliminary_review_status(application):
         )
 
 
-# --------------------------------------------------
 # SRS 9.4.2 - Save Preliminary Review
-# --------------------------------------------------
 
 def preliminary_review(application_id, payload, actor):
     require_role(actor, {"advisor"})
@@ -205,9 +197,7 @@ def preliminary_review(application_id, payload, actor):
     return get_application(application_id, actor)
 
 
-# --------------------------------------------------
 # Application Email Delivery
-# --------------------------------------------------
 
 def _deliver(application, actor, subject, body, kind):
 
@@ -232,9 +222,7 @@ def _deliver(application, actor, subject, body, kind):
     }
 
 
-# --------------------------------------------------
 # SRS 9.4.2 - Request Missing Information
-# --------------------------------------------------
 
 def request_information(application_id, actor):
     require_role(actor, {"advisor"})
@@ -274,9 +262,7 @@ def request_information(application_id, actor):
     )
 
 
-# --------------------------------------------------
 # SRS 9.4.3 - Application Communication
-# --------------------------------------------------
 
 def message_applicant(application_id, payload, actor):
     require_role(actor, {"advisor", "administrator"})
@@ -298,9 +284,7 @@ def message_applicant(application_id, payload, actor):
     )
 
 
-# --------------------------------------------------
 # SRS 9.4.2 - Request Recommendation Letters
-# --------------------------------------------------
 
 def request_recommendation(application_id, payload, actor):
     require_role(actor, {"advisor"})

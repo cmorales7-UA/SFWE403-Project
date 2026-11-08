@@ -21,8 +21,8 @@
 
             {% for application in applications %}
 
-            <a href="?application={{ application.id }}"
-                class="review-application-item {% if selected_application and selected_application.id == application.id %}active{% endif %}">
+            <a href="/reviewer/applications?application={{ application.application_id }}"
+                class="review-application-item {% if selected_application and selected_application.id == application.application_id %}active{% endif %}">
 
                 <div class="review-application-item-heading">
 
@@ -47,7 +47,7 @@
                 </span>
 
                 <span>
-                    {{ application.term }}
+                    Review Due: {{ application.due_date }}
                 </span>
 
             </a>

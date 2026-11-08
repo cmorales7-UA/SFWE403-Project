@@ -1,0 +1,142 @@
+
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Review Committee Status | UA-GDAS
+{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet"
+      href="/static/css/pages/reviews/review-status.css">
+{% endblock %}
+
+{% block sidebar_role %}
+{% if user_role == "administrator" %}
+Administrator
+{% else %}
+Degree Advisor
+{% endif %}
+{% endblock %}
+
+{% block sidebar_navigation %}
+{% if user_role == "administrator" %}
+    {% set admin_active_page = "review-status" %}
+    {% include "partials/navigation/administrator_sidebar.html" %}
+{% else %}
+    {% set advisor_active_page = "review-status" %}
+    {% include "partials/navigation/advisor_sidebar.html" %}
+{% endif %}
+{% endblock %}
+
+{% block dashboard_heading %}
+Review Committee Status
+{% endblock %}
+
+{% block dashboard_summary %}
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="rm-page" id="review-monitor-page">
+
+    <div class="rm-summary">
+        <div class="rm-summary-item">
+            <span>Pending</span>
+            <strong id="rm-pending-count">0</strong>
+        </div>
+
+        <div class="rm-summary-item">
+            <span>Completed</span>
+            <strong id="rm-completed-count">0</strong>
+        </div>
+
+        <div class="rm-summary-item">
+            <span>Due Soon</span>
+            <strong id="rm-soon-count">0</strong>
+        </div>
+
+        <div class="rm-summary-item">
+            <span>Overdue</span>
+            <strong id="rm-overdue-count">0</strong>
+        </div>
+    </div>
+
+    <section class="rm-panel" aria-labelledby="rm-heading">
+
+        <div class="rm-panel-heading">
+            <h2 id="rm-heading">Assignments</h2>
+            <span id="rm-result-count">Loading...</span>
+        </div>
+
+        <div class="rm-filters">
+
+            <div class="rm-field rm-search-field">
+                <label for="rm-search">Search</label>
+                <input
+                    type="search"
+                    id="rm-search"
+                    placeholder="Applicant or reviewer"
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="rm-field">
+                <label for="rm-program">Degree Program</label>
+                <select id="rm-program">
+                    <option value="">All programs</option>
+                </select>
+            </div>
+
+            <div class="rm-field">
+                <label for="rm-status">Status</label>
+                <select id="rm-status">
+                    <option value="all">All reviews</option>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                    <option value="soon">Due soon</option>
+                    <option value="overdue">Overdue</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="rm-table-container">
+            <table class="rm-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Applicant</th>
+                        <th scope="col">Reviewer</th>
+                        <th scope="col">Recommendation</th>
+                        <th scope="col">Deadline</th>
+                        <th scope="col">Last Reminder</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="rm-table-body">
+                    <tr>
+                        <td colspan="6" class="rm-empty">
+                            Loading assignments...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p
+            id="rm-feedback"
+            class="rm-feedback"
+            role="status"
+            aria-live="polite"
+        ></p>
+
+    </section>
+
+</div>
+
+<script
+    src="/static/js/pages/reviews/review-status.js"
+    defer>
+</script>
+
+{% endblock %}
