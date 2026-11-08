@@ -1,5 +1,5 @@
-{% extends "dashboard_base.html" %}
 
+{% extends "dashboard_base.html" %}
 
 {% block title %}
 Review Applications | UA-GDAS
@@ -12,32 +12,29 @@ Review Applications | UA-GDAS
 >
 {% endblock %}
 
-
 {% block sidebar_role %}
 Application Reviewer
 {% endblock %}
 
-
 {% block sidebar_navigation %}
-
 {% set reviewer_active_page = "review-applications" %}
-
 {% include "partials/navigation/reviewer_sidebar.html" %}
-
 {% endblock %}
-
 
 {% block dashboard_heading %}
 Review Applications
 {% endblock %}
 
-
 {% block dashboard_summary %}
 {% endblock %}
-
 
 {% block dashboard_content %}
 
 {% include "partials/applications/reviewer_workspace.html" %}
+
+<script
+    src="/static/js/pages/reviews/reviewer-actions.js"
+    defer>
+</script>
 
 {% endblock %}

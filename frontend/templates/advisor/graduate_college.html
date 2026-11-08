@@ -1,0 +1,238 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Graduate College Decisions | UA-GDAS
+{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet"
+      href="/static/css/pages/reviews/graduate-college.css">
+{% endblock %}
+
+{% block sidebar_role %}
+Degree Advisor
+{% endblock %}
+
+{% block sidebar_navigation %}
+{% set advisor_active_page = "graduate-college" %}
+{% include "partials/navigation/advisor_sidebar.html" %}
+{% endblock %}
+
+{% block dashboard_heading %}
+Graduate College Decisions
+{% endblock %}
+
+{% block dashboard_summary %}
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="gc-workspace">
+
+    <section class="gc-panel gc-list-panel" aria-label="Applications">
+
+        <div class="gc-panel-heading">
+            <h2>Applications</h2>
+            <p>Applications currently under review.</p>
+        </div>
+
+        <div class="gc-search-wrap">
+            <label class="gc-sr-only" for="gc-search">
+                Find an application
+            </label>
+            <input
+                id="gc-search"
+                type="search"
+                placeholder="Search applicants or programs"
+                autocomplete="off"
+            >
+        </div>
+
+        <div id="gc-application-list"
+             class="gc-application-list"
+             aria-live="polite">
+
+            <p class="gc-empty">Loading applications...</p>
+
+        </div>
+
+    </section>
+
+
+    <section class="gc-panel gc-detail-panel"
+             aria-label="Graduate program decision">
+
+        <div id="gc-selection-empty" class="gc-selection-empty">
+            <h2>Select an application</h2>
+            <p>
+                Choose an application to review its committee
+                progress and program decision.
+            </p>
+        </div>
+
+        <div id="gc-detail-content" hidden>
+
+            <header class="gc-detail-heading">
+                <div>
+                    <span class="gc-eyebrow">Program decision</span>
+                    <h2 id="gc-applicant-name"></h2>
+                </div>
+
+                <a id="gc-view-application"
+                   href="/advisor/application-review">
+                    View application
+                </a>
+            </header>
+
+            <dl class="gc-details-grid">
+                <div>
+                    <dt>Degree program</dt>
+                    <dd id="gc-program-name">—</dd>
+                </div>
+
+                <div>
+                    <dt>Academic term</dt>
+                    <dd id="gc-term">—</dd>
+                </div>
+
+                <div>
+                    <dt>Application status</dt>
+                    <dd id="gc-app-status">—</dd>
+                </div>
+
+                <div>
+                    <dt>Committee reviews</dt>
+                    <dd id="gc-review-progress">—</dd>
+                </div>
+            </dl>
+
+            <div class="gc-section gc-progress-section">
+                <h3>Committee progress</h3>
+                <p id="gc-progress-message"></p>
+            </div>
+
+
+            <form id="gc-decision-form" class="gc-section">
+
+                <h3>Graduate program decision</h3>
+
+                <p class="gc-section-description">
+                    Record the program's recommendation.
+                    This is not a final admission decision.
+                </p>
+
+                <div class="gc-field">
+                    <label for="gc-decision">Decision</label>
+
+                    <select id="gc-decision" required>
+                        <option value="">Select a decision</option>
+                        <option value="Recommend">Recommend</option>
+                        <option value="Deny">Deny</option>
+                        <option value="Defer">Defer</option>
+                    </select>
+                </div>
+
+                <div class="gc-field">
+                    <label for="gc-rationale">Advisor rationale</label>
+
+                    <textarea
+                        id="gc-rationale"
+                        rows="5"
+                        maxlength="5000"
+                        required
+                        placeholder="Summarize the reason for the program decision."
+                    ></textarea>
+                </div>
+
+                <div class="gc-actions">
+                    <button
+                        id="gc-save-decision"
+                        class="gc-primary-button"
+                        type="submit"
+                        disabled
+                    >
+                        Save Decision
+                    </button>
+                </div>
+
+                <p id="gc-decision-feedback"
+                   class="gc-feedback"
+                   role="status"
+                   aria-live="polite"></p>
+
+            </form>
+
+
+            <section class="gc-section"
+                     aria-labelledby="gc-notify-heading">
+
+                <h3 id="gc-notify-heading">
+                    Notify Graduate College
+                </h3>
+
+                <p class="gc-section-description">
+                    Email the saved decision to a Graduate
+                    College Administrator.
+                </p>
+
+                <div class="gc-field">
+                    <label for="gc-administrator">Administrator</label>
+
+                    <select id="gc-administrator">
+                        <option value="">
+                            Select an Administrator
+                        </option>
+                    </select>
+                </div>
+
+                <p id="gc-notification-state" class="gc-note"></p>
+
+                <div class="gc-actions">
+                    <button
+                        id="gc-send-notification"
+                        class="gc-primary-button"
+                        type="button"
+                        disabled
+                    >
+                        Send Notification
+                    </button>
+                </div>
+
+                <p id="gc-notify-feedback"
+                   class="gc-feedback"
+                   role="status"
+                   aria-live="polite"></p>
+
+            </section>
+
+
+            <section class="gc-section gc-history-section"
+                     aria-labelledby="gc-history-heading">
+
+                <h3 id="gc-history-heading">
+                    Notification history
+                </h3>
+
+                <div id="gc-notification-history"
+                     class="gc-history-list">
+
+                    <p class="gc-muted">
+                        No notifications sent.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </section>
+
+</div>
+
+<script
+    src="/static/js/pages/reviews/graduate-college.js"
+    defer>
+</script>
+
+{% endblock %}

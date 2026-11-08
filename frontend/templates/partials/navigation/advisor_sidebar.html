@@ -1,10 +1,8 @@
-
 <div class="sidebar-main-navigation">
 
     <a href="/advisor" class="sidebar-link {% if advisor_active_page == 'overview' %}active{% endif %}">
         Overview
     </a>
-
 
     <div class="sidebar-group">
 
@@ -27,12 +25,17 @@
             Filter Applications
         </a>
 
-        <span class="sidebar-link">
+        <a href="/advisor/review-committee"
+            class="sidebar-link {% if advisor_active_page == 'review-committee' %}active{% endif %}">
             Review Committee
-        </span>
+        </a>
+        
+        <a href="/advisor/review-status"
+            class="sidebar-link {% if advisor_active_page == 'review-status' %}active{% endif %}">
+            Review Committee Status
+        </a>
 
     </div>
-
 
     <div class="sidebar-group">
 
@@ -50,9 +53,9 @@
             Modify Degree Program
         </a>
 
-        <a href="/advisor/graduate-degrees"
-            class="sidebar-link {% if advisor_active_page == 'graduate-degrees' %}active{% endif %}">
-            Graduate Degrees
+        <a href="/advisor/graduate-college"
+            class="sidebar-link {% if advisor_active_page == 'graduate-college' %}active{% endif %}">
+            Graduate College Decisions
         </a>
 
     </div>
