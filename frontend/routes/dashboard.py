@@ -341,7 +341,7 @@ async def it_support_dashboard(request: Request):
             "summary": {
                 "accounts": len(users),
                 "applicants": applicants,
-                "staff": len(users) - applicants,
+                "other_accounts": len(users) - applicants,
             },
             "users": users,
         },
