@@ -16,7 +16,7 @@
     <section class="admissions-panel">
         <header class="admissions-panel-title">
             <h2>Graduate Applications</h2>
-            <p>{{ cases|length }} applications in the database</p>
+            <p>{{ cases|length }} applications</p>
         </header>
         <div class="admissions-case-list">
             {% for item in cases %}
@@ -49,7 +49,7 @@
             <section class="admissions-step">
                 <div class="admissions-step-heading">
                     <span class="admissions-step-number">1</span>
-                    <h3>Issue Official Admission Decision <small>SRS 9.5.2</small></h3>
+                    <h3>Issue Official Admission Decision</h3>
                 </div>
                 {% if selected.notice and selected.notice.state == "sent" %}
                 <p>An official {{ selected.notice.decision|lower }} email was accepted by the configured
@@ -81,7 +81,7 @@
             <section class="admissions-step">
                 <div class="admissions-step-heading">
                     <span class="admissions-step-number">2</span>
-                    <h3>Receive Applicant's Acceptance <small>SRS 9.5.3</small></h3>
+                    <h3>Receive Applicant's Acceptance</h3>
                 </div>
                 {% if selected.intent %}
                     <p>Applicant notified the Graduate College via
@@ -97,47 +97,35 @@
                 {% endif %}
             </section>
 
-            {% if selected.notice and selected.notice.decision == "Accepted" and selected.notice.state == "sent" %}
             <section class="admissions-step">
                 <div class="admissions-step-heading">
                     <span class="admissions-step-number">3</span>
-                    <h3>Official Transcript <small>SRS 9.5.5</small></h3>
+                    <h3>Admitted Student Record</h3>
                 </div>
-                {% if selected.transcript %}
-                    <p>Verified transcript: <strong>{{ selected.transcript.filename }}</strong></p>
-                    <p>Received {{ selected.transcript.received_at }}.
-                        <a class="admissions-link" href="/api/admissions/{{ selected.id }}/official-transcript">
-                        Download private copy</a></p>
-                {% else %}
-                    <p>No verified official transcript has been stored for this application.</p>
+                {% if selected.notice and selected.notice.decision == "Accepted" and selected.notice.state == "sent" and not selected.student_record_id %}
+                    <h4>Official Transcript</h4>
+                    {% if selected.transcript %}
+                    <p><strong>{{ selected.transcript.filename }}</strong> · {{ selected.transcript.received_at }}
+                       · <a class="admissions-link" href="/api/admissions/{{ selected.id }}/official-transcript">Download transcript</a></p>
+                    {% else %}
+                    <p>No verified transcript on file.</p>
+                    {% endif %}
+                    <form id="official-transcript-form" enctype="multipart/form-data">
+                        <label class="admissions-label" for="official_transcript">Verified transcript (PDF, up to 10 MB)</label>
+                        <input id="official_transcript" name="official_transcript" type="file" accept="application/pdf,.pdf" required>
+                        <label class="admissions-check">
+                            <input name="verified" type="checkbox" value="true" required>
+                            I confirm the transcript was received through an approved channel.
+                        </label>
+                        <button class="admissions-button secondary" type="submit">Save Transcript</button>
+                    </form>
                 {% endif %}
-                {% if not selected.student_record_id %}
-                <form id="official-transcript-form" enctype="multipart/form-data">
-                    <label class="admissions-label" for="official_transcript">Upload verified official transcript (PDF, up to 10 MB)</label>
-                    <input id="official_transcript" name="official_transcript" type="file" accept="application/pdf,.pdf" required>
-                    <label class="admissions-check">
-                        <input name="verified" type="checkbox" value="true" required>
-                        I confirm this was received through an approved official transcript channel.
-                    </label>
-                    <button class="admissions-button secondary" type="submit">
-                        Save verified transcript
-                    </button>
-                </form>
-                {% endif %}
-            </section>
-            {% endif %}
-
-            <section class="admissions-step">
-                <div class="admissions-step-heading">
-                    <span class="admissions-step-number">4</span>
-                    <h3>Create Admitted Student Record <small>SRS 9.5.5</small></h3>
-                </div>
                 {% if selected.student_record_id %}
                     <p>Student record {{ selected.student_record_id }} was saved in the admitted graduate student database.</p>
                     <p><a class="admissions-link" href="/administrator/admissions/{{ selected.id }}/student-record"
                           target="_blank" rel="noopener">View admitted student record</a></p>
                 {% elif selected.notice and selected.notice.decision == "Accepted" and selected.notice.state == "sent" %}
-                    <p>Requires complete applicant information and a verified transcript.</p>
+                    <p>Complete applicant information and a verified transcript are required.</p>
                     <form id="create-student-record-form">
                         <label class="admissions-label" for="tuition_classification">Approved tuition classification</label>
                         <select id="tuition_classification" name="tuition_classification" required>
@@ -158,8 +146,8 @@
 
             <section class="admissions-step">
                 <div class="admissions-step-heading">
-                    <span class="admissions-step-number">5</span>
-                    <h3>Process Matriculation <small>SRS 9.5.3 / 9.5.4</small></h3>
+                    <span class="admissions-step-number">4</span>
+                    <h3>Process Matriculation</h3>
                 </div>
                 {% if selected.intent and selected.intent.processed_at %}
                     <p>The applicant's status is <strong>Intent to Matriculate</strong>.</p>
@@ -180,7 +168,7 @@
             <p id="admissions-feedback" role="status" aria-live="polite"></p>
         </div>
         {% else %}
-        <div class="admissions-empty admissions-select">Select an application to review its Graduate College processing status.</div>
+        <div class="admissions-empty admissions-select">Select an application.</div>
         {% endif %}
     </section>
 </div>
