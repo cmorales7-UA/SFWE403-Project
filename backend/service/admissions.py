@@ -412,8 +412,12 @@ def _student_snapshot(application, account, program, classification, transcript)
     missing = [name for name in mandatory if not record.get(name)]
     if not transcript:
         missing.append("official_transcripts")
-    if not education["institution"]:
-        missing.append("education_history.institution")
+    for field in (
+        "institution", "education_degree_name", "degree_type", "degree_name",
+        "total_credits", "degree_start_date", "degree_received_date",
+    ):
+        if not education[field]:
+            missing.append(f"education_history.{field}")
     record["missing_verification_fields"] = missing
     return record
 
@@ -494,14 +498,14 @@ def process_acceptance(application_id, actor):
             (u for u in database.users() if u["id"] == application["owner_id"]), None
         )
         registrar_text = (
-            "UA-GDAS Registrar Notification (SIMULATION ONLY)\\n"
-            f"Student record: {student_id if student_id is not None else 'Not yet created'}\\n"
-            f"Applicant: {application.get('applicant_name', 'Applicant')}\\n"
-            f"NetID: {(account or {}).get('net_id') or 'Not provided'}\\n"
-            f"Degree program: {application['degree_program']}\\n"
-            f"Campus: {application['campus']}\\n"
-            f"Academic term: {application['term']}\\n"
-            "Status: Intent to Matriculate\\n"
+            "UA-GDAS Registrar Notification (SIMULATION ONLY)\n"
+            f"Student record: {student_id if student_id is not None else 'Not yet created'}\n"
+            f"Applicant: {application.get('applicant_name', 'Applicant')}\n"
+            f"NetID: {(account or {}).get('net_id') or 'Not provided'}\n"
+            f"Degree program: {application['degree_program']}\n"
+            f"Campus: {application['campus']}\n"
+            f"Academic term: {application['term']}\n"
+            "Status: Intent to Matriculate\n"
             "No communication with the actual University Registrar was made."
         )
         db.execute(
