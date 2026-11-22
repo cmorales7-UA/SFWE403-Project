@@ -195,7 +195,7 @@
             </div>
 
             {% if program_decision %}
-            <span class="review-field-note">
+            <span id="advisor-notification-state" class="review-field-note">
                 Notification: {{ "Received" if selected_application.advisor_decision_received else "Pending" }}
             </span>
             {% endif %}
