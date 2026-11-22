@@ -171,3 +171,12 @@ def test_unknown_gender_is_not_assumed(setup_filter_app):
     )
     assert "Avery Bennett" in response.text
     assert "Jordan Rivera" not in response.text
+
+
+def test_gender_options_visible_even_without_saved_gender(setup_filter_app):
+    client, _, _ = setup_filter_app
+    # Options are available even if an application does not supply this field.
+    response = client.get("/administrator/filter-applications")
+    assert response.status_code == 200
+    for value in ("Male", "Female", "Non-binary", "Other", "Prefer not to say"):
+        assert f'value="{value}"' in response.text
