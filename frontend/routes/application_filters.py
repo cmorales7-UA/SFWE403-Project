@@ -1,147 +1,174 @@
-from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse
+"""Database-backed application filtering for administrators and advisors."""
+
+from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+
+from backend.clients import database
+from backend.service import accounts, applications, graduate_college
 
 
 router = APIRouter()
-
 templates = Jinja2Templates(directory="frontend/templates")
 
 
-STATUS_OPTIONS = [
-    "Pending",
-    "Submitted",
-    "In Review",
-]
-
-DECISION_OPTIONS = [
-    "Recommend",
-    "Deny",
-    "Defer",
-    "Intent to Matriculate",
-]
-
-CAMPUS_OPTIONS = [
-    "Main",
-    "Online",
-    "Distance",
-]
-
-GENDER_OPTIONS = [
-    "Male",
-    "Female",
-]
+def _normalize(value):
+    """Compare form labels and stored values without case/space differences."""
+    return str(value or "").strip().casefold()
 
 
-def get_application_filter_options(user_role: str):
-    """
-    Backend integration point.
+def _application_gender(application):
+    """Use only explicitly stored gender data; do not infer it from pronouns."""
+    fields = application.get("fields") or {}
+    return fields.get("gender") or fields.get("applicant_gender") or ""
 
-    Degree and term options should come from the current
-    graduate degree/application data.
-    """
+
+def _application_country(application):
+    fields = application.get("fields") or {}
+    return fields.get("legal_residence_country") or ""
+
+
+def _application_decision(application):
+    # A final admissions result takes precedence over a program recommendation.
+    status = application.get("status")
+    if status in {"Accepted", "Denied"}:
+        return status
+
+    saved = graduate_college.get_saved_decision(application["id"])
+    return saved["decision"] if saved else ""
+
+
+def get_application_filter_options(actor, available):
+    """Build real choices from the actor's authorized data and degree programs."""
+    accounts.require_role(actor, {"administrator", "advisor"})
+
+    permitted_programs = set(actor.get("assigned_program_ids") or [])
+    programs = [
+        program for program in database.programs()
+        if actor["user_type"] == "administrator"
+        or program["id"] in permitted_programs
+    ]
+
+    degree_options = {
+        program.get("degree_name", "")
+        for program in programs
+        if program.get("degree_name")
+    }
+    degree_options.update(
+        record.get("degree_program") or record.get("degree_name")
+        for record in available
+        if record.get("degree_program") or record.get("degree_name")
+    )
+
+    term_options = {
+        term
+        for program in programs
+        for term in (program.get("terms_offered") or [])
+        if term
+    }
+    term_options.update(
+        record.get("term") for record in available if record.get("term")
+    )
+
+    def distinct(field):
+        return sorted(
+            {str(value).strip() for record in available
+             if (value := field(record)) and str(value).strip()},
+            key=str.casefold,
+        )
 
     return {
-        "degree_options": [],
-        "term_options": [],
+        "degree_options": sorted(degree_options, key=str.casefold),
+        "term_options": sorted(term_options, key=str.casefold),
+        "status_options": distinct(lambda record: record.get("status")),
+        "gender_options": distinct(_application_gender),
+        "campus_options": sorted(
+            {value.title() for value in distinct(lambda record: record.get("campus"))},
+            key=str.casefold,
+        ),
+        "decision_options": distinct(lambda record: record.get("decision")),
     }
 
 
-def get_authorized_applications(
-    user_role: str,
-    filters: dict,
-):
-    """
-    Backend integration point.
+def get_authorized_applications(actor, filters, available=None):
+    """Apply all requested filters to applications the current actor may view."""
+    accounts.require_role(actor, {"administrator", "advisor"})
+    if available is None:
+        available = [
+            dict(record, decision=_application_decision(record))
+            for record in applications.list_applications(actor)
+        ]
 
-    The backend should return only applications the current
-    user is authorized to access.
+    results = []
+    for application in available:
+        if filters["degree"] and _normalize(
+            application.get("degree_program") or application.get("degree_name")
+        ) != _normalize(filters["degree"]):
+            continue
 
-    When multiple filters are supplied, the backend should
-    combine them using AND conditions.
+        if filters["applicant_name"] and _normalize(filters["applicant_name"]) not in _normalize(
+            application.get("applicant_name") or application.get("full_name")
+        ):
+            continue
 
-    When no filters are supplied, return the full authorized
-    application listing for the current user.
-    """
+        if filters["gender"] and _normalize(
+            _application_gender(application)
+        ) != _normalize(filters["gender"]):
+            continue
 
-    return []
+        if filters["country"] and _normalize(filters["country"]) not in _normalize(
+            _application_country(application)
+        ):
+            continue
+
+        for field in ("campus", "term", "status", "decision"):
+            if filters[field] and _normalize(
+                application.get(field)
+            ) != _normalize(filters[field]):
+                break
+        else:
+            results.append(application)
+
+    return results
 
 
-def get_filter_context(
-    request: Request,
-    user_role: str,
-):
+def get_filter_context(request: Request, user_role: str, actor):
+    """Retrieve current persisted records rather than returning empty fixtures."""
+    accounts.require_role(actor, {user_role})
 
     filters = {
-        "degree": request.query_params.get(
-            "degree",
-            "",
-        ).strip(),
-        "applicant_name": request.query_params.get(
-            "applicant_name",
-            "",
-        ).strip(),
-        "gender": request.query_params.get(
-            "gender",
-            "",
-        ).strip(),
-        "country": request.query_params.get(
-            "country",
-            "",
-        ).strip(),
-        "campus": request.query_params.get(
-            "campus",
-            "",
-        ).strip(),
-        "term": request.query_params.get(
-            "term",
-            "",
-        ).strip(),
-        "status": request.query_params.get(
-            "status",
-            "",
-        ).strip(),
-        "decision": request.query_params.get(
-            "decision",
-            "",
-        ).strip(),
+        key: request.query_params.get(key, "").strip()
+        for key in (
+            "degree", "applicant_name", "gender", "country",
+            "campus", "term", "status", "decision",
+        )
     }
 
-    filter_options = get_application_filter_options(
-        user_role
-    )
+    # The service performs the administrator/advisor ownership checks.
+    available = [
+        dict(record, decision=_application_decision(record))
+        for record in applications.list_applications(actor)
+    ]
 
-    applications = get_authorized_applications(
-        user_role,
-        filters,
-    )
-
-    active_filter_count = sum(
-        bool(value)
-        for value in filters.values()
-    )
+    options = get_application_filter_options(actor, available)
+    filtered = get_authorized_applications(actor, filters, available)
 
     return {
         "user_role": user_role,
-        "filter_action": (
-            f"/{user_role}/filter-applications"
-        ),
-        "applications": applications,
-        "degree_options": filter_options[
-            "degree_options"
-        ],
-        "term_options": filter_options[
-            "term_options"
-        ],
-        "gender_options": GENDER_OPTIONS,
-        "campus_options": CAMPUS_OPTIONS,
-        "status_options": STATUS_OPTIONS,
-        "decision_options": DECISION_OPTIONS,
+        "filter_action": f"/{user_role}/filter-applications",
+        "applications": filtered,
+        **options,
         "filters": filters,
-        "has_filters": active_filter_count > 0,
-        "active_filter_count": active_filter_count,
-        "result_count": len(applications),
+        "has_filters": any(filters.values()),
+        "active_filter_count": sum(bool(value) for value in filters.values()),
+        "result_count": len(filtered),
     }
+
+
+def _current_user(request, required_role):
+    user = accounts.session_user(request.cookies.get("gdas_session", ""))
+    accounts.require_role(user, {required_role})
+    return user
 
 
 @router.get(
@@ -149,17 +176,19 @@ def get_filter_context(
     response_class=HTMLResponse,
     name="administrator_filter_applications",
 )
-async def administrator_filter_applications(
-    request: Request,
-):
+async def administrator_filter_applications(request: Request):
+    try:
+        actor = _current_user(request, "administrator")
+    except HTTPException as error:
+        if error.status_code == 401:
+            return RedirectResponse("/login", status_code=303)
+        raise
 
     return templates.TemplateResponse(
         request=request,
         name="applications/filter_applications.html",
-        context=get_filter_context(
-            request,
-            "administrator",
-        ),
+        context=get_filter_context(request, "administrator", actor),
+        headers={"Cache-Control": "no-store"},
     )
 
 
@@ -168,15 +197,17 @@ async def administrator_filter_applications(
     response_class=HTMLResponse,
     name="advisor_filter_applications",
 )
-async def advisor_filter_applications(
-    request: Request,
-):
+async def advisor_filter_applications(request: Request):
+    try:
+        actor = _current_user(request, "advisor")
+    except HTTPException as error:
+        if error.status_code == 401:
+            return RedirectResponse("/login", status_code=303)
+        raise
 
     return templates.TemplateResponse(
         request=request,
         name="applications/filter_applications.html",
-        context=get_filter_context(
-            request,
-            "advisor",
-        ),
+        context=get_filter_context(request, "advisor", actor),
+        headers={"Cache-Control": "no-store"},
     )
