@@ -1,0 +1,65 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Admitted Graduate Student Record | UA-GDAS{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="/static/css/pages/admin/admissions.css">{% endblock %}
+{% block sidebar_role %}Administrator{% endblock %}
+{% block sidebar_navigation %}
+{% set admin_active_page = "admissions" %}
+{% include "partials/navigation/administrator_sidebar.html" %}
+{% endblock %}
+{% block dashboard_heading %}Admitted Graduate Student Record{% endblock %}
+{% block dashboard_summary %}
+<p class="admissions-intro">Saved graduate student record · Record {{ record.id }} · Created {{ record.record_created_at }}</p>
+{% endblock %}
+{% block dashboard_content %}
+<section class="admissions-panel">
+  <div class="admissions-detail-body">
+    <h2>{{ record.full_name }}</h2>
+    <p class="admissions-hint">Contains private student information. Accessible only to Graduate College Administrators.</p>
+    <dl class="admissions-record">
+      <dt>NetID</dt><dd>{{ record.net_id or "Not provided" }}</dd>
+      <dt>Preferred pronoun</dt><dd>{{ record.preferred_pronoun or "Not provided" }}</dd>
+      <dt>Date of birth</dt><dd>{{ record.date_of_birth or "Not provided" }}</dd>
+      <dt>Email</dt><dd>{{ record.email or "Not provided" }}</dd>
+      <dt>Phone</dt><dd>{{ record.phone or "Not provided" }}</dd>
+      <dt>Mailing address</dt><dd>{{ record.mailing_address or "Not provided" }}</dd>
+      <dt>Citizenship</dt><dd>{{ record.citizenship or "Not provided" }}</dd>
+      <dt>Country of birth</dt><dd>{{ record.country_of_birth or "Not provided" }}</dd>
+      <dt>Legal residence country</dt><dd>{{ record.legal_residence_country or "Not provided" }}</dd>
+      <dt>Visa</dt><dd>{{ record.visa or "Not applicable / not provided" }}</dd>
+      <dt>Military affiliation</dt><dd>{{ record.military_affiliation or "Not provided" }}</dd>
+      <dt>Previous UA affiliation</dt><dd>{{ record.previous_ua_affiliation or "Not applicable / not provided" }}</dd>
+      <dt>Reported residency eligibility</dt><dd>{{ record.resident_tuition_eligibility_reported or "Not provided" }}</dd>
+      <dt>Tuition classification</dt><dd>{{ record.tuition_classification|title }}</dd>
+      <dt>Tuition amount per unit</dt><dd>${{ record.tuition_amount_per_unit }} {{ record.tuition_currency }}</dd>
+      <dt>Degree program</dt><dd>{{ record.graduate_degree_program }}</dd>
+      <dt>College</dt><dd>{{ record.college or "Not specified" }}</dd>
+      <dt>Campus</dt><dd>{{ record.campus }}</dd>
+      <dt>Term</dt><dd>{{ record.term }}</dd>
+      <dt>Cumulative GPA</dt><dd>{{ record.cumulative_gpa or "Not provided" }}</dd>
+      <dt>Ethnicity</dt><dd>{{ record.ethnicity or "Not provided" }}</dd>
+      <dt>Official transcript</dt>
+      <dd>{{ record.official_transcripts.status }}{% if record.official_transcripts.document_id %}
+          · <a class="admissions-link" href="/api/admissions/{{ application_id }}/official-transcript">Download verified PDF</a>
+          {% endif %}</dd>
+    </dl>
+    <h3>Education history</h3>
+    {% for edu in record.education_history %}
+    <dl class="admissions-record">
+      <dt>University</dt><dd>{{ edu.institution or "Not provided" }}</dd>
+      <dt>Education degree</dt><dd>{{ edu.education_degree_name or "Not provided" }}</dd>
+      <dt>Degree type</dt><dd>{{ edu.degree_type or "Not provided" }}</dd>
+      <dt>Degree name</dt><dd>{{ edu.degree_name or "Not provided" }}</dd>
+      <dt>Credits</dt><dd>{{ edu.total_credits or "Not provided" }}</dd>
+      <dt>Dates</dt><dd>{{ edu.degree_start_date or "Not provided" }} – {{ edu.degree_received_date or "Not provided" }}</dd>
+    </dl>
+    {% endfor %}
+    {% if record.missing_verification_fields %}
+    <div class="admissions-warning"><strong>Follow-up required</strong>
+      <p>Some source fields are missing: {{ record.missing_verification_fields|join(", ")|replace("_", " ") }}.
+        Missing information was not invented.</p>
+    </div>
+    {% endif %}
+    <a class="admissions-link" href="/administrator/admissions?application={{ application_id }}">Back to Admissions Processing</a>
+  </div>
+</section>
+{% endblock %}
