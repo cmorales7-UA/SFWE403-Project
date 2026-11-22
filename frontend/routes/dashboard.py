@@ -77,7 +77,7 @@ async def administrator_dashboard(request: Request):
 
     accounts.require_role(user, {"administrator"})
 
-    # Read persisted data on every request. Do not use demo fixtures or
+    # Read persisted data on every request. Do not use static fixtures or
     # hardcoded counts: this is the same service used by application management.
     saved_applications = applications.list_applications(user)
     saved_programs = database.programs()
@@ -97,7 +97,7 @@ async def administrator_dashboard(request: Request):
     }
 
     # Distinguish formal outcomes from graduate-program recommendations.
-    # Both come from persisted records; a missing decision is not mocked.
+    # Both come from persisted records; a missing decision remains unassigned.
     application_rows = []
     for application in saved_applications:
         row = dict(application)
