@@ -241,7 +241,11 @@ def test_admin_review_notes_persist_without_changing_advisor_decision(setup_perm
 
     page = client.get(f"/administrator/application-review?application={app_id}")
     assert page.status_code == 200
-    assert "Reviewed supporting documents." in page.text
+    assert "Internal Review Comments" in page.text
+    assert "Save Review" in page.text
+    # Existing Graduate College notes remain in SQLite even though the
+    # original form displays the shared preliminary review comments instead.
+    assert database.get_application(app_id)["review"]["graduate_college_notes"] == "Reviewed supporting documents."
 
     result = client.put(endpoint, json={"notes": "Documents verified."})
     assert result.status_code == 200
