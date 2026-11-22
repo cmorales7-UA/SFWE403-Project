@@ -195,22 +195,7 @@ Manage User Accounts
             </div>
 
 
-            <!-- Pagination -->
-            <div class="user-pagination">
-
-                <span class="pagination-control">
-                    Previous
-                </span>
-
-                <span class="pagination-page">
-                    Page 1
-                </span>
-
-                <span class="pagination-control">
-                    Next
-                </span>
-
-            </div>
+            <!-- All matching users are shown; no nonfunctional page controls. -->
 
 
             {% else %}
@@ -288,7 +273,7 @@ Manage User Accounts
         </div>
 
 
-        <form class="user-edit-form">
+        <form class="user-edit-form" data-user-id="{{ selected_user.id }}">
 
             <div class="user-form-grid">
 
@@ -319,7 +304,8 @@ Manage User Accounts
                     <select
                         id="user_type"
                         name="user_type"
-                        required
+                        title="Only administrators may change account roles"
+                        disabled
                     >
 
                         <option value="">
@@ -464,6 +450,9 @@ Manage User Accounts
             </div>
 
 
+            <p id="it-user-save-feedback" role="status" aria-live="polite">
+                {% if request.query_params.get("saved") == "1" %}Account changes saved successfully.{% endif %}
+            </p>
             <div class="user-form-actions">
 
                 <button
@@ -520,5 +509,7 @@ Manage User Accounts
     </section>
 
 </div>
+
+<script src="/static/js/pages/admin/it-manage-users.js" defer></script>
 
 {% endblock %}
