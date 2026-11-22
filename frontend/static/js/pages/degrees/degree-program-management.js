@@ -51,6 +51,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = new FormData(form);
     const campus = data.getAll("campus_offered").map(String);
     const terms = data.getAll("terms_offered").map(String);
+    const extraTerms = String(data.get("additional_terms") ?? "")
+      .split(",")
+      .map(term => term.trim())
+      .filter(Boolean);
+    const selectedTerms = [...new Set([...terms, ...extraTerms])];
+    if (selectedTerms.length === 0) {
+      message("Select or enter at least one application term.", true);
+      return;
+    }
     if (campus.length === 0) {
       message("Select at least one campus.", true);
       return;
@@ -69,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
       payload[field] = String(data.get(field) ?? "").trim();
     }
     payload.campus_offered = campus;
-    payload.terms_offered = terms;
+    payload.terms_offered = selectedTerms;
     payload.custom_questions = String(data.get("custom_questions") ?? "")
       .split(/\r?\n/)
       .map(question => question.trim())
