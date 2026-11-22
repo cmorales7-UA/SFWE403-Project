@@ -78,7 +78,7 @@ def _make_tables(connection):
         CREATE TABLE IF NOT EXISTS registrar_simulations (
             id INTEGER PRIMARY KEY,
             application_id INTEGER NOT NULL UNIQUE,
-            student_record_id INTEGER NOT NULL,
+            student_record_id INTEGER,
             term TEXT NOT NULL,
             notice_text TEXT NOT NULL,
             created_at TEXT NOT NULL
@@ -372,14 +372,18 @@ def _student_snapshot(application, account, program, classification, transcript)
         "application_id": application["id"],
         "account_id": account["id"],
         "full_name": application.get("full_name") or application.get("applicant_name"),
+        "preferred_pronoun": fields.get("preferred_pronoun") or None,
         "date_of_birth": fields.get("date_of_birth") or None,
         "net_id": account.get("net_id") or None,
         "email": account.get("email") or application.get("email"),
         "phone": fields.get("phone") or account.get("phone") or None,
         "mailing_address": fields.get("mailing_address") or None,
         "citizenship": fields.get("citizenship") or None,
+        "country_of_birth": fields.get("country_of_birth") or None,
         "legal_residence_country": fields.get("legal_residence_country") or None,
         "visa": fields.get("visa") or None,
+        "military_affiliation": fields.get("military_affiliation") or None,
+        "previous_ua_affiliation": fields.get("previous_ua_affiliation") or None,
         "resident_tuition_eligibility_reported": fields.get("resident_tuition_eligibility") or None,
         "tuition_classification": classification,
         "tuition_amount_per_unit": str(tuition),
@@ -401,7 +405,9 @@ def _student_snapshot(application, account, program, classification, transcript)
     }
     mandatory = [
         "full_name", "net_id", "email", "phone", "mailing_address",
-        "citizenship", "legal_residence_country", "cumulative_gpa", "ethnicity",
+        "date_of_birth", "citizenship", "country_of_birth",
+        "legal_residence_country", "resident_tuition_eligibility_reported",
+        "military_affiliation", "cumulative_gpa", "ethnicity",
     ]
     missing = [name for name in mandatory if not record.get(name)]
     if not transcript:
@@ -412,13 +418,18 @@ def _student_snapshot(application, account, program, classification, transcript)
     return record
 
 
-def process_acceptance(application_id, actor, classification):
+def create_student_record(application_id, actor, classification):
+    """SRS 9.5.5: create an admitted student record after a formal acceptance.
+
+    This is independent of applicant enrollment intent (SRS 9.5.3).
+    Require an actual verified transcript and source application fields.
+    """
     accounts.require_role(actor, {"administrator"})
     if classification not in TUITION_OPTIONS:
         raise HTTPException(422, "Select a resident or non-resident tuition classification")
     application = _application(application_id)
-    if application["status"] != "Accepted":
-        raise HTTPException(409, "Only accepted applicants may matriculate")
+    if application["status"] not in {"Accepted", "Intent to Matriculate"}:
+        raise HTTPException(409, "A formal acceptance is required before creating a student record")
     account = next((u for u in database.users() if u["id"] == application["owner_id"]), None)
     program = next((p for p in database.programs() if p["id"] == application["program_id"]), None)
     if account is None or program is None:
@@ -428,15 +439,19 @@ def process_acceptance(application_id, actor, classification):
         db.execute("BEGIN IMMEDIATE")
         _make_tables(db)
         notice = _get_row(db, "official_admission_notices", application_id)
-        if not notice or notice["state"] != "sent" or notice["decision"] != "Accepted":
-            raise HTTPException(409, "An official acceptance notice must have been delivered")
-        intent = _get_row(db, "admission_intents", application_id)
-        if not intent:
-            raise HTTPException(409, "The applicant has not notified the Graduate College of acceptance")
-        if intent["processed_at"] or _get_row(db, "admitted_graduate_students", application_id):
-            raise HTTPException(409, "Enrollment intent has already been processed")
+        if notice is None or notice["state"] != "sent" or notice["decision"] != "Accepted":
+            raise HTTPException(409, "An official acceptance email must be delivered first")
+        if _get_row(db, "admitted_graduate_students", application_id):
+            raise HTTPException(409, "An admitted student record already exists")
+
         transcript = _get_row(db, "official_transcripts", application_id)
         snapshot = _student_snapshot(application, account, program, classification, transcript)
+        if snapshot["missing_verification_fields"]:
+            raise HTTPException(
+                422,
+                "Complete missing ConOps record requirements before creating a student record: "
+                + ", ".join(snapshot["missing_verification_fields"]),
+            )
         timestamp = _now()
         snapshot["record_created_at"] = timestamp
         cursor = db.execute(
@@ -445,16 +460,48 @@ def process_acceptance(application_id, actor, classification):
                VALUES (?, ?, ?, ?)""",
             (application_id, account["id"], json.dumps(snapshot), timestamp),
         )
-        student_id = cursor.lastrowid
+        db.execute(
+            """UPDATE registrar_simulations SET student_record_id=?
+               WHERE application_id=?""",
+            (cursor.lastrowid, application_id),
+        )
+    return get_student_record(application_id, actor)
+
+
+def process_acceptance(application_id, actor):
+    """SRS 9.5.3/9.5.4: process acceptance and simulate Registrar notification."""
+    accounts.require_role(actor, {"administrator"})
+    application = _application(application_id)
+    if application["status"] != "Accepted":
+        raise HTTPException(409, "Only accepted applicants may matriculate")
+
+    with database.connect() as db:
+        db.execute("BEGIN IMMEDIATE")
+        _make_tables(db)
+        notice = _get_row(db, "official_admission_notices", application_id)
+        if notice is None or notice["state"] != "sent" or notice["decision"] != "Accepted":
+            raise HTTPException(409, "The official acceptance notice must have been sent")
+        intent = _get_row(db, "admission_intents", application_id)
+        if intent is None:
+            raise HTTPException(409, "No acceptance notification was received from this applicant")
+        if intent["processed_at"]:
+            raise HTTPException(409, "Enrollment intent has already been processed")
+
+        existing_student = _get_row(db, "admitted_graduate_students", application_id)
+        student_id = existing_student["id"] if existing_student else None
+        timestamp = _now()
+        account = next(
+            (u for u in database.users() if u["id"] == application["owner_id"]), None
+        )
         registrar_text = (
-            "UA-GDAS Registrar Notification (SIMULATION ONLY)\n"
-            f"Student record: {student_id}\n"
-            f"Applicant: {snapshot['full_name']}\n"
-            f"NetID: {snapshot['net_id'] or 'Not provided'}\n"
-            f"Degree program: {program['degree_name']}\n"
-            f"Campus: {application['campus']}\n"
-            f"Academic term: {application['term']}\n"
-            "Status: Intent to Matriculate\n"
+            "UA-GDAS Registrar Notification (SIMULATION ONLY)\\n"
+            f"Student record: {student_id if student_id is not None else 'Not yet created'}\\n"
+            f"Applicant: {application.get('applicant_name', 'Applicant')}\\n"
+            f"NetID: {(account or {}).get('net_id') or 'Not provided'}\\n"
+            f"Degree program: {application['degree_program']}\\n"
+            f"Campus: {application['campus']}\\n"
+            f"Academic term: {application['term']}\\n"
+            "Status: Intent to Matriculate\\n"
             "No communication with the actual University Registrar was made."
         )
         db.execute(
