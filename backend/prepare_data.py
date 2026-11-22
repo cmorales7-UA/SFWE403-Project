@@ -76,6 +76,14 @@ def upgrade_existing_accounts():
         database.save_user(account, original_id)
 
         if change_email:
+            with database.connect() as connection:
+                # Historical reference requests must follow the renamed recipient.
+                connection.execute(
+                    """UPDATE recommendation_requests
+                       SET recipient_email=? WHERE LOWER(recipient_email)=LOWER(?)""",
+                    (new_email, old_email),
+                )
+
             # Update only original embedded addresses belonging to this owner.
             for application in database.applications():
                 if application["owner_id"] != original_id:
@@ -90,6 +98,32 @@ def upgrade_existing_accounts():
                     changed = True
                 if changed:
                     database.save_application(application, application["id"])
+
+    # Remove outdated contact labels only when they exactly match the
+    # original starter values; retain any manually edited contacts.
+    for program in database.programs():
+        if program.get("program_contact") in {
+            "graduate-demo@arizona.edu", "graduate@example.test",
+        }:
+            program["program_contact"] = "gdas.programs@arizona.edu"
+            identifier = program.pop("id")
+            database.save_program(program, identifier)
+
+    previous_references = {
+        "demo_reference_morgan@arizona.edu": "morgan.lee@arizona.edu",
+        "demo_reference_taylor@arizona.edu": "taylor.kim@arizona.edu",
+        "demo_reference_jordan@arizona.edu": "jordan.smith@arizona.edu",
+    }
+    for application in database.applications():
+        fields = application.get("fields") or {}
+        modified = False
+        for key in ("reference_1_contact", "reference_2_contact", "reference_3_contact"):
+            former = str(fields.get(key) or "").casefold()
+            if former in previous_references:
+                fields[key] = previous_references[former]
+                modified = True
+        if modified:
+            database.save_application(application, application["id"])
 
 
 def prepare():
