@@ -1,6 +1,6 @@
 
 /*
- * SRS 9.4.3 - Application Communication with Applicant
+ * Applicant communication
  *
  * Allows an Advisor or Administrator to send an email
  * to an applicant before a final application decision.
