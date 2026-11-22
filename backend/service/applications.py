@@ -291,6 +291,9 @@ def save_graduate_college_review(application_id, payload, actor):
 
     result = get_application(application_id, actor)
     result["notification_required"] = changed_decision
+    result["decision_version"] = (
+        graduate_college.get_saved_decision(application_id) or {}
+    ).get("version")
     return result
 
 
