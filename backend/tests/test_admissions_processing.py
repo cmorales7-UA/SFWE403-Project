@@ -245,6 +245,13 @@ def test_srs_955_create_complete_student_record_with_transcript_before_intent(en
         json={"tuition_classification": "nonresident"},
     ).status_code == 409
 
+    post_creation_upload = client.post(
+        f"/api/admissions/{application_id}/official-transcript",
+        files={"official_transcript": ("replacement.pdf", pdf_bytes, "application/pdf")},
+        data={"verified": "true"},
+    )
+    assert post_creation_upload.status_code == 409
+
     down = client.get(f"/api/admissions/{application_id}/official-transcript")
     assert down.status_code == 200
     assert down.content == pdf_bytes
@@ -325,3 +332,51 @@ def test_admin_no_final_recommendation_and_invalid_transcripts(environment):
         data={"verified": "false"},
     )
     assert not_verified.status_code == 422
+
+
+def test_conops_requires_complete_education_history_before_student_record(environment):
+    client, identity, users, application_id, _ = environment
+    deliver_advisor_recommendation(client, identity, users, application_id, "Recommend")
+    assert client.post(f"/api/admissions/{application_id}/official-notice").status_code == 200
+    application = database.get_application(application_id)
+    application["fields"].pop("degree_start_date")
+    database.save_application(application, application_id)
+
+    pdf_bytes = b"%PDF-1.4\\n1 0 obj <<>> endobj\\n%%EOF"
+    assert client.post(
+        f"/api/admissions/{application_id}/official-transcript",
+        files={"official_transcript": ("verified.pdf", pdf_bytes, "application/pdf")},
+        data={"verified": "true"},
+    ).status_code == 200
+    response = client.post(
+        f"/api/admissions/{application_id}/student-record",
+        json={"tuition_classification": "resident"},
+    )
+    assert response.status_code == 422
+    assert "education_history.degree_start_date" in response.json()["detail"]
+    assert client.get(f"/api/admissions/{application_id}/student-record").status_code == 404
+
+
+def test_administrator_page_renders_live_conops_workflow(environment):
+    client, identity, users, application_id, _ = environment
+    page = client.get("/administrator/admissions")
+    assert page.status_code == 200
+    assert "Avery Bennett" in page.text
+    assert "No applications exist" not in page.text
+
+    chosen = client.get(f"/administrator/admissions?application={application_id}")
+    assert chosen.status_code == 200
+    assert "Admissions Processing" in chosen.text
+    assert "Graduate College notified" in chosen.text
+    assert "Issue Official Admission Decision" in chosen.text
+
+    deliver_advisor_recommendation(client, identity, users, application_id, "Recommend")
+    ready = client.get(f"/administrator/admissions?application={application_id}")
+    assert "Send official decision email" in ready.text
+    assert "Create Student Record" not in ready.text
+
+    assert client.post(f"/api/admissions/{application_id}/official-notice").status_code == 200
+    accepted = client.get(f"/administrator/admissions?application={application_id}")
+    assert "Open printable decision letter" in accepted.text
+    assert "Create Student Record" in accepted.text
+    assert "Save verified transcript" in accepted.text
