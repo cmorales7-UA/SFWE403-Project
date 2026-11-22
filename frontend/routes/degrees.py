@@ -39,6 +39,9 @@ def get_degree_programs():
                 "other_requirements", ""
             ),
             "contact_information": program["program_contact"],
+            "resident_cost_per_unit": program.get("resident_cost_per_unit"),
+            "nonresident_cost_per_unit": program.get("nonresident_cost_per_unit"),
+            "custom_questions": program.get("custom_questions") or [],
         })
 
     return degree_programs
