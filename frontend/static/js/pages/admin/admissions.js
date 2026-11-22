@@ -1,5 +1,3 @@
-// SRS 9.5.2–9.5.5, Graduate College admissions processing.
-// Only the authenticated backend can change official statuses or student records.
 document.addEventListener("DOMContentLoaded", () => {
   const panel = document.querySelector("[data-application-id]");
   if (!panel) return;
