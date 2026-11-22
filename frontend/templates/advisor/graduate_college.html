@@ -1,7 +1,7 @@
 {% extends "dashboard_base.html" %}
 
 {% block title %}
-Graduate College Decisions | UA-GDAS
+Program Recommendations | UA-GDAS
 {% endblock %}
 
 {% block page_css %}
@@ -19,10 +19,13 @@ Degree Advisor
 {% endblock %}
 
 {% block dashboard_heading %}
-Graduate College Decisions
+Program Recommendations
 {% endblock %}
 
 {% block dashboard_summary %}
+<p>Review committee recommendations, save the degree program's final recommendation,
+and notify the Graduate College Administrator. The Administrator issues the
+official admission decision.</p>
 {% endblock %}
 
 {% block dashboard_content %}
@@ -74,7 +77,7 @@ Graduate College Decisions
 
             <header class="gc-detail-heading">
                 <div>
-                    <span class="gc-eyebrow">Program decision</span>
+                    <span class="gc-eyebrow">Advisor program recommendation</span>
                     <h2 id="gc-applicant-name"></h2>
                 </div>
 
@@ -114,11 +117,11 @@ Graduate College Decisions
 
             <form id="gc-decision-form" class="gc-section">
 
-                <h3>Graduate program decision</h3>
+                <h3>Final Program Recommendation</h3>
 
                 <p class="gc-section-description">
-                    Record the program's recommendation.
-                    This is not a final admission decision.
+                    Select Recommend, Deny, or Defer and provide the advisor rationale.
+                    This is the degree program's final recommendation, not the Graduate College's official admission decision.
                 </p>
 
                 <div class="gc-field">
