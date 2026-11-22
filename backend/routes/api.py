@@ -511,10 +511,18 @@ def submit_admission_intent(
 @router.post("/admissions/{application_id}/process-intent")
 def process_admission_intent(
     application_id: int,
+    actor=Depends(current_user),
+):
+    return admissions.process_acceptance(application_id, actor)
+
+
+@router.post("/admissions/{application_id}/student-record", status_code=201)
+def create_admitted_student_record(
+    application_id: int,
     payload: ProcessAdmissionIntent,
     actor=Depends(current_user),
 ):
-    return admissions.process_acceptance(
+    return admissions.create_student_record(
         application_id, actor, payload.tuition_classification
     )
 
