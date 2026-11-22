@@ -16,6 +16,11 @@ class ApplicationUpdate(BaseModel):
     fields: dict[str, str] = Field(min_length=1)
 
 
+class GraduateCollegeReviewUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+    notes: str = Field(default="", max_length=5000)
+
+
 class PreliminaryReview(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
     review_comments: str = Field(default="", max_length=5000)
