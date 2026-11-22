@@ -235,8 +235,24 @@
                     Fall 2028
                 </label>
 
+                {% if selected_degree %}
+                {% for existing_term in (selected_degree.terms_offered or []) %}
+                {% if existing_term not in ["Spring 2027", "Summer 2027", "Fall 2027", "Spring 2028", "Summer 2028", "Fall 2028"] %}
+                <label class="degree-program-checkbox">
+                    <input type="checkbox" name="terms_offered" value="{{ existing_term }}" checked>
+                    {{ existing_term }}
+                </label>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
             </div>
 
+            <label for="additional_terms" class="degree-program-label">Additional Application Terms</label>
+            <input type="text" id="additional_terms" name="additional_terms"
+                placeholder="Spring 2029, Fall 2029">
+            <p class="degree-program-section-description">
+                Separate additional terms with commas. Existing selected terms will be preserved.
+            </p>
         </div>
 
     </section>
