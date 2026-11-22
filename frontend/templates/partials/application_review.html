@@ -146,66 +146,67 @@
         </div>
 
 
+        {% set program_decision = selected_application.advisor_program_decision %}
+        {% set editable = selected_application.status in ["Submitted", "Needs Information", "In Review"] %}
         <form id="graduate-college-review-form"
               class="review-form"
-              data-application-id="{{ selected_application.id }}">
+              data-application-id="{{ selected_application.id }}"
+              {% if program_decision %}data-decision-version="{{ program_decision.version }}"{% endif %}>
+
             <div class="review-field">
-                <label for="graduate_college_notes">Graduate College Notes</label>
-                <textarea id="graduate_college_notes"
-                          name="notes"
+                <label for="review_comments">Internal Review Comments</label>
+                <textarea id="review_comments"
+                          name="review_comments"
                           maxlength="5000"
-                          rows="5">{{ selected_application.graduate_college_notes or "" }}</textarea>
-            </div>
-            <div class="review-actions">
-                <a class="review-secondary-button"
-                   href="/administrator/student-applications/{{ selected_application.id }}/modify">
-                    Modify Application
-                </a>
-                <button type="submit" class="review-save-button">Save Notes</button>
-            </div>
-            <p id="graduate-college-review-feedback" role="status" aria-live="polite"></p>
-        </form>
-
-
-        <!-- Advisor recommendation -->
-        <section class="review-form" aria-label="Advisor program recommendation">
-            <div class="review-section-heading">
-                <h3>Advisor Program Recommendation</h3>
+                          rows="7"
+                          {% if not editable %}disabled{% endif %}>{{ selected_application.review_comments or "" }}</textarea>
             </div>
 
             <div class="review-field">
-                <strong>Preliminary Review Comments</strong>
-                <p>{{ selected_application.review_comments or "No preliminary review comments recorded." }}</p>
+                <label for="recommendation">Final Recommendation</label>
+                <select id="recommendation"
+                        name="recommendation"
+                        {% if not editable or not program_decision %}disabled{% endif %}>
+                    <option value="" {% if not program_decision %}selected{% endif %}>
+                        Select Recommendation
+                    </option>
+                    <option value="Recommend" {% if program_decision and program_decision.decision == "Recommend" %}selected{% endif %}>
+                        Recommend
+                    </option>
+                    <option value="Deny" {% if program_decision and program_decision.decision == "Deny" %}selected{% endif %}>
+                        Deny
+                    </option>
+                    <option value="Defer" {% if program_decision and program_decision.decision == "Defer" %}selected{% endif %}>
+                        Defer
+                    </option>
+                </select>
+                {% if not program_decision %}
+                <span class="review-field-note">Advisor recommendation pending.</span>
+                {% endif %}
             </div>
 
-            {% set program_decision = selected_application.advisor_program_decision %}
+            <div class="review-field">
+                <label for="advisor_rationale">Recommendation Rationale</label>
+                <textarea id="advisor_rationale"
+                          name="rationale"
+                          maxlength="5000"
+                          rows="4"
+                          {% if not editable or not program_decision %}disabled{% endif %}>{{ program_decision.rationale if program_decision else "" }}</textarea>
+            </div>
+
             {% if program_decision %}
-            <div class="review-field">
-                <strong>Program Recommendation</strong>
-                <p>{{ program_decision.decision }}</p>
-            </div>
-            <div class="review-field">
-                <strong>Advisor Rationale</strong>
-                <p>{{ program_decision.rationale }}</p>
-            </div>
-            <div class="review-field">
-                <strong>Notification to Current Administrator</strong>
-                <p>{{ "Received" if selected_application.advisor_decision_received else "Not yet received" }}</p>
-            </div>
-            {% else %}
-            <p class="review-field-note">
-                No program recommendation has been submitted by the Advisor.
-            </p>
+            <span class="review-field-note">
+                Notification: {{ "Received" if selected_application.advisor_decision_received else "Pending" }}
+            </span>
             {% endif %}
 
+            {% if editable %}
             <div class="review-actions">
-                <a href="/administrator/admissions?application={{ selected_application.id }}"
-                   class="review-save-button"
-                   style="display: inline-flex; align-items: center; text-decoration: none;">
-                    Open Admissions Processing
-                </a>
+                <button type="submit" class="review-save-button">Save Review</button>
             </div>
-        </section>
+            {% endif %}
+            <p id="graduate-college-review-feedback" class="review-feedback" role="status" aria-live="polite"></p>
+        </form>
 
 
         {% else %}
