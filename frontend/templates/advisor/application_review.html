@@ -237,6 +237,31 @@ Review Applications
         </form>
 
 
+        <!-- SRS 9.4.5: advisor-only program recommendation -->
+        <section class="review-action-section">
+            <h3>Final Program Recommendation</h3>
+            <p>
+                Once the preliminary review and committee evaluations are complete,
+                submit the degree program's Recommend, Deny, or Defer decision
+                and notify the Graduate College Administrator.
+            </p>
+            {% if selected_application.status == "In Review" %}
+            <a
+                href="/advisor/graduate-college?application={{ selected_application.id }}"
+                class="review-secondary-button"
+                style="display: inline-flex; align-items: center; text-decoration: none;"
+            >
+                Open Program Recommendations
+            </a>
+            {% else %}
+            <p class="review-field-note">
+                This application is not yet In Review. Complete the
+                preliminary review before recording a final program recommendation.
+            </p>
+            {% endif %}
+        </section>
+
+
         <!-- Request additional information -->
         <section class="review-action-section">
 
