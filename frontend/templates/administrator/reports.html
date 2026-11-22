@@ -72,7 +72,7 @@ Generate Reports
             </h2>
 
             <p>
-                Filters apply to the Degree Applicant Status Report.
+                Filters apply to both reports. Current applicants excludes finalized decisions; the status report includes all applications.
             </p>
 
         </div>
@@ -234,7 +234,7 @@ Generate Reports
 
             {% if report_rows %}
 
-            <a href="/administrator/reports.csv?report_type={{ selected_report_type }}&term={{ filters.term }}&campus={{ filters.campus }}&status={{ filters.status }}&decision={{ filters.decision }}"
+            <a href="/administrator/reports.csv?{{ report_csv_query }}"
                 class="report-download-button">
                 Download CSV
             </a>
