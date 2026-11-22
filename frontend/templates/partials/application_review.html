@@ -146,6 +146,27 @@
         </div>
 
 
+        <form id="graduate-college-review-form"
+              class="review-form"
+              data-application-id="{{ selected_application.id }}">
+            <div class="review-field">
+                <label for="graduate_college_notes">Graduate College Notes</label>
+                <textarea id="graduate_college_notes"
+                          name="notes"
+                          maxlength="5000"
+                          rows="5">{{ selected_application.graduate_college_notes or "" }}</textarea>
+            </div>
+            <div class="review-actions">
+                <a class="review-secondary-button"
+                   href="/administrator/student-applications/{{ selected_application.id }}/modify">
+                    Modify Application
+                </a>
+                <button type="submit" class="review-save-button">Save Notes</button>
+            </div>
+            <p id="graduate-college-review-feedback" role="status" aria-live="polite"></p>
+        </form>
+
+
         <!-- Advisor recommendation -->
         <section class="review-form" aria-label="Advisor program recommendation">
             <div class="review-section-heading">
