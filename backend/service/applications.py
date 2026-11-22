@@ -2,6 +2,7 @@
 """Application access, preliminary review, and applicant communication (SRS 9.4)."""
 
 from datetime import datetime, timezone
+import json
 import secrets
 
 from fastapi import HTTPException
@@ -9,7 +10,7 @@ from fastapi import HTTPException
 from backend.clients import database
 from backend.service.accounts import require_role
 from backend.service.security import hash_secret
-from backend.service import mailer
+from backend.service import mailer, graduate_college
 
 
 FINAL_STATES = {"Accepted", "Denied"}
@@ -165,22 +166,132 @@ def update_application(application_id, payload, actor):
 
 
 def save_graduate_college_review(application_id, payload, actor):
-    """Store Graduate College review notes without editing the Advisor's decision."""
+    """Save Administrator corrections in the existing review workflow."""
     require_role(actor, {"administrator"})
-    application = database.get_application(application_id)
-    if application is None:
-        raise HTTPException(404, "Application not found")
-    if application["status"] not in REVIEWABLE_STATUSES:
-        raise HTTPException(409, "This application is no longer open for review")
 
-    review = dict(application.get("review") or {})
-    review["graduate_college_notes"] = payload.notes
-    review["graduate_college_updated_by"] = actor["id"]
-    review["graduate_college_updated_at"] = _now()
-    application["review"] = review
-    application["last_updated"] = _now()
-    database.save_application(application, application_id)
-    return get_application(application_id, actor)
+    with database.connect() as db:
+        db.execute("BEGIN IMMEDIATE")
+        row = db.execute(
+            "SELECT data FROM applications WHERE id=?", (application_id,)
+        ).fetchone()
+        if row is None:
+            raise HTTPException(404, "Application not found")
+
+        application = json.loads(row["data"])
+        if application.get("status") not in REVIEWABLE_STATUSES:
+            raise HTTPException(409, "This application is no longer open for review")
+
+        review = dict(application.get("review") or {})
+        previous_comments = review.get("review_comments", "")
+        new_comments = (
+            payload.review_comments
+            if payload.review_comments is not None else previous_comments
+        )
+        if payload.notes is not None:
+            review["graduate_college_notes"] = payload.notes
+        if payload.review_comments is not None:
+            review["review_comments"] = payload.review_comments
+
+        changed_review = (
+            previous_comments != new_comments
+            or (payload.notes is not None and
+                payload.notes != review.get("graduate_college_notes", ""))
+        )
+        # Compare notes against the original before updating.
+        if payload.notes is not None:
+            original_review = json.loads(row["data"]).get("review") or {}
+            changed_review = changed_review or (
+                payload.notes != original_review.get("graduate_college_notes", "")
+            )
+
+        graduate_college.ensure_tables(db)
+        decision_row = db.execute(
+            "SELECT * FROM graduate_college_decisions WHERE application_id=?",
+            (application_id,),
+        ).fetchone()
+        changed_decision = False
+
+        if payload.decision is not None:
+            if decision_row is None:
+                raise HTTPException(
+                    409, "The Advisor must submit a program recommendation first"
+                )
+            if (payload.decision_version is not None
+                    and payload.decision_version != decision_row["version"]):
+                raise HTTPException(
+                    409, "The recommendation has changed. Refresh before saving"
+                )
+            changed_decision = (
+                payload.decision != decision_row["decision"]
+                or payload.rationale != decision_row["rationale"]
+            )
+            if changed_decision:
+                official_table = db.execute(
+                    """SELECT 1 FROM sqlite_master
+                       WHERE type='table' AND name='official_admission_notices'"""
+                ).fetchone()
+                if official_table and db.execute(
+                    """SELECT 1 FROM official_admission_notices
+                       WHERE application_id=?""",
+                    (application_id,),
+                ).fetchone():
+                    raise HTTPException(
+                        409, "An official admission notice already exists for this application"
+                    )
+                db.execute(
+                    """UPDATE graduate_college_decisions
+                       SET decision=?, rationale=?, version=version+1,
+                           updated_at=CURRENT_TIMESTAMP WHERE application_id=?""",
+                    (payload.decision, payload.rationale, application_id),
+                )
+
+        if changed_review or changed_decision:
+            db.execute(
+                """CREATE TABLE IF NOT EXISTS graduate_college_admin_edit_history (
+                       id INTEGER PRIMARY KEY,
+                       application_id INTEGER NOT NULL,
+                       administrator_id INTEGER NOT NULL,
+                       previous_comments TEXT,
+                       updated_comments TEXT,
+                       previous_decision TEXT,
+                       updated_decision TEXT,
+                       previous_rationale TEXT,
+                       updated_rationale TEXT,
+                       edited_at TEXT NOT NULL
+                   )"""
+            )
+            db.execute(
+                """INSERT INTO graduate_college_admin_edit_history (
+                       application_id, administrator_id, previous_comments,
+                       updated_comments, previous_decision, updated_decision,
+                       previous_rationale, updated_rationale, edited_at
+                   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (
+                    application_id, actor["id"], previous_comments, new_comments,
+                    decision_row["decision"] if decision_row else None,
+                    payload.decision if payload.decision is not None
+                    else (decision_row["decision"] if decision_row else None),
+                    decision_row["rationale"] if decision_row else None,
+                    payload.rationale if payload.rationale is not None
+                    else (decision_row["rationale"] if decision_row else None),
+                    _now(),
+                ),
+            )
+
+        if changed_review or changed_decision:
+            if payload.notes is not None or payload.review_comments is not None:
+                review["graduate_college_updated_by"] = actor["id"]
+                review["graduate_college_updated_at"] = _now()
+            application["review"] = review
+            application["last_updated"] = _now()
+            db.execute(
+                "UPDATE applications SET data=? WHERE id=?",
+                (json.dumps(application), application_id),
+            )
+
+    result = get_application(application_id, actor)
+    result["notification_required"] = changed_decision
+    return result
 
 
 # SRS 9.4.2 - Preliminary Review Validation
