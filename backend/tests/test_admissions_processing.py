@@ -188,7 +188,7 @@ def test_srs_953_954_applicant_intent_and_registrar_simulation(environment):
     )
     assert saved.status_code == 200
     assert "Fall 2027" in saved.text
-    assert "No connection to the actual University Registrar" in saved.text
+    assert "SIMULATION ONLY" in saved.text
 
 
 def test_srs_955_create_complete_student_record_with_transcript_before_intent(environment):
