@@ -570,6 +570,12 @@ def upload_transcript(application_id, actor, filename, raw, confirmed):
     application = _application(application_id)
     if application["status"] not in {"Accepted", "Intent to Matriculate"}:
         raise HTTPException(409, "Official transcript processing requires an accepted applicant")
+    with database.connect() as db:
+        _make_tables(db)
+        if _get_row(db, "admitted_graduate_students", application_id):
+            raise HTTPException(
+                409, "A student record already exists. Transcript amendments require a separate approved workflow"
+            )
     if not confirmed:
         raise HTTPException(422, "Confirm the transcript was received through an approved channel")
     if not raw or len(raw) > MAX_TRANSCRIPT_BYTES:
