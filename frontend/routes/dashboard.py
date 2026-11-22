@@ -3,7 +3,8 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
-from backend.service import accounts, applications
+from backend.clients import database
+from backend.service import accounts, applications, graduate_college
 
 
 # This router handles the different user dashboard pages.
@@ -64,9 +65,64 @@ async def applicant_dashboard(request: Request):
     name="administrator_dashboard",
 )
 async def administrator_dashboard(request: Request):
+    # Require an authenticated administrator, not just an authorized page URL.
+    try:
+        user = accounts.session_user(
+            request.cookies.get("gdas_session", "")
+        )
+    except HTTPException as error:
+        if error.status_code == 401:
+            return RedirectResponse("/login", status_code=303)
+        raise
+
+    accounts.require_role(user, {"administrator"})
+
+    # Read persisted data on every request. Do not use demo fixtures or
+    # hardcoded counts: this is the same service used by application management.
+    saved_applications = applications.list_applications(user)
+    saved_programs = database.programs()
+
+    summary = {
+        "applications": len(saved_applications),
+        # "Pending" means submitted or awaiting requested information.
+        "pending": sum(
+            item.get("status") in {"Submitted", "Needs Information"}
+            for item in saved_applications
+        ),
+        "in_review": sum(
+            item.get("status") == "In Review"
+            for item in saved_applications
+        ),
+        "degree_programs": len(saved_programs),
+    }
+
+    # Distinguish formal outcomes from graduate-program recommendations.
+    # Both come from persisted records; a missing decision is not mocked.
+    application_rows = []
+    for application in saved_applications:
+        row = dict(application)
+        if row.get("status") in {"Accepted", "Denied"}:
+            row["decision_display"] = row["status"]
+        else:
+            program_decision = graduate_college.get_saved_decision(
+                row["id"]
+            )
+            row["decision_display"] = (
+                f"Program: {program_decision['decision']}"
+                if program_decision
+                else "Not decided"
+            )
+        application_rows.append(row)
+
     return templates.TemplateResponse(
         request=request,
         name="administrator/dashboard.html",
+        context={
+            "summary": summary,
+            "applications": application_rows,
+        },
+        # Prevent the browser from reusing an old dashboard after edits.
+        headers={"Cache-Control": "no-store"},
     )
 
 
