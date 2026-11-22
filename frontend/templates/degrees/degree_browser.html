@@ -311,7 +311,35 @@
 
             </div>
 
+            <div class="degree-information-item">
+                <span class="degree-information-label">Resident Tuition per Unit</span>
+                <span class="degree-information-value">
+                    {% if selected_degree.resident_cost_per_unit is not none %}
+                    &#36;{{ "%.2f"|format(selected_degree.resident_cost_per_unit|float) }}
+                    {% else %}Not provided{% endif %}
+                </span>
+            </div>
+
+            <div class="degree-information-item">
+                <span class="degree-information-label">Non-Resident Tuition per Unit</span>
+                <span class="degree-information-value">
+                    {% if selected_degree.nonresident_cost_per_unit is not none %}
+                    &#36;{{ "%.2f"|format(selected_degree.nonresident_cost_per_unit|float) }}
+                    {% else %}Not provided{% endif %}
+                </span>
+            </div>
         </div>
+
+        {% if selected_degree.custom_questions %}
+        <div class="degree-information-section">
+            <h3>Additional Application Questions</h3>
+            <ul>
+                {% for question in selected_degree.custom_questions %}
+                <li>{{ question }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
 
 
         <div class="degree-information-section">
