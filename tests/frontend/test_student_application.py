@@ -142,6 +142,6 @@ def test_application_without_degree_selection(monkeypatch):
     assert response.status_code == 200
     assert (
         "Select a graduate degree program before starting an application."
-        in response.text
+        in " ".join(response.text.split())
     )
     assert "Browse Graduate Degrees" in response.text
