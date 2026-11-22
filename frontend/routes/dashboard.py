@@ -299,6 +299,7 @@ async def reference_dashboard(request: Request):
             continue
         requests.append({
             "application_id": application["id"],
+            "owner_id": application["owner_id"],
             "program_id": application["program_id"],
             "applicant_name": application.get("applicant_name", "Applicant"),
             "degree_program": application.get("degree_program", ""),
@@ -313,7 +314,7 @@ async def reference_dashboard(request: Request):
         {
             "summary": {
                 "requests": len(requests),
-                "applicants": len({row["application_id"] for row in requests}),
+                "applicants": len({row["owner_id"] for row in requests}),
                 "programs": len({row["program_id"] for row in requests}),
             },
             "requests": requests,
