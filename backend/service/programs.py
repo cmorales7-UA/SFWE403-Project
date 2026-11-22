@@ -65,6 +65,12 @@ def _ensure_history_table(connection):
 def create_program(payload, actor):
     require_role(actor, {"administrator", "advisor"})
     data = payload.model_dump(mode="json")
+    if not data["terms_offered"]:
+        raise HTTPException(422, "Select at least one application term")
+    if data["resident_cost_per_unit"] is None or data["nonresident_cost_per_unit"] is None:
+        raise HTTPException(
+            422, "Enter both Arizona resident and non-resident tuition per unit"
+        )
 
     if actor["user_type"] == "administrator":
         _verify_collaborators(data["collaborating_advisor_ids"])
@@ -124,10 +130,14 @@ def update_program(program_id, payload, actor):
             "collaborating_advisor_ids", []
         )
 
-    # Preserve an existing unknown tuition value if older clients omit it.
-    for field in ("resident_cost_per_unit", "nonresident_cost_per_unit"):
+    # Older program clients must not silently wipe established fields.
+    for field in (
+        "resident_cost_per_unit", "nonresident_cost_per_unit", "custom_questions",
+    ):
         if field not in payload.model_fields_set:
-            data[field] = previous.get(field)
+            data[field] = previous.get(field, [] if field == "custom_questions" else None)
+    if not data["terms_offered"]:
+        raise HTTPException(422, "Select at least one application term")
 
     changed_fields = sorted(
         name for name in set(previous) | set(data)
