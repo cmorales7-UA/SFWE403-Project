@@ -257,6 +257,9 @@ async def administrator_application_review(
         review = selected_application.get("review") or {}
 
         selected_application["review_comments"] = review.get("review_comments", "")
+        selected_application["graduate_college_notes"] = review.get(
+            "graduate_college_notes", ""
+        )
 
         # Only the Advisor records a final program recommendation.
         # Administrators may review it here but cannot edit it.
