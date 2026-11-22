@@ -75,9 +75,15 @@ Degree Advisor Dashboard
             <tbody>
                 {% for application in applications %}
                 <tr>
-                    <td><a href="/advisor/application-review?application={{ application.id }}">
+                    <td>
+                        {% if application.status in ["Submitted", "Needs Information", "In Review"] %}
+                        <a href="/advisor/application-review?application={{ application.id }}">
+                            {{ application.applicant_name or application.full_name or "Applicant" }}
+                        </a>
+                        {% else %}
                         {{ application.applicant_name or application.full_name or "Applicant" }}
-                    </a></td>
+                        {% endif %}
+                    </td>
                     <td>{{ application.degree_program or application.degree_name or "Unknown" }}</td>
                     <td>{{ application.term or "Not specified" }}</td>
                     <td>{{ application.status }}</td>
