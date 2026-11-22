@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 
 from backend.clients import database, reviewer_data
 from frontend.routes import dashboard
+from backend.routes.api import router as api_router
 
 
 @pytest.fixture
@@ -176,3 +177,31 @@ def test_role_dashboard_rejects_other_roles(browser, route, role):
     client, identity = browser
     identity["user_type"] = "applicant"
     assert client.get(route).status_code == 403
+
+
+
+def test_it_user_management_reads_accounts_and_saves_allowed_fields(browser):
+    client, identity = browser
+    identity.update({"id": 90, "user_type": "it_support"})
+    user_id = add_user("avery", "applicant")
+
+    listed = client.get("/it-support/manage-users", params={"q": "avery"})
+    assert listed.status_code == 200
+    assert "Avery Example" in " ".join(listed.text.split())
+    selected = client.get("/it-support/manage-users", params={"user": user_id})
+    assert 'data-user-id="' + str(user_id) + '"' in selected.text
+    assert "it-manage-users.js" in selected.text
+
+    app = FastAPI()
+    app.include_router(api_router)
+    client_api = TestClient(app)
+    changed = client_api.patch(
+        f"/api/users/{user_id}", json={"phone": "5550100000"},
+    )
+    assert changed.status_code == 200, changed.text
+    assert next(u for u in database.users() if u["id"] == user_id)["phone"] == "5550100000"
+
+    restricted = client_api.patch(
+        f"/api/users/{user_id}", json={"user_type": "administrator"},
+    )
+    assert restricted.status_code == 403
