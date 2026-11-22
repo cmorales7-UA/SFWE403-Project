@@ -162,6 +162,7 @@ def test_it_dashboard_uses_registered_accounts_and_not_fictional_auth_states(bro
     assert "support@example.test" in response.text
     assert "Pending Authorization" not in response.text
     assert "Authorized Accounts" not in response.text
+    assert "Other Accounts" in response.text
     assert 'class="summary-value">3</strong>' in response.text
     assert 'class="summary-value">1</strong>' in response.text
     assert 'class="summary-value">2</strong>' in response.text
