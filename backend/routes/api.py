@@ -16,6 +16,7 @@ from backend.models.schemas import (
 from backend.models.application_schemas import (
     ApplicationCreate,
     ApplicationUpdate,
+    GraduateCollegeReviewUpdate,
     PreliminaryReview,
     ApplicantMessage,
     ReferenceRequest,
@@ -186,6 +187,15 @@ def update_application(
         payload,
         actor,
     )
+
+
+@router.put("/applications/{application_id}/graduate-college-review")
+def update_graduate_college_review(
+    application_id: int,
+    payload: GraduateCollegeReviewUpdate,
+    actor=Depends(current_user),
+):
+    return applications.save_graduate_college_review(application_id, payload, actor)
 
 
 # SRS 9.4.2: Preliminary review
