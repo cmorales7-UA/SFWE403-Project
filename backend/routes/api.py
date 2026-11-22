@@ -137,6 +137,11 @@ def update_program(
     )
 
 
+@router.get("/programs/{program_id}/history")
+def program_change_history(program_id: int, actor=Depends(current_user)):
+    return programs.change_history(program_id, actor)
+
+
 # SRS 9.4.1: Application management
 
 
