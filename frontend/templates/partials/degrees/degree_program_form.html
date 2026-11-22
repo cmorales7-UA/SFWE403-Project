@@ -349,10 +349,7 @@
         </div>
 
 
-        <p class="degree-program-section-description">
-            Review or customize the supplemental questions applicants
-            will answer for this degree program.
-        </p>
+        
 
 
         <div class="degree-program-question-group">
@@ -442,9 +439,7 @@
 
         <div class="degree-program-field">
             <label for="custom_questions">Additional Program-Specific Application Questions</label>
-            <p class="degree-program-section-description">
-                Enter one question per line. These questions will be stored with the degree program.
-            </p>
+            <p class="degree-program-section-description">One question per line.</p>
             <textarea id="custom_questions" name="custom_questions" rows="5"
                 placeholder="Enter each unique question on a separate line">{% if selected_degree %}{{ (selected_degree.custom_questions or []) | join('\n') }}{% endif %}</textarea>
         </div>
@@ -499,10 +494,7 @@
         <div class="degree-program-section-heading">
             <h2>Collaborating Degree Advisors</h2>
         </div>
-        <p class="degree-program-section-description">
-            Select the advisors who may help create and maintain this degree program.
-            Authorized advisors can edit program details; changes are recorded in program history.
-        </p>
+        <p class="degree-program-section-description">Selected advisors can edit program details.</p>
         <div class="degree-program-checkbox-group">
             {% for advisor in collaboration_advisors %}
             <label class="degree-program-checkbox">
