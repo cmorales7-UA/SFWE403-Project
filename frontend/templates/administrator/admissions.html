@@ -137,38 +137,56 @@
             <section class="admissions-step">
                 <div class="admissions-step-heading">
                     <span class="admissions-step-number">4</span>
-                    <h3>Process Matriculation <small>SRS 9.5.3 / 9.5.4 / 9.5.5</small></h3>
+                    <h3>Create Admitted Student Record <small>SRS 9.5.5</small></h3>
                 </div>
                 {% if selected.student_record_id %}
-                    <p>Enrollment intent was processed. The student status is
-                        <strong>Intent to Matriculate</strong>.</p>
+                    <p>Student record {{ selected.student_record_id }} was saved in the admitted graduate student database.</p>
                     <p><a class="admissions-link" href="/administrator/admissions/{{ selected.id }}/student-record"
-                          target="_blank" rel="noopener">View official student record</a></p>
-                    {% if selected.registrar_notification_at %}
-                    <p><a class="admissions-link"
-                          href="/administrator/admissions/{{ selected.id }}/registrar-notification"
-                          target="_blank" rel="noopener">View simulated Registrar notification</a>
-                          · Recorded {{ selected.registrar_notification_at }}</p>
-                    {% endif %}
-                {% elif selected.intent and not selected.intent.processed_at and selected.status == "Accepted" %}
-                    <p>Verify the applicant's enrollment intent and choose the applicable tuition classification.
-                        Both the admitted-student record and simulated Registrar notice will be created together.</p>
-                    <form id="process-intent-form">
-                        <label class="admissions-label" for="tuition_classification">
-                            Approved tuition classification
-                        </label>
+                          target="_blank" rel="noopener">View admitted student record</a></p>
+                {% elif selected.notice and selected.notice.decision == "Accepted" and selected.notice.state == "sent" %}
+                    <p>Create the record independently of whether the applicant has notified the
+                        Graduate College of enrollment intent. The application must contain ConOps
+                        personal and education fields plus a verified official transcript.</p>
+                    <form id="create-student-record-form">
+                        <label class="admissions-label" for="tuition_classification">Approved tuition classification</label>
                         <select id="tuition_classification" name="tuition_classification" required>
                             <option value="">Select classification</option>
                             <option value="resident">Arizona Resident</option>
                             <option value="nonresident">Non-Resident</option>
                         </select>
-                        <p class="admissions-hint">Do not infer tuition eligibility from citizenship or legal residence alone.
-                            Unverified or missing student fields will be marked for follow-up.</p>
-                        <button type="submit" class="admissions-button">Process Intent to Matriculate</button>
+                        <p class="admissions-hint">Select the verified classification. Do not infer
+                            eligibility solely from citizenship or mailing address.</p>
+                        <button type="submit" class="admissions-button secondary">Create Student Record</button>
                     </form>
+                {% elif selected.status == "Denied" %}
+                    <p>Student records are not created for rejected applicants.</p>
                 {% else %}
-                    <p>Processing becomes available after an officially accepted applicant
-                        communicates their intent to the Graduate College.</p>
+                    <p>Available after the Graduate College issues a formal acceptance notification.</p>
+                {% endif %}
+            </section>
+
+            <section class="admissions-step">
+                <div class="admissions-step-heading">
+                    <span class="admissions-step-number">5</span>
+                    <h3>Process Matriculation <small>SRS 9.5.3 / 9.5.4</small></h3>
+                </div>
+                {% if selected.intent and selected.intent.processed_at %}
+                    <p>The applicant's status is <strong>Intent to Matriculate</strong>.</p>
+                    {% if selected.registrar_notification_at %}
+                    <p><a class="admissions-link" href="/administrator/admissions/{{ selected.id }}/registrar-notification"
+                          target="_blank" rel="noopener">View simulated Registrar notification</a>
+                          · Recorded {{ selected.registrar_notification_at }}</p>
+                    {% endif %}
+                {% elif selected.intent and selected.status == "Accepted" %}
+                    <p>The applicant notified Graduate College of acceptance.
+                        Processing will update the application status and create a local Registrar simulation
+                        for the specified term. This does not contact the real Registrar.</p>
+                    <button type="button" id="process-intent" class="admissions-button">
+                        Process Intent to Matriculate
+                    </button>
+                {% else %}
+                    <p>Processing becomes available after the accepted applicant notifies the
+                        Graduate College of enrollment intent.</p>
                 {% endif %}
             </section>
             <p id="admissions-feedback" role="status" aria-live="polite"></p>
