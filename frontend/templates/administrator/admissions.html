@@ -10,10 +10,6 @@
 {% endblock %}
 {% block dashboard_heading %}Admissions Processing{% endblock %}
 {% block dashboard_summary %}
-<p class="admissions-intro">
-    Issue official Graduate College decisions, record acceptance of admission,
-    and prepare admitted-student records. Registrar notifications are simulated locally.
-</p>
 {% endblock %}
 {% block dashboard_content %}
 <div class="admissions-grid">
@@ -65,9 +61,7 @@
                     Printing or postal delivery must be completed by staff.</p>
                 {% elif selected.recommendation in ["Recommend", "Deny"] and
                         selected.recommendation_received and selected.status == "In Review" %}
-                <p>The advisor's {{ selected.recommendation }} decision has been received.
-                    The system will email the matching formal decision to {{ selected.email }} and
-                    generate a printable letter.</p>
+                <p>Send the {{ selected.recommendation }} decision to {{ selected.email }}.</p>
                 <button class="admissions-button" type="button" id="send-official-notice">
                     {% if selected.notice and selected.notice.state == "failed" %}
                     Retry official email
@@ -95,8 +89,7 @@
                     <p><strong>{{ "Processed on " ~ selected.intent.processed_at
                         if selected.intent.processed_at else "Awaiting administrative processing" }}</strong></p>
                 {% elif selected.notice and selected.notice.decision == "Accepted" and selected.notice.state == "sent" %}
-                    <p>Waiting for the applicant to submit their acceptance through
-                        the Applicant portal. An accepted decision alone does not confirm intent to matriculate.</p>
+                    <p>Awaiting applicant's acceptance.</p>
                 {% elif selected.status == "Denied" %}
                     <p>Not applicable for rejected applications.</p>
                 {% else %}
@@ -144,9 +137,7 @@
                     <p><a class="admissions-link" href="/administrator/admissions/{{ selected.id }}/student-record"
                           target="_blank" rel="noopener">View admitted student record</a></p>
                 {% elif selected.notice and selected.notice.decision == "Accepted" and selected.notice.state == "sent" %}
-                    <p>Create the record independently of whether the applicant has notified the
-                        Graduate College of enrollment intent. The application must contain ConOps
-                        personal and education fields plus a verified official transcript.</p>
+                    <p>Requires complete applicant information and a verified transcript.</p>
                     <form id="create-student-record-form">
                         <label class="admissions-label" for="tuition_classification">Approved tuition classification</label>
                         <select id="tuition_classification" name="tuition_classification" required>
@@ -178,15 +169,12 @@
                           · Recorded {{ selected.registrar_notification_at }}</p>
                     {% endif %}
                 {% elif selected.intent and selected.status == "Accepted" %}
-                    <p>The applicant notified Graduate College of acceptance.
-                        Processing will update the application status and create a local Registrar simulation
-                        for the specified term. This does not contact the real Registrar.</p>
+                    <p>Processing sets Intent to Matriculate and records a simulated Registrar notice.</p>
                     <button type="button" id="process-intent" class="admissions-button">
                         Process Intent to Matriculate
                     </button>
                 {% else %}
-                    <p>Processing becomes available after the accepted applicant notifies the
-                        Graduate College of enrollment intent.</p>
+                    <p>Awaiting applicant's acceptance.</p>
                 {% endif %}
             </section>
             <p id="admissions-feedback" role="status" aria-live="polite"></p>
