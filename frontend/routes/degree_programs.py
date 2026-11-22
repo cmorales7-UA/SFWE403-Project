@@ -23,6 +23,22 @@ def _current_role(request: Request, role: str):
     return actor
 
 
+def _collaboration_context(actor):
+    # The administrator may invite registered degree advisors to participate.
+    return {
+        "collaboration_advisors": sorted(
+            (
+                user for user in accounts.list_users(actor)
+                if user["user_type"] == "advisor"
+            ),
+            key=lambda user: (
+                (user.get("last_name") or "").casefold(),
+                (user.get("first_name") or "").casefold(),
+            ),
+        ) if actor["user_type"] == "administrator" else [],
+    }
+
+
 def _modify_context(actor, degree_id: int | None):
     # Use existing database-backed program service, not fixtures.
     all_programs = programs.list_programs(actor)
@@ -37,6 +53,11 @@ def _modify_context(actor, degree_id: int | None):
             key=lambda item: item["degree_name"].casefold(),
         ),
         "selected_degree": selected,
+        "change_history": (
+            programs.change_history(degree_id, actor)
+            if selected is not None else []
+        ),
+        **_collaboration_context(actor),
     }
 
 
@@ -46,11 +67,13 @@ def _modify_context(actor, degree_id: int | None):
     name="administrator_create_degree_program",
 )
 async def administrator_create_degree_program(request: Request):
-    if _current_role(request, "administrator") is None:
+    actor = _current_role(request, "administrator")
+    if actor is None:
         return RedirectResponse("/login", status_code=303)
     return templates.TemplateResponse(
         request=request,
         name="administrator/create_degree_program.html",
+        context=_collaboration_context(actor),
         headers={"Cache-Control": "no-store"},
     )
 
