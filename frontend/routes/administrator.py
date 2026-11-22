@@ -2,7 +2,9 @@
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from urllib.parse import urlencode
 
+from backend.clients import database
 from backend.service import accounts, applications
 from frontend.routes.degrees import get_degree_program
 
@@ -34,26 +36,91 @@ def current_administrator(request: Request):
     return user
 
 
-# Manage users
+# Manage users: query the same account service used by /api/users.
 @router.get(
     "/administrator/manage-users",
     response_class=HTMLResponse,
     name="manage_users",
 )
 async def manage_users(request: Request):
+    actor = current_administrator(request)
+    if actor is None:
+        return RedirectResponse("/login", status_code=303)
 
-    search_query = request.query_params.get("q", "")
-    selected_user_type = request.query_params.get("user_type", "")
+    query = request.query_params.get("q", "").strip()
+    selected_user_type = request.query_params.get("user_type", "").strip()
+    selected_id = request.query_params.get("user", "").strip()
+    raw_page = request.query_params.get("page", "1")
+    page = max(int(raw_page), 1) if raw_page.isdigit() else 1
+
+    # Public-safe account records, never stored password/security hashes.
+    all_users = accounts.list_users(actor)
+    matching = []
+    for account in all_users:
+        if selected_user_type and account.get("user_type") != selected_user_type:
+            continue
+
+        searchable = " ".join(str(account.get(field) or "") for field in (
+            "first_name", "last_name", "username", "email", "net_id",
+        )).casefold()
+        if query and query.casefold() not in searchable:
+            continue
+        matching.append(account)
+
+    matching.sort(key=lambda account: (
+        str(account.get("last_name") or "").casefold(),
+        str(account.get("first_name") or "").casefold(),
+        account["id"],
+    ))
+
+    per_page = 12
+    total_pages = max(1, (len(matching) + per_page - 1) // per_page)
+    page = min(page, total_pages)
+    users_page = matching[(page - 1) * per_page:page * per_page]
+
+    # Selecting a user cannot bypass the role check above. A selection is
+    # independent of the search filter so an edited role remains viewable.
+    selected_user = next(
+        (account for account in all_users if str(account["id"]) == selected_id),
+        None,
+    )
+    base_query = urlencode({
+        "q": query,
+        "user_type": selected_user_type,
+        "page": page,
+    })
+
+    def page_url(number):
+        return "/administrator/manage-users?" + urlencode({
+            "q": query,
+            "user_type": selected_user_type,
+            "page": number,
+        })
 
     return templates.TemplateResponse(
         request=request,
         name="administrator/manage_users.html",
         context={
-            "users": [],
-            "selected_user": None,
-            "search_query": search_query,
+            "users": users_page,
+            "selected_user": selected_user,
+            "search_query": query,
             "selected_user_type": selected_user_type,
+            "page": page,
+            "total_pages": total_pages,
+            "total_results": len(matching),
+            "base_query": base_query,
+            "previous_url": page_url(page - 1) if page > 1 else None,
+            "next_url": page_url(page + 1) if page < total_pages else None,
+            "programs": sorted(
+                database.programs(),
+                key=lambda program: program["degree_name"].casefold(),
+            ),
+            "save_success": (
+                selected_user is not None
+                and request.query_params.get("saved") == "1"
+            ),
         },
+        headers={"Cache-Control": "no-store"},
     )
 
 
