@@ -2,7 +2,7 @@
 {% set selected_degree = selected_degree | default(none) %}
 {% set degree_programs = degree_programs | default([]) %}
 
-<form class="degree-program-form" id="degree-program-form">
+<form class="degree-program-form" id="degree-program-form" data-mode="{{ form_mode }}" data-role="{{ request.url.path.split('/')[1] }}" {% if selected_degree %}data-program-id="{{ selected_degree.id }}"{% endif %}>
 
     {% if form_mode == "modify" %}
 
@@ -452,6 +452,8 @@
     </section>
 
 
+    <p id="degree-program-feedback" role="status" aria-live="polite"></p>
+
     <!-- Form actions -->
     <div class="degree-program-actions">
 
@@ -462,3 +464,5 @@
     </div>
 
 </form>
+
+<script src="/static/js/pages/degrees/degree-program-management.js" defer></script>
