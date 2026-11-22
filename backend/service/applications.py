@@ -50,6 +50,16 @@ def _public(application, actor):
 
     if actor["user_type"] == "applicant":
         result.pop("review", None)
+    elif actor["user_type"] == "advisor":
+        # Graduate College notes are internal to Administrator review.
+        review = dict(result.get("review") or {})
+        for key in (
+            "graduate_college_notes",
+            "graduate_college_updated_by",
+            "graduate_college_updated_at",
+        ):
+            review.pop(key, None)
+        result["review"] = review
 
     return result
 
@@ -151,6 +161,25 @@ def update_application(application_id, payload, actor):
 
     database.save_application(application, application_id)
 
+    return get_application(application_id, actor)
+
+
+def save_graduate_college_review(application_id, payload, actor):
+    """Store Graduate College review notes without editing the Advisor's decision."""
+    require_role(actor, {"administrator"})
+    application = database.get_application(application_id)
+    if application is None:
+        raise HTTPException(404, "Application not found")
+    if application["status"] not in REVIEWABLE_STATUSES:
+        raise HTTPException(409, "This application is no longer open for review")
+
+    review = dict(application.get("review") or {})
+    review["graduate_college_notes"] = payload.notes
+    review["graduate_college_updated_by"] = actor["id"]
+    review["graduate_college_updated_at"] = _now()
+    application["review"] = review
+    application["last_updated"] = _now()
+    database.save_application(application, application_id)
     return get_application(application_id, actor)
 
 
