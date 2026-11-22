@@ -119,6 +119,10 @@ My Applications
 
         <div class="application-row-action">
 
+            {% if application.status in ["Accepted", "Denied", "Intent to Matriculate"] %}
+            <a href="/applicant/admission-offer?application_id={{ application.id }}"
+               aria-label="View admission decision for {{ application.degree_name }}">Admission Decision</a>
+            {% else %}
             <a href="/applicant/modify-application?application_id={{ application.id }}">
                 {% if application.status == "In Process" %}
                 Continue
@@ -126,6 +130,7 @@ My Applications
                 Open Application
                 {% endif %}
             </a>
+            {% endif %}
 
         </div>
 
