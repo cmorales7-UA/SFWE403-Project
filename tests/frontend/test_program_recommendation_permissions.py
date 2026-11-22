@@ -106,6 +106,10 @@ def test_administrator_can_view_but_not_edit_advisor_recommendation(setup_permis
     assert "saved decision." in page.text
     assert "Deny" in page.text
     assert "Open Admissions Processing" in page.text
+    assert 'id="graduate-college-review-form"' in page.text
+    assert 'name="notes"' in page.text
+    assert "Save Notes" in page.text
+    assert f"/administrator/student-applications/{app_id}/modify" in page.text
     assert 'id="recommendation"' not in page.text
     assert 'name="recommendation"' not in page.text
     assert "Save Review" not in page.text
@@ -130,3 +134,46 @@ def test_advisor_cannot_edit_unassigned_program(setup_permissions):
     assert response.status_code == 403
     page = client.get(f"/advisor/application-review?application={app_id}")
     assert page.status_code == 403
+
+
+def test_admin_review_notes_persist_without_changing_advisor_decision(setup_permissions):
+    client, people, acting, app_id = setup_permissions
+    advisor_url = f"/api/graduate-college/applications/{app_id}/decision"
+    saved = client.put(
+        advisor_url,
+        json={"decision": "Recommend", "rationale": "Advisor approved."},
+    )
+    assert saved.status_code == 200
+
+    acting["user_id"] = people["alex.morgan"]
+    endpoint = f"/api/applications/{app_id}/graduate-college-review"
+    result = client.put(endpoint, json={"notes": "Reviewed supporting documents."})
+    assert result.status_code == 200, result.text
+    assert result.json()["review"]["graduate_college_notes"] == "Reviewed supporting documents."
+    assert result.json()["review"]["review_comments"] == "Reviewed by the program advisor."
+    assert result.json()["review"]["graduate_college_updated_by"] == people["alex.morgan"]
+
+    page = client.get(f"/administrator/application-review?application={app_id}")
+    assert page.status_code == 200
+    assert "Reviewed supporting documents." in page.text
+
+    result = client.put(endpoint, json={"notes": "Documents verified."})
+    assert result.status_code == 200
+    assert result.json()["review"]["graduate_college_notes"] == "Documents verified."
+    assert client.get(f"/api/applications/{app_id}").json()["review"]["graduate_college_notes"] == "Documents verified."
+
+    acting["user_id"] = people["taylor.bennett"]
+    assert client.put(endpoint, json={"notes": "Unauthorized"}).status_code == 403
+    advisor_app = client.get(f"/api/applications/{app_id}")
+    assert advisor_app.status_code == 200
+    assert "graduate_college_notes" not in advisor_app.json()["review"]
+    current_recommendation = client.get(f"/api/graduate-college/applications/{app_id}")
+    assert current_recommendation.json()["decision"]["decision"] == "Recommend"
+    assert current_recommendation.json()["decision"]["rationale"] == "Advisor approved."
+
+    acting["user_id"] = people["alex.morgan"]
+    record = database.get_application(app_id)
+    record["status"] = "Accepted"
+    database.save_application(record, app_id)
+    assert client.put(endpoint, json={"notes": "Late edit"}).status_code == 409
+    assert database.get_application(app_id)["review"]["graduate_college_notes"] == "Documents verified."
