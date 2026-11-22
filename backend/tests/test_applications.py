@@ -44,7 +44,7 @@ def program(client):
         "degree_college": "Engineering", "degree_description": "Program",
         "campus_offered": ["main"], "terms_offered": ["Fall 2027"],
         "degree_requirements": "Bachelor degree", "application_deadline": "2027-01-15",
-        "application_fee": "90.00", "program_contact": "grad@example.com"
+        "application_fee": "90.00", "resident_cost_per_unit": "650.00", "nonresident_cost_per_unit": "1500.00", "program_contact": "grad@example.com"
     }
     return client.post("/api/programs", json=body).json()["id"]
 
