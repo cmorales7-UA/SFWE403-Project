@@ -1,6 +1,6 @@
 """End-to-end page/API integration for user management and reports.
 
-The tests use isolated temporary SQLite files. Nothing modifies the demo DB.
+The tests use isolated temporary SQLite files. Nothing modifies the main application database.
 """
 import csv
 import io
