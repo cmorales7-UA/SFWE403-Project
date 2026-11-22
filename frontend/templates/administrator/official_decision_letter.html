@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Graduate Admission Decision Letter | UA-GDAS</title>
+<style>
+@page { size: letter; margin: 0.8in; }
+body { margin: 0 auto; background: #eef1f5; font-family: Georgia, serif; color: #15263d; }
+.letter-tools { background:#0c234b; color:white; padding:12px 20px; display:flex; gap:16px; align-items:center; justify-content:space-between; font-family:Arial,sans-serif; }
+.letter-tools button { background:#ab0520; color:white; border:0; padding:10px 18px; border-radius:4px; cursor:pointer; }
+.letter { background:white; max-width:8.5in; min-height:10in; box-sizing:border-box; padding:0.85in; margin:24px auto; box-shadow:0 2px 12px #bfc7d1; line-height:1.58; }
+.letter-heading { font-family:Arial,sans-serif; color:#0c234b; font-weight:700; border-bottom:4px solid #ab0520; padding-bottom:16px; margin-bottom:24px; }
+.letter-body { white-space:pre-wrap; font-size:11pt; overflow-wrap:break-word; }
+.letter-footer { font:9pt Arial,sans-serif; color:#56657b; border-top:1px solid #ddd; margin-top:42px; padding-top:12px; }
+@media print { body { background:white; } .letter-tools { display:none; } .letter { margin:0; padding:0; box-shadow:none; min-height:0; max-width:none; } }
+</style>
+</head>
+<body>
+<div class="letter-tools">
+    <span>Prepared for mailing · {{ notice.decision }} · {{ notice.sent_at }}</span>
+    <button type="button" onclick="window.print()">Print Letter</button>
+</div>
+<article class="letter">
+    <div class="letter-heading">THE UNIVERSITY OF ARIZONA<br>GRADUATE COLLEGE</div>
+    <div class="letter-body">{{ notice.letter_body }}</div>
+    <div class="letter-footer">UA-GDAS generated correspondence for course-project testing.
+        Printing a copy does not confirm that the letter has been physically mailed.</div>
+</article>
+</body>
+</html>
