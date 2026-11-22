@@ -35,7 +35,6 @@ Review Applications
 
         <div class="review-panel-heading">
             <h2>Applications</h2>
-            <p>Select an application to review.</p>
         </div>
 
         <div class="review-results">
@@ -118,7 +117,6 @@ Review Applications
 
             <div class="review-section-heading">
                 <h3>Applicant Information</h3>
-                <p>Review the information provided in the application.</p>
             </div>
 
             <details class="review-detail-section" open>
@@ -240,11 +238,6 @@ Review Applications
         <!-- SRS 9.4.5: advisor-only program recommendation -->
         <section class="review-action-section">
             <h3>Final Program Recommendation</h3>
-            <p>
-                Once the preliminary review and committee evaluations are complete,
-                submit the degree program's Recommend, Deny, or Defer decision
-                and notify the Graduate College Administrator.
-            </p>
             {% if selected_application.status == "In Review" %}
             <a
                 href="/advisor/graduate-college?application={{ selected_application.id }}"
@@ -266,11 +259,6 @@ Review Applications
         <section class="review-action-section">
 
             <h3>Request Additional Information</h3>
-
-            <p>
-                Notify the applicant about missing information
-                identified during the preliminary review.
-            </p>
 
             <button
                 type="button"
