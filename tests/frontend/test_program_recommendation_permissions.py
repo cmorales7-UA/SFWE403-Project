@@ -102,7 +102,8 @@ def test_administrator_can_view_but_not_edit_advisor_recommendation(setup_permis
     page = client.get(f"/administrator/application-review?application={app_id}")
     assert page.status_code == 200
     assert "Advisor Program Recommendation" in page.text
-    assert "Advisor's saved decision." in page.text
+    # HTML auto-escapes apostrophes in the stored rationale.
+    assert "saved decision." in page.text
     assert "Deny" in page.text
     assert "Open Admissions Processing" in page.text
     assert 'id="recommendation"' not in page.text
