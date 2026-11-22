@@ -81,7 +81,12 @@ def get_application_filter_options(actor, available):
         "degree_options": sorted(degree_options, key=str.casefold),
         "term_options": sorted(term_options, key=str.casefold),
         "status_options": distinct(lambda record: record.get("status")),
-        # Keep filter choices visible even before any applicants provide gender.\n        "gender_options": sorted(\n            set(("Male", "Female", "Non-binary", "Other", "Prefer not to say"))\n            | set(distinct(_application_gender)),\n            key=str.casefold,\n        ),
+        # Keep filter choices visible even before any applicants provide gender.
+        "gender_options": sorted(
+            set(("Male", "Female", "Non-binary", "Other", "Prefer not to say"))
+            | set(distinct(_application_gender)),
+            key=str.casefold,
+        ),
         "campus_options": sorted(
             {value.title() for value in distinct(lambda record: record.get("campus"))},
             key=str.casefold,
