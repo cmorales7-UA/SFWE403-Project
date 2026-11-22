@@ -1,0 +1,182 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Admissions Processing | UA-GDAS{% endblock %}
+{% block page_css %}
+<link rel="stylesheet" href="/static/css/pages/admin/admissions.css">
+{% endblock %}
+{% block sidebar_role %}Administrator{% endblock %}
+{% block sidebar_navigation %}
+{% set admin_active_page = "admissions" %}
+{% include "partials/navigation/administrator_sidebar.html" %}
+{% endblock %}
+{% block dashboard_heading %}Admissions Processing{% endblock %}
+{% block dashboard_summary %}
+<p class="admissions-intro">
+    Issue official Graduate College decisions, record acceptance of admission,
+    and prepare admitted-student records. Registrar notifications are simulated locally.
+</p>
+{% endblock %}
+{% block dashboard_content %}
+<div class="admissions-grid">
+    <section class="admissions-panel">
+        <header class="admissions-panel-title">
+            <h2>Graduate Applications</h2>
+            <p>{{ cases|length }} applications in the database</p>
+        </header>
+        <div class="admissions-case-list">
+            {% for item in cases %}
+            <a class="admissions-case {% if selected and selected.id == item.id %}selected{% endif %}"
+               href="/administrator/admissions?application={{ item.id }}">
+                <strong>{{ item.applicant_name }}</strong>
+                <span>{{ item.degree_program }} · {{ item.term }}</span>
+                <span class="admissions-case-status">{{ item.status }}</span>
+            </a>
+            {% else %}
+            <div class="admissions-empty">No applications exist in the database.</div>
+            {% endfor %}
+        </div>
+    </section>
+    <section class="admissions-panel admissions-details">
+        {% if selected %}
+        <header class="admissions-panel-title">
+            <span class="admissions-eyebrow">Graduate College Processing</span>
+            <h2>{{ selected.applicant_name }}</h2>
+            <p>{{ selected.degree_program }} · {{ selected.campus|title }} · {{ selected.term }}</p>
+        </header>
+        <div class="admissions-detail-body" data-application-id="{{ selected.id }}">
+            <div class="admissions-facts">
+                <div><span>Application status</span><strong>{{ selected.status }}</strong></div>
+                <div><span>Advisor recommendation</span><strong>{{ selected.recommendation or "Not received" }}</strong></div>
+                <div><span>Graduate College notified</span><strong>{{ "Yes" if selected.recommendation_received else "No" }}</strong></div>
+                <div><span>Official notification</span><strong>{{ selected.notice.state|title if selected.notice else "Not issued" }}</strong></div>
+            </div>
+
+            <section class="admissions-step">
+                <div class="admissions-step-heading">
+                    <span class="admissions-step-number">1</span>
+                    <h3>Issue Official Admission Decision <small>SRS 9.5.2</small></h3>
+                </div>
+                {% if selected.notice and selected.notice.state == "sent" %}
+                <p>An official {{ selected.notice.decision|lower }} email was accepted by the configured
+                    SMTP server on {{ selected.notice.sent_at }}.</p>
+                <p><a class="admissions-link" target="_blank" rel="noopener"
+                      href="/administrator/admissions/{{ selected.id }}/letter">
+                      Open printable decision letter</a></p>
+                <p class="admissions-hint">Print this document and prepare the hard copy for mailing.
+                    Printing or postal delivery must be completed by staff.</p>
+                {% elif selected.recommendation in ["Recommend", "Deny"] and
+                        selected.recommendation_received and selected.status == "In Review" %}
+                <p>The advisor's {{ selected.recommendation }} decision has been received.
+                    The system will email the matching formal decision to {{ selected.email }} and
+                    generate a printable letter.</p>
+                <button class="admissions-button" type="button" id="send-official-notice">
+                    {% if selected.notice and selected.notice.state == "failed" %}
+                    Retry official email
+                    {% else %}Send official decision email{% endif %}
+                </button>
+                {% elif selected.recommendation == "Defer" %}
+                <p>Decision deferred. A final Recommend or Deny from the advisor is required before a formal notice.</p>
+                {% elif selected.status in ["Accepted", "Denied"] %}
+                <p>This application is already finalized, but no new verified notice exists in this workflow.
+                   Do not send a second decision without reviewing the previous records.</p>
+                {% else %}
+                <p>The advisor must finish their recommendation and send it to the
+                    Graduate College Administrator before a formal notice can be issued.</p>
+                {% endif %}
+            </section>
+
+            <section class="admissions-step">
+                <div class="admissions-step-heading">
+                    <span class="admissions-step-number">2</span>
+                    <h3>Receive Applicant's Acceptance <small>SRS 9.5.3</small></h3>
+                </div>
+                {% if selected.intent %}
+                    <p>Applicant notified the Graduate College via
+                        {{ selected.intent.channel|replace("_", " ") }} on {{ selected.intent.received_at }}.</p>
+                    <p><strong>{{ "Processed on " ~ selected.intent.processed_at
+                        if selected.intent.processed_at else "Awaiting administrative processing" }}</strong></p>
+                {% elif selected.notice and selected.notice.decision == "Accepted" and selected.notice.state == "sent" %}
+                    <p>Waiting for the applicant to submit their acceptance through
+                        the Applicant portal. An accepted decision alone does not confirm intent to matriculate.</p>
+                {% elif selected.status == "Denied" %}
+                    <p>Not applicable for rejected applications.</p>
+                {% else %}
+                    <p>No applicant acceptance has been received.</p>
+                {% endif %}
+            </section>
+
+            {% if selected.notice and selected.notice.decision == "Accepted" and selected.notice.state == "sent" %}
+            <section class="admissions-step">
+                <div class="admissions-step-heading">
+                    <span class="admissions-step-number">3</span>
+                    <h3>Official Transcript <small>SRS 9.5.5</small></h3>
+                </div>
+                {% if selected.transcript %}
+                    <p>Verified transcript: <strong>{{ selected.transcript.filename }}</strong></p>
+                    <p>Received {{ selected.transcript.received_at }}.
+                        <a class="admissions-link" href="/api/admissions/{{ selected.id }}/official-transcript">
+                        Download private copy</a></p>
+                {% else %}
+                    <p>No verified official transcript has been stored for this application.</p>
+                {% endif %}
+                {% if not selected.student_record_id %}
+                <form id="official-transcript-form" enctype="multipart/form-data">
+                    <label class="admissions-label" for="official_transcript">Upload verified official transcript (PDF, up to 10 MB)</label>
+                    <input id="official_transcript" name="official_transcript" type="file" accept="application/pdf,.pdf" required>
+                    <label class="admissions-check">
+                        <input name="verified" type="checkbox" value="true" required>
+                        I confirm this was received through an approved official transcript channel.
+                    </label>
+                    <button class="admissions-button secondary" type="submit">
+                        Save verified transcript
+                    </button>
+                </form>
+                {% endif %}
+            </section>
+            {% endif %}
+
+            <section class="admissions-step">
+                <div class="admissions-step-heading">
+                    <span class="admissions-step-number">4</span>
+                    <h3>Process Matriculation <small>SRS 9.5.3 / 9.5.4 / 9.5.5</small></h3>
+                </div>
+                {% if selected.student_record_id %}
+                    <p>Enrollment intent was processed. The student status is
+                        <strong>Intent to Matriculate</strong>.</p>
+                    <p><a class="admissions-link" href="/administrator/admissions/{{ selected.id }}/student-record"
+                          target="_blank" rel="noopener">View official student record</a></p>
+                    {% if selected.registrar_notification_at %}
+                    <p><a class="admissions-link"
+                          href="/administrator/admissions/{{ selected.id }}/registrar-notification"
+                          target="_blank" rel="noopener">View simulated Registrar notification</a>
+                          · Recorded {{ selected.registrar_notification_at }}</p>
+                    {% endif %}
+                {% elif selected.intent and not selected.intent.processed_at and selected.status == "Accepted" %}
+                    <p>Verify the applicant's enrollment intent and choose the applicable tuition classification.
+                        Both the admitted-student record and simulated Registrar notice will be created together.</p>
+                    <form id="process-intent-form">
+                        <label class="admissions-label" for="tuition_classification">
+                            Approved tuition classification
+                        </label>
+                        <select id="tuition_classification" name="tuition_classification" required>
+                            <option value="">Select classification</option>
+                            <option value="resident">Arizona Resident</option>
+                            <option value="nonresident">Non-Resident</option>
+                        </select>
+                        <p class="admissions-hint">Do not infer tuition eligibility from citizenship or legal residence alone.
+                            Unverified or missing student fields will be marked for follow-up.</p>
+                        <button type="submit" class="admissions-button">Process Intent to Matriculate</button>
+                    </form>
+                {% else %}
+                    <p>Processing becomes available after an officially accepted applicant
+                        communicates their intent to the Graduate College.</p>
+                {% endif %}
+            </section>
+            <p id="admissions-feedback" role="status" aria-live="polite"></p>
+        </div>
+        {% else %}
+        <div class="admissions-empty admissions-select">Select an application to review its Graduate College processing status.</div>
+        {% endif %}
+    </section>
+</div>
+<script src="/static/js/pages/admin/admissions.js" defer></script>
+{% endblock %}
