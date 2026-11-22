@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "sponsor_question", "ta_ra_question", "funding_question",
       "english_test_question", "english_score_question",
       "other_requirements", "program_contact",
+      "resident_cost_per_unit", "nonresident_cost_per_unit",
     ];
     const payload = {};
     for (const field of fields) {
@@ -69,6 +70,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     payload.campus_offered = campus;
     payload.terms_offered = terms;
+    payload.custom_questions = String(data.get("custom_questions") ?? "")
+      .split(/\r?\n/)
+      .map(question => question.trim())
+      .filter(Boolean);
+    if (role === "administrator") {
+      payload.collaborating_advisor_ids = data.getAll("collaborating_advisor_ids")
+        .map(Number);
+    }
+
+    for (const field of ["resident_cost_per_unit", "nonresident_cost_per_unit"]) {
+      const number = Number(payload[field]);
+      if (!payload[field] || !Number.isFinite(number) || number < 0) {
+        message("Provide valid, non-negative tuition rates for both residency groups.", true);
+        return;
+      }
+    }
 
     const id = Number(form.dataset.programId);
     const updating = mode === "modify";
