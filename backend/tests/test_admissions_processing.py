@@ -334,6 +334,54 @@ def test_admin_no_final_recommendation_and_invalid_transcripts(environment):
     assert not_verified.status_code == 422
 
 
+
+def test_srs_955_transcript_requires_delivered_official_acceptance(environment):
+    client, identity, users, application_id, _ = environment
+    pdf = b"%PDF-1.4\\n1 0 obj <<>> endobj\\n%%EOF"
+
+    # An Administrator cannot upload while an offer is still under review.
+    before = client.post(
+        f"/api/admissions/{application_id}/official-transcript",
+        files={"official_transcript": ("test.pdf", pdf, "application/pdf")},
+        data={"verified": "true"},
+    )
+    assert before.status_code == 409
+
+    # Manually changing status does not count as delivering a formal notice.
+    application = database.get_application(application_id)
+    application["status"] = "Accepted"
+    database.save_application(application, application_id)
+    no_notice = client.post(
+        f"/api/admissions/{application_id}/official-transcript",
+        files={"official_transcript": ("test.pdf", pdf, "application/pdf")},
+        data={"verified": "true"},
+    )
+    assert no_notice.status_code == 409
+    assert "official acceptance notification" in no_notice.json()["detail"]
+
+    with database.connect() as db:
+        admissions._make_tables(db)
+        assert db.execute(
+            "SELECT 1 FROM official_transcripts WHERE application_id=?",
+            (application_id,),
+        ).fetchone() is None
+
+
+def test_srs_955_missing_record_data_has_clear_user_facing_error(environment):
+    client, identity, users, application_id, _ = environment
+    deliver_advisor_recommendation(client, identity, users, application_id, "Recommend")
+    assert client.post(
+        f"/api/admissions/{application_id}/official-notice"
+    ).status_code == 200
+
+    response = client.post(
+        f"/api/admissions/{application_id}/student-record",
+        json={"tuition_classification": "resident"},
+    )
+    assert response.status_code == 422
+    assert "missing student record information" in response.json()["detail"]
+    assert "ConOps" not in response.json()["detail"]
+
 def test_conops_requires_complete_education_history_before_student_record(environment):
     client, identity, users, application_id, _ = environment
     deliver_advisor_recommendation(client, identity, users, application_id, "Recommend")
