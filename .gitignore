@@ -1,28 +1,28 @@
-# Python cache files
+# Python caches and test output
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
 
 # Virtual environments
 .venv/
 venv/
 
-# Environment files
+# Local configuration
 .env
-
-# VS Code settings
+.env.*
+!.env.example
 .vscode/
 
-# Operating system files
+# Local databases and private uploaded documents
+backend/data/
+*.sqlite3
+
+# Operating system files and debug logs
 .DS_Store
 Thumbs.db
-
-# Python
-__pycache__/
-*.pyc
-.venv/
-
-# Environment
-.env
-
-# Local databases
-backend/data/*.sqlite3
+*.log
