@@ -453,7 +453,7 @@ def create_student_record(application_id, actor, classification):
         if snapshot["missing_verification_fields"]:
             raise HTTPException(
                 422,
-                "Complete missing ConOps record requirements before creating a student record: "
+                "Complete missing student record information before creating a student record: "
                 + ", ".join(snapshot["missing_verification_fields"]),
             )
         timestamp = _now()
@@ -572,6 +572,11 @@ def upload_transcript(application_id, actor, filename, raw, confirmed):
         raise HTTPException(409, "Official transcript processing requires an accepted applicant")
     with database.connect() as db:
         _make_tables(db)
+        notice = _get_row(db, "official_admission_notices", application_id)
+        if notice is None or notice["state"] != "sent" or notice["decision"] != "Accepted":
+            raise HTTPException(
+                409, "An official acceptance notification must be sent before uploading a transcript"
+            )
         if _get_row(db, "admitted_graduate_students", application_id):
             raise HTTPException(
                 409, "A student record already exists. Transcript amendments require a separate approved workflow"
