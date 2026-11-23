@@ -2,7 +2,8 @@
 
 from typing import Literal
 
-from fastapi import APIRouter, Depends, Request, Response
+from fastapi import APIRouter, Depends, File, Form, Request, Response, UploadFile
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, ConfigDict, Field
 
 from backend.models.schemas import (
@@ -15,11 +16,13 @@ from backend.models.schemas import (
 from backend.models.application_schemas import (
     ApplicationCreate,
     ApplicationUpdate,
+    GraduateCollegeReviewUpdate,
     PreliminaryReview,
     ApplicantMessage,
     ReferenceRequest,
 )
 
+from backend.models.admissions_schemas import ProcessAdmissionIntent
 from backend.models.review_schemas import (
     ReviewAssignmentCreate,
     ReviewNotificationSend,
@@ -32,6 +35,7 @@ from backend.service import (
     review_committee,
     reviewer_actions,
     review_monitor,
+    admissions,
 )
 
 router = APIRouter(prefix="/api")
@@ -137,6 +141,11 @@ def update_program(
     )
 
 
+@router.get("/programs/{program_id}/history")
+def program_change_history(program_id: int, actor=Depends(current_user)):
+    return programs.change_history(program_id, actor)
+
+
 # SRS 9.4.1: Application management
 
 
@@ -178,6 +187,15 @@ def update_application(
         payload,
         actor,
     )
+
+
+@router.put("/applications/{application_id}/graduate-college-review")
+def update_graduate_college_review(
+    application_id: int,
+    payload: GraduateCollegeReviewUpdate,
+    actor=Depends(current_user),
+):
+    return applications.save_graduate_college_review(application_id, payload, actor)
 
 
 # SRS 9.4.2: Preliminary review
@@ -469,4 +487,100 @@ def send_review_monitor_reminder(
     return review_monitor.send_reminder(
         assignment_id,
         actor,
+    )
+
+
+# SRS 9.5.2, 9.5.3, 9.5.4, 9.5.5: Graduate College admissions
+
+@router.get("/admissions")
+def list_admissions(actor=Depends(current_user)):
+    return admissions.list_cases(actor)
+
+
+@router.get("/admissions/{application_id}")
+def get_admissions_case(application_id: int, actor=Depends(current_user)):
+    return admissions.summary(application_id, actor)
+
+
+@router.post("/admissions/{application_id}/official-notice")
+def send_official_admission_notice(
+    application_id: int,
+    actor=Depends(current_user),
+):
+    return admissions.issue_official_notice(application_id, actor)
+
+
+@router.post("/admissions/{application_id}/intent", status_code=201)
+def submit_admission_intent(
+    application_id: int,
+    actor=Depends(current_user),
+):
+    return admissions.notify_acceptance(application_id, actor)
+
+
+@router.post("/admissions/{application_id}/process-intent")
+def process_admission_intent(
+    application_id: int,
+    actor=Depends(current_user),
+):
+    return admissions.process_acceptance(application_id, actor)
+
+
+@router.post("/admissions/{application_id}/student-record", status_code=201)
+def create_admitted_student_record(
+    application_id: int,
+    payload: ProcessAdmissionIntent,
+    actor=Depends(current_user),
+):
+    return admissions.create_student_record(
+        application_id, actor, payload.tuition_classification
+    )
+
+
+@router.get("/admissions/{application_id}/student-record")
+def get_admitted_student_record(
+    application_id: int,
+    actor=Depends(current_user),
+):
+    return admissions.get_student_record(application_id, actor)
+
+
+@router.get("/admissions/{application_id}/registrar-simulation")
+def get_registrar_simulation(
+    application_id: int,
+    actor=Depends(current_user),
+):
+    return admissions.get_registrar_simulation(application_id, actor)
+
+
+@router.post("/admissions/{application_id}/official-transcript")
+async def save_official_transcript(
+    application_id: int,
+    official_transcript: UploadFile = File(...),
+    verified: bool = Form(...),
+    actor=Depends(current_user),
+):
+    if official_transcript.filename is None:
+        from fastapi import HTTPException
+        raise HTTPException(422, "Filename is required")
+    try:
+        raw = await official_transcript.read(admissions.MAX_TRANSCRIPT_BYTES + 1)
+    finally:
+        await official_transcript.close()
+    return admissions.upload_transcript(
+        application_id, actor, official_transcript.filename, raw, verified
+    )
+
+
+@router.get("/admissions/{application_id}/official-transcript")
+def download_official_transcript(
+    application_id: int,
+    actor=Depends(current_user),
+):
+    path, filename = admissions.download_transcript(application_id, actor)
+    return FileResponse(
+        path,
+        filename=filename,
+        media_type="application/pdf",
+        headers={"Cache-Control": "no-store"},
     )

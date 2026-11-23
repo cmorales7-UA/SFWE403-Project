@@ -1,3 +1,4 @@
+from hashlib import sha256
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -39,6 +40,23 @@ def get_degree_programs():
                 "other_requirements", ""
             ),
             "contact_information": program["program_contact"],
+            "resident_cost_per_unit": program.get("resident_cost_per_unit"),
+            "nonresident_cost_per_unit": program.get("nonresident_cost_per_unit"),
+            "custom_questions": program.get("custom_questions") or [],
+            "sponsor_question": program.get("sponsor_question", ""),
+            "ta_ra_question": program.get("ta_ra_question", ""),
+            "funding_question": program.get("funding_question", ""),
+            "application_questions": [
+                {
+                    # The question text determines a stable answer key even
+                    # when its order changes within the degree program.
+                    "id": "program_question_" + sha256(
+                        question.strip().casefold().encode("utf-8")
+                    ).hexdigest()[:12],
+                    "text": question,
+                }
+                for question in (program.get("custom_questions") or [])
+            ],
         })
 
     return degree_programs

@@ -1,8 +1,20 @@
+import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from frontend.routes import applicant, degrees
 from tests.fixtures.degree_programs import TEST_DEGREE_PROGRAMS
+
+
+@pytest.fixture(autouse=True)
+def authenticated_applicant(monkeypatch):
+    # The page requires an authenticated applicant. Isolated template tests
+    # bypass login and supply that identity explicitly.
+    monkeypatch.setattr(
+        applicant.accounts,
+        "session_user",
+        lambda token: {"id": 1, "user_type": "applicant"},
+    )
 
 
 def create_test_client():
@@ -130,6 +142,6 @@ def test_application_without_degree_selection(monkeypatch):
     assert response.status_code == 200
     assert (
         "Select a graduate degree program before starting an application."
-        in response.text
+        in " ".join(response.text.split())
     )
     assert "Browse Graduate Degrees" in response.text

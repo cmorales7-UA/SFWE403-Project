@@ -40,9 +40,7 @@ Manage Users
 
             <h2>Find Users</h2>
 
-            <p>
-                Search for an existing UA-GDAS user account.
-            </p>
+            
 
         </div>
 
@@ -158,7 +156,7 @@ Manage Users
                 {% if users %}
 
                 <span class="user-results-count">
-                    {{ users|length }} shown
+                    {{ users|length }} of {{ total_results }} shown
                 </span>
 
                 {% endif %}
@@ -173,7 +171,7 @@ Manage Users
                 {% for user in users %}
 
                 <a
-                    href="/administrator/manage-users?user={{ user.id }}"
+                    href="/administrator/manage-users?{{ base_query }}&user={{ user.id }}"
                     class="user-list-item"
                 >
 
@@ -196,22 +194,23 @@ Manage Users
             </div>
 
 
-            <!-- Pagination -->
+            {% if total_pages > 1 %}
             <div class="user-pagination">
+                {% if previous_url %}
+                <a href="{{ previous_url }}" class="pagination-control">Previous</a>
+                {% else %}
+                <span class="pagination-control" aria-disabled="true">Previous</span>
+                {% endif %}
 
-                <a href="#" class="pagination-control">
-                    Previous
-                </a>
+                <span class="pagination-page">Page {{ page }} of {{ total_pages }}</span>
 
-                <span class="pagination-page">
-                    Page 1
-                </span>
-
-                <a href="#" class="pagination-control">
-                    Next
-                </a>
-
+                {% if next_url %}
+                <a href="{{ next_url }}" class="pagination-control">Next</a>
+                {% else %}
+                <span class="pagination-control" aria-disabled="true">Next</span>
+                {% endif %}
             </div>
+            {% endif %}
 
 
             {% else %}
@@ -245,7 +244,7 @@ Manage Users
                 </div>
 
                 <p>
-                    Search to find existing user accounts.
+                    No user accounts match your search.
                 </p>
 
             </div>
@@ -289,7 +288,7 @@ Manage Users
         </div>
 
 
-        <form class="user-edit-form">
+        <form class="user-edit-form" data-user-id="{{ selected_user.id }}">
 
             <div class="user-form-grid">
 
@@ -327,27 +326,27 @@ Manage Users
                             Select User Type
                         </option>
 
-                        <option value="applicant">
+                        <option value="applicant" {% if selected_user.user_type == "applicant" %}selected{% endif %}>
                             Graduate Student Applicant
                         </option>
 
-                        <option value="administrator">
+                        <option value="administrator" {% if selected_user.user_type == "administrator" %}selected{% endif %}>
                             Graduate College Administrator / Staff
                         </option>
 
-                        <option value="advisor">
+                        <option value="advisor" {% if selected_user.user_type == "advisor" %}selected{% endif %}>
                             Graduate Degree Advisor / Staff
                         </option>
 
-                        <option value="reviewer">
+                        <option value="reviewer" {% if selected_user.user_type == "reviewer" %}selected{% endif %}>
                             Applicant Reviewer
                         </option>
 
-                        <option value="reference">
+                        <option value="reference" {% if selected_user.user_type == "reference" %}selected{% endif %}>
                             Applicant Reference
                         </option>
 
-                        <option value="it_support">
+                        <option value="it_support" {% if selected_user.user_type == "it_support" %}selected{% endif %}>
                             IT Support Staff
                         </option>
 
@@ -447,6 +446,21 @@ Manage Users
             </div>
 
 
+            {% if programs %}
+            <div class="user-password-section" id="user-program-assignments"
+                {% if selected_user.user_type not in ["advisor", "reviewer"] %}hidden{% endif %}>
+                <h3>Assigned Degree Programs</h3>
+                <p>Select the programs this advisor or reviewer can access.</p>
+                {% for program in programs %}
+                <label class="user-field" style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
+                    <input type="checkbox" name="assigned_program_ids" value="{{ program.id }}"
+                        {% if program.id in (selected_user.assigned_program_ids or []) %}checked{% endif %}>
+                    {{ program.degree_name }}
+                </label>
+                {% endfor %}
+            </div>
+            {% endif %}
+
             <!-- Password -->
             <div class="user-password-section">
 
@@ -470,6 +484,10 @@ Manage Users
 
             </div>
 
+
+            <p id="user-save-feedback" role="status" aria-live="polite">
+                {% if save_success %}Account changes saved successfully.{% endif %}
+            </p>
 
             <div class="user-form-actions">
 
@@ -516,9 +534,7 @@ Manage Users
                 No User Selected
             </h3>
 
-            <p>
-                Select a user from the search results to review and update their account information.
-            </p>
+            <p>Select a user.</p>
 
         </div>
 
@@ -527,5 +543,7 @@ Manage Users
     </section>
 
 </div>
+
+<script src="/static/js/pages/admin/manage-users.js" defer></script>
 
 {% endblock %}

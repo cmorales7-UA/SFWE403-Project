@@ -1,0 +1,22 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Registrar Simulation | UA-GDAS{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="/static/css/pages/admin/admissions.css">{% endblock %}
+{% block sidebar_role %}Administrator{% endblock %}
+{% block sidebar_navigation %}
+{% set admin_active_page = "admissions" %}
+{% include "partials/navigation/administrator_sidebar.html" %}
+{% endblock %}
+{% block dashboard_heading %}Registrar Notification Simulation{% endblock %}
+{% block dashboard_summary %}
+<p class="admissions-intro">Saved {{ simulation.created_at }} · Registrar simulation</p>
+{% endblock %}
+{% block dashboard_content %}
+<section class="admissions-panel">
+  <div class="admissions-detail-body">
+    <h2>Enrollment Intent Notification</h2>
+    <p>Saved when Graduate College processes enrollment intent for the specified term.</p>
+    <pre class="admissions-simulation">{{ simulation.notice_text }}</pre>
+    <a class="admissions-link" href="/administrator/admissions?application={{ application_id }}">Back to Admissions Processing</a>
+  </div>
+</section>
+{% endblock %}

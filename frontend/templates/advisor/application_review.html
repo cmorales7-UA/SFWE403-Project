@@ -35,7 +35,6 @@ Review Applications
 
         <div class="review-panel-heading">
             <h2>Applications</h2>
-            <p>Select an application to review.</p>
         </div>
 
         <div class="review-results">
@@ -118,7 +117,6 @@ Review Applications
 
             <div class="review-section-heading">
                 <h3>Applicant Information</h3>
-                <p>Review the information provided in the application.</p>
             </div>
 
             <details class="review-detail-section" open>
@@ -237,15 +235,30 @@ Review Applications
         </form>
 
 
+        <!-- Program recommendation -->
+        <section class="review-action-section">
+            <h3>Final Program Recommendation</h3>
+            {% if selected_application.status == "In Review" %}
+            <a
+                href="/advisor/graduate-college?application={{ selected_application.id }}"
+                class="review-secondary-button"
+                style="display: inline-flex; align-items: center; text-decoration: none;"
+            >
+                Open Program Recommendations
+            </a>
+            {% else %}
+            <p class="review-field-note">
+                This application is not yet In Review. Complete the
+                preliminary review before recording a final program recommendation.
+            </p>
+            {% endif %}
+        </section>
+
+
         <!-- Request additional information -->
         <section class="review-action-section">
 
             <h3>Request Additional Information</h3>
-
-            <p>
-                Notify the applicant about missing information
-                identified during the preliminary review.
-            </p>
 
             <button
                 type="button"
@@ -303,7 +316,7 @@ Review Applications
         ></p>
 
 
-        <!-- SRS 9.4.3: Application communication with applicant -->
+        <!-- Applicant communication -->
         {% include "partials/applicant_communication.html" %}
 
 

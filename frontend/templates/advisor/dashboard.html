@@ -29,22 +29,22 @@ Degree Advisor Dashboard
 
 <div class="summary-card">
     <span class="summary-label">Applications</span>
-    <strong class="summary-value">—</strong>
+    <strong class="summary-value">{{ summary.applications }}</strong>
 </div>
 
 <div class="summary-card">
     <span class="summary-label">Reviews Pending</span>
-    <strong class="summary-value">—</strong>
+    <strong class="summary-value">{{ summary.reviews_pending }}</strong>
 </div>
 
 <div class="summary-card">
     <span class="summary-label">Reviews Completed</span>
-    <strong class="summary-value">—</strong>
+    <strong class="summary-value">{{ summary.reviews_completed }}</strong>
 </div>
 
 <div class="summary-card">
     <span class="summary-label">Degree Programs</span>
-    <strong class="summary-value">—</strong>
+    <strong class="summary-value">{{ summary.degree_programs }}</strong>
 </div>
 
 {% endblock %}
@@ -73,13 +73,27 @@ Degree Advisor Dashboard
             </thead>
 
             <tbody>
-                <tr class="empty-row">
-                    <td>—</td>
-                    <td>—</td>
-                    <td>—</td>
-                    <td>—</td>
-                    <td>—</td>
+                {% for application in applications %}
+                <tr>
+                    <td>
+                        {% if application.status in ["Submitted", "Needs Information", "In Review"] %}
+                        <a href="/advisor/application-review?application={{ application.id }}">
+                            {{ application.applicant_name or application.full_name or "Applicant" }}
+                        </a>
+                        {% else %}
+                        {{ application.applicant_name or application.full_name or "Applicant" }}
+                        {% endif %}
+                    </td>
+                    <td>{{ application.degree_program or application.degree_name or "Unknown" }}</td>
+                    <td>{{ application.term or "Not specified" }}</td>
+                    <td>{{ application.status }}</td>
+                    <td>{{ application.decision_display }}</td>
                 </tr>
+                {% else %}
+                <tr class="empty-row">
+                    <td colspan="5">No applications assigned to your degree programs.</td>
+                </tr>
+                {% endfor %}
             </tbody>
 
         </table>

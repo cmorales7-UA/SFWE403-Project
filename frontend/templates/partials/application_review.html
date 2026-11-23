@@ -8,9 +8,7 @@
 
             <h2>Assigned Applications</h2>
 
-            <p>
-                Select an application to review.
-            </p>
+            
 
         </div>
 
@@ -48,9 +46,7 @@
 
                 <h3>No Applications</h3>
 
-                <p>
-                    Assigned applications will appear here.
-                </p>
+                
 
             </div>
 
@@ -150,87 +146,66 @@
         </div>
 
 
-        <!-- Internal review -->
-        <form class="review-form">
+        {% set program_decision = selected_application.advisor_program_decision %}
+        {% set editable = selected_application.status in ["Submitted", "Needs Information", "In Review"] %}
+        <form id="graduate-college-review-form"
+              class="review-form"
+              data-application-id="{{ selected_application.id }}"
+              {% if program_decision %}data-decision-version="{{ program_decision.version }}"{% endif %}>
 
             <div class="review-field">
-
-                <label for="review_comments">
-                    Internal Review Comments
-                </label>
-
-                <textarea
-                    id="review_comments"
-                    name="review_comments"
-                    rows="7"
-                >{{ selected_application.review_comments | default("") }}</textarea>
-
-                <span class="review-field-note">
-                    Internal comments are not visible to the applicant.
-                </span>
-
+                <label for="review_comments">Internal Review Comments</label>
+                <textarea id="review_comments"
+                          name="review_comments"
+                          maxlength="5000"
+                          rows="7"
+                          {% if not editable %}disabled{% endif %}>{{ selected_application.review_comments or "" }}</textarea>
             </div>
 
-
             <div class="review-field">
-
-                <label for="recommendation">
-                    Final Recommendation
-                </label>
-
-                {% set current_recommendation = selected_application.recommendation | default("") %}
-
-                <select
-                    id="recommendation"
-                    name="recommendation"
-                    required
-                >
-
-                    <option
-                        value=""
-                        disabled
-                        {% if not current_recommendation %}selected{% endif %}
-                    >
+                <label for="recommendation">Final Recommendation</label>
+                <select id="recommendation"
+                        name="recommendation"
+                        {% if not editable or not program_decision %}disabled{% endif %}>
+                    <option value="" {% if not program_decision %}selected{% endif %}>
                         Select Recommendation
                     </option>
-
-                    <option
-                        value="recommend"
-                        {% if current_recommendation == "recommend" %}selected{% endif %}
-                    >
+                    <option value="Recommend" {% if program_decision and program_decision.decision == "Recommend" %}selected{% endif %}>
                         Recommend
                     </option>
-
-                    <option
-                        value="deny"
-                        {% if current_recommendation == "deny" %}selected{% endif %}
-                    >
+                    <option value="Deny" {% if program_decision and program_decision.decision == "Deny" %}selected{% endif %}>
                         Deny
                     </option>
-
-                    <option
-                        value="defer"
-                        {% if current_recommendation == "defer" %}selected{% endif %}
-                    >
+                    <option value="Defer" {% if program_decision and program_decision.decision == "Defer" %}selected{% endif %}>
                         Defer
                     </option>
-
                 </select>
-
+                {% if not program_decision %}
+                <span class="review-field-note">Advisor recommendation pending.</span>
+                {% endif %}
             </div>
 
+            <div class="review-field">
+                <label for="advisor_rationale">Recommendation Rationale</label>
+                <textarea id="advisor_rationale"
+                          name="rationale"
+                          maxlength="5000"
+                          rows="4"
+                          {% if not editable or not program_decision %}disabled{% endif %}>{{ program_decision.rationale if program_decision else "" }}</textarea>
+            </div>
 
+            {% if program_decision %}
+            <span id="advisor-notification-state" class="review-field-note">
+                Notification: {{ "Received" if selected_application.advisor_decision_received else "Pending" }}
+            </span>
+            {% endif %}
+
+            {% if editable %}
             <div class="review-actions">
-
-                <button
-                    type="submit"
-                    class="review-save-button"
-                >
-                    Save Review
-                </button>
-
+                <button type="submit" class="review-save-button">Save Review</button>
             </div>
-
+            {% endif %}
+            <p id="graduate-college-review-feedback" class="review-feedback" role="status" aria-live="polite"></p>
         </form>
 
 
@@ -243,9 +218,7 @@
                 No Application Selected
             </h3>
 
-            <p>
-                Select an assigned application to begin the review.
-            </p>
+            
 
         </div>
 

@@ -1,0 +1,52 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Admission Decision | UA-GDAS{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="/static/css/pages/admin/admissions.css">{% endblock %}
+{% block sidebar_role %}Applicant{% endblock %}
+{% block sidebar_navigation %}
+{% set applicant_active_page = "my-applications" %}
+{% include "partials/navigation/applicant_sidebar.html" %}
+{% endblock %}
+{% block dashboard_heading %}Graduate Admission Decision{% endblock %}
+{% block dashboard_summary %}
+<p class="admissions-intro">{{ application.degree_program }} · {{ application.campus|title }} · {{ application.term }}</p>
+{% endblock %}
+{% block dashboard_content %}
+<section class="admissions-panel admissions-offer" data-application-id="{{ application.id }}">
+    <header class="admissions-panel-title">
+        <h2>{{ application.applicant_name }}</h2>
+        <p>Application status: <strong>{{ state.application_status }}</strong></p>
+    </header>
+    <div class="admissions-detail-body">
+    {% if not state.notice or state.notice.state != "sent" %}
+        <p>No formal Graduate College decision notification has been issued for this application.</p>
+    {% elif state.notice.decision == "Denied" %}
+        <h3>Graduate College Decision: Not Accepted</h3>
+        <p>The Graduate College's formal admission decision has been emailed to the address on your application.</p>
+    {% elif state.notice.decision == "Accepted" %}
+        <h3>Graduate College Decision: Accepted</h3>
+        <p>The Graduate College issued an acceptance notification for your graduate degree application.</p>
+        {% if state.intent and state.intent.processed_at %}
+            <p><strong>Your acceptance has been processed.</strong> Your application status is Intent to Matriculate.</p>
+        {% elif state.intent %}
+            <p><strong>Your intent was received on {{ state.intent.received_at }}.</strong>
+                Graduate College processing is pending. You do not need to submit it again.</p>
+        {% else %}
+            <p>If you intend to accept the offer and begin the program for {{ application.term }},
+                notify the Graduate College below.</p>
+            <label class="admissions-check">
+                <input id="confirm-acceptance" type="checkbox">
+                I accept this admission offer for {{ application.degree_program }} ({{ application.term }}).
+            </label>
+            <button id="accept-admission" type="button" class="admissions-button">
+                Notify Graduate College of My Acceptance
+            </button>
+            <p class="admissions-hint">This records your decision to accept the offer.
+                It does not automatically finalize matriculation.</p>
+        {% endif %}
+    {% endif %}
+    <p id="admissions-feedback" role="status" aria-live="polite"></p>
+    <a class="admissions-link" href="/applicant/applications">Back to My Applications</a>
+    </div>
+</section>
+<script src="/static/js/pages/applications/admission-offer.js" defer></script>
+{% endblock %}

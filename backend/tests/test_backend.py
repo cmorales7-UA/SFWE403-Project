@@ -36,7 +36,7 @@ def program():
                 degree_college='Engineering', degree_description='A graduate program',
                 campus_offered=['main', 'online'], terms_offered=['Fall 2027'],
                 degree_requirements='Bachelor degree', application_deadline='2027-01-15',
-                application_fee='90.00', sponsor_question='Sponsor?',
+                application_fee='90.00', resident_cost_per_unit='650.00', nonresident_cost_per_unit='1500.00', sponsor_question='Sponsor?',
                 ta_ra_question='Assistantship?', funding_question='Funding?',
                 english_test_question='Test?', english_score_question='Score?',
                 other_requirements='Resume', program_contact='grad@example.com')

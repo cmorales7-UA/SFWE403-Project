@@ -28,17 +28,17 @@ Reference Dashboard
 
 <div class="summary-card">
     <span class="summary-label">Requests</span>
-    <strong class="summary-value">—</strong>
+    <strong class="summary-value">{{ summary.requests }}</strong>
 </div>
 
 <div class="summary-card">
-    <span class="summary-label">Letters Submitted</span>
-    <strong class="summary-value">—</strong>
+    <span class="summary-label">Applicants</span>
+    <strong class="summary-value">{{ summary.applicants }}</strong>
 </div>
 
 <div class="summary-card">
-    <span class="summary-label">Pending</span>
-    <strong class="summary-value">—</strong>
+    <span class="summary-label">Degree Programs</span>
+    <strong class="summary-value">{{ summary.programs }}</strong>
 </div>
 
 {% endblock %}
@@ -64,10 +64,16 @@ Reference Dashboard
             </thead>
 
             <tbody>
-                <tr class="empty-row">
-                    <td>—</td>
-                    <td>—</td>
+                {% for item in requests %}
+                <tr>
+                    <td>{{ item.applicant_name }}{% if item.degree_program %} ({{ item.degree_program }}){% endif %}</td>
+                    <td>{{ item.status }}</td>
                 </tr>
+                {% else %}
+                <tr class="empty-row">
+                    <td colspan="2">No recommendation requests are associated with your account email.</td>
+                </tr>
+                {% endfor %}
             </tbody>
 
         </table>

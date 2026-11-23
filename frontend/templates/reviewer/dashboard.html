@@ -29,22 +29,22 @@ Reviewer Dashboard
 
 <div class="summary-card">
     <span class="summary-label">Assigned Applications</span>
-    <strong class="summary-value">—</strong>
+    <strong class="summary-value">{{ summary.assigned }}</strong>
 </div>
 
 <div class="summary-card">
     <span class="summary-label">Pending Reviews</span>
-    <strong class="summary-value">—</strong>
+    <strong class="summary-value">{{ summary.pending }}</strong>
 </div>
 
 <div class="summary-card">
     <span class="summary-label">Completed Reviews</span>
-    <strong class="summary-value">—</strong>
+    <strong class="summary-value">{{ summary.completed }}</strong>
 </div>
 
 <div class="summary-card">
     <span class="summary-label">Recommendations Entered</span>
-    <strong class="summary-value">—</strong>
+    <strong class="summary-value">{{ summary.recommendations }}</strong>
 </div>
 
 {% endblock %}
@@ -72,12 +72,24 @@ Reviewer Dashboard
             </thead>
 
             <tbody>
-                <tr class="empty-row">
-                    <td>—</td>
-                    <td>—</td>
-                    <td>—</td>
-                    <td>—</td>
+                {% for assignment in assignments %}
+                <tr>
+                    <td>
+                        {% if assignment.is_reviewable %}
+                        <a href="/reviewer/applications?application={{ assignment.application_id }}">{{ assignment.applicant_name }}</a>
+                        {% else %}
+                        {{ assignment.applicant_name }}
+                        {% endif %}
+                    </td>
+                    <td>{{ assignment.degree_program }}</td>
+                    <td>{{ assignment.application_status }}</td>
+                    <td>{{ assignment.recommendation_display }}</td>
                 </tr>
+                {% else %}
+                <tr class="empty-row">
+                    <td colspan="4">No review applications are currently assigned to you.</td>
+                </tr>
+                {% endfor %}
             </tbody>
 
         </table>

@@ -44,7 +44,7 @@ Application Review
 {% include "partials/application_review.html" %}
 
 
-<!-- SRS 9.4.3: Application communication with applicant -->
+<!-- Applicant communication -->
 {% if selected_application %}
 
 <section class="review-details-panel admin-email-panel">
@@ -61,5 +61,6 @@ Application Review
     src="/static/js/pages/applications/applicant-communication.js"
     defer>
 </script>
+<script src="/static/js/pages/applications/admin-review.js" defer></script>
 
 {% endblock %}

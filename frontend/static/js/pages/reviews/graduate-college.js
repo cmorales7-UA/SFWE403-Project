@@ -314,7 +314,11 @@ document.addEventListener("DOMContentLoaded", () => {
         emptySelection.querySelector("h2").textContent =
             "Loading application...";
 
-        emptySelection.querySelector("p").textContent = "";
+        const selectionError = $("gc-selection-error");
+        if (selectionError) {
+            selectionError.textContent = "";
+            selectionError.hidden = true;
+        }
 
         renderList();
 
@@ -341,8 +345,10 @@ document.addEventListener("DOMContentLoaded", () => {
             emptySelection.querySelector("h2").textContent =
                 "Unable to open application";
 
-            emptySelection.querySelector("p").textContent =
-                error.message;
+            if (selectionError) {
+                selectionError.textContent = error.message;
+                selectionError.hidden = false;
+            }
         }
     }
 

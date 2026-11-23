@@ -5,6 +5,7 @@ from fastapi.templating import Jinja2Templates
 from backend.service import (
     accounts,
     applications,
+    graduate_college,
     programs,
     review_committee,
 )
@@ -256,8 +257,21 @@ async def administrator_application_review(
         review = selected_application.get("review") or {}
 
         selected_application["review_comments"] = review.get("review_comments", "")
+        selected_application["graduate_college_notes"] = review.get(
+            "graduate_college_notes", ""
+        )
 
-        selected_application["recommendation"] = review.get("recommendation", "")
+        # Only the Advisor records a final program recommendation.
+        # Administrators may review it here but cannot edit it.
+        saved = graduate_college.get_saved_decision(application)
+        selected_application["advisor_program_decision"] = saved
+        selected_application["advisor_decision_received"] = bool(
+            saved and any(
+                notice["administrator_id"] == user["id"]
+                and notice["decision_version"] == saved["version"]
+                for notice in graduate_college.get_notifications(application)
+            )
+        )
 
     return templates.TemplateResponse(
         request=request,

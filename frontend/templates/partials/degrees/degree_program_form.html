@@ -2,7 +2,7 @@
 {% set selected_degree = selected_degree | default(none) %}
 {% set degree_programs = degree_programs | default([]) %}
 
-<form class="degree-program-form" id="degree-program-form">
+<form class="degree-program-form" id="degree-program-form" data-mode="{{ form_mode }}" data-role="{{ request.url.path.split('/')[1] }}" {% if selected_degree %}data-program-id="{{ selected_degree.id }}"{% endif %}>
 
     {% if form_mode == "modify" %}
 
@@ -84,12 +84,12 @@
 
                     <option value="masters" {% if selected_degree and selected_degree.degree_level=="masters"
                         %}selected{% endif %}>
-                        Masters
+                        Master’s (e.g., MS)
                     </option>
 
                     <option value="doctorate" {% if selected_degree and selected_degree.degree_level=="doctorate"
                         %}selected{% endif %}>
-                        Doctorate
+                        Doctorate (e.g., PhD)
                     </option>
                 </select>
 
@@ -235,8 +235,24 @@
                     Fall 2028
                 </label>
 
+                {% if selected_degree %}
+                {% for existing_term in (selected_degree.terms_offered or []) %}
+                {% if existing_term not in ["Spring 2027", "Summer 2027", "Fall 2027", "Spring 2028", "Summer 2028", "Fall 2028"] %}
+                <label class="degree-program-checkbox">
+                    <input type="checkbox" name="terms_offered" value="{{ existing_term }}" checked>
+                    {{ existing_term }}
+                </label>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
             </div>
 
+            <label for="additional_terms" class="degree-program-label">Additional Application Terms</label>
+            <input type="text" id="additional_terms" name="additional_terms"
+                placeholder="Spring 2029, Fall 2029">
+            <p class="degree-program-section-description">
+                Separate additional terms with commas. Existing selected terms will be preserved.
+            </p>
         </div>
 
     </section>
@@ -297,6 +313,23 @@
 
         </div>
 
+        <div class="degree-program-form-grid">
+            <div class="degree-program-field">
+                <label for="resident_cost_per_unit">Tuition per Unit: Arizona Resident ($)</label>
+                <input type="number" id="resident_cost_per_unit" name="resident_cost_per_unit"
+                    min="0" step="0.01" required
+                    value="{{ selected_degree.resident_cost_per_unit if selected_degree and selected_degree.resident_cost_per_unit is not none else '' }}"
+                    placeholder="Enter current approved rate">
+            </div>
+            <div class="degree-program-field">
+                <label for="nonresident_cost_per_unit">Tuition per Unit: Non-Resident ($)</label>
+                <input type="number" id="nonresident_cost_per_unit" name="nonresident_cost_per_unit"
+                    min="0" step="0.01" required
+                    value="{{ selected_degree.nonresident_cost_per_unit if selected_degree and selected_degree.nonresident_cost_per_unit is not none else '' }}"
+                    placeholder="Enter current approved rate">
+            </div>
+        </div>
+
     </section>
 
 
@@ -316,10 +349,7 @@
         </div>
 
 
-        <p class="degree-program-section-description">
-            Review or customize the supplemental questions applicants
-            will answer for this degree program.
-        </p>
+        
 
 
         <div class="degree-program-question-group">
@@ -407,6 +437,13 @@
 
         </div>
 
+        <div class="degree-program-field">
+            <label for="custom_questions">Additional Program-Specific Application Questions</label>
+            <p class="degree-program-section-description">One question per line.</p>
+            <textarea id="custom_questions" name="custom_questions" rows="5"
+                placeholder="Enter each unique question on a separate line">{% if selected_degree %}{{ (selected_degree.custom_questions or []) | join('\n') }}{% endif %}</textarea>
+        </div>
+
     </section>
 
 
@@ -452,6 +489,44 @@
     </section>
 
 
+    {% if collaboration_advisors %}
+    <section class="degree-program-section">
+        <div class="degree-program-section-heading">
+            <h2>Collaborating Degree Advisors</h2>
+        </div>
+        <p class="degree-program-section-description">Selected advisors can edit program details.</p>
+        <div class="degree-program-checkbox-group">
+            {% for advisor in collaboration_advisors %}
+            <label class="degree-program-checkbox">
+                <input type="checkbox" name="collaborating_advisor_ids"
+                    value="{{ advisor.id }}"
+                    {% if selected_degree and advisor.id in (selected_degree.collaborating_advisor_ids or []) %}checked{% endif %}>
+                {{ advisor.first_name }} {{ advisor.last_name }} ({{ advisor.username }})
+            </label>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if form_mode == "modify" and selected_degree and change_history %}
+    <section class="degree-program-section">
+        <div class="degree-program-section-heading"><h2>Program Change History</h2></div>
+        <ul>
+            {% for item in change_history[:10] %}
+            <li>
+                <strong>{{ item.actor_name }}</strong> ({{ item.actor_role | title }})
+                {{ item.action }} this program on {{ item.changed_at }}.
+                {% if item.action == "updated" %}
+                Updated: {{ item.changed_fields | join(", ") | replace("_", " ") }}.
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+
+    <p id="degree-program-feedback" role="status" aria-live="polite"></p>
+
     <!-- Form actions -->
     <div class="degree-program-actions">
 
@@ -462,3 +537,5 @@
     </div>
 
 </form>
+
+<script src="/static/js/pages/degrees/degree-program-management.js" defer></script>

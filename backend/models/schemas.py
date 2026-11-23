@@ -65,3 +65,21 @@ class ProgramCreate(BaseModel):
     english_score_question: str = ''
     other_requirements: str = ''
     program_contact: str = Field(min_length=1)
+    # SRS 9.5.1: per-unit tuition is distinct from the application fee.
+    # Optional for previously saved programs; new forms require both values.
+    resident_cost_per_unit: Decimal | None = Field(
+        default=None, ge=0, max_digits=10, decimal_places=2
+    )
+    nonresident_cost_per_unit: Decimal | None = Field(
+        default=None, ge=0, max_digits=10, decimal_places=2
+    )
+    custom_questions: list[str] = Field(default_factory=list)
+    collaborating_advisor_ids: list[int] = Field(default_factory=list)
+
+    @field_validator('custom_questions')
+    @classmethod
+    def validate_questions(cls, questions):
+        cleaned = [question.strip() for question in questions if question.strip()]
+        if len(cleaned) != len(set(question.casefold() for question in cleaned)):
+            raise ValueError('Additional application questions must be unique')
+        return cleaned

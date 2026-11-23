@@ -44,6 +44,18 @@
             </div>
 
             <div class="application-field">
+                <label for="gender">Applicant Gender (Optional)</label>
+                <select id="gender" name="gender">
+                    <option value="">Prefer not to answer</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Non-binary">Non-binary</option>
+                    <option value="Other">Other</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+            </div>
+
+            <div class="application-field">
                 <label for="date_of_birth">Date of Birth</label>
                 <input type="date" id="date_of_birth" name="date_of_birth" required>
             </div>
@@ -527,9 +539,8 @@
 
         <div class="application-field">
             <label for="sponsor_information">
-                Do you currently have a sponsor in the program
-                that you are applying to?
-                If so, provide their name and contact information.
+                {{ selected_degree.sponsor_question if selected_degree and selected_degree.sponsor_question else
+                   "Do you currently have a sponsor in this program? If so, provide their name and contact information." }}
             </label>
             <textarea id="sponsor_information"
                 name="sponsor_information" rows="4"></textarea>
@@ -537,8 +548,8 @@
 
         <div class="application-field">
             <label for="ta_ra_experience">
-                Do you have TA or RA experience?
-                If so, provide where and the location or program.
+                {{ selected_degree.ta_ra_question if selected_degree and selected_degree.ta_ra_question else
+                   "Do you have TA or RA experience? If so, provide where and the program." }}
             </label>
             <textarea id="ta_ra_experience"
                 name="ta_ra_experience" rows="4"></textarea>
@@ -546,13 +557,21 @@
 
         <div class="application-field">
             <label for="funding_information">
-                Do you require funding?
-                If so, would a tuition scholarship be sufficient
-                for funding you?
+                {{ selected_degree.funding_question if selected_degree and selected_degree.funding_question else
+                   "Do you require funding? If so, would a tuition scholarship be sufficient?" }}
             </label>
             <textarea id="funding_information"
                 name="funding_information" rows="4"></textarea>
         </div>
+
+        {% if selected_degree and selected_degree.application_questions %}
+        {% for question in selected_degree.application_questions %}
+        <div class="application-field">
+            <label for="{{ question.id }}">{{ question.text }}</label>
+            <textarea id="{{ question.id }}" name="{{ question.id }}" rows="4"></textarea>
+        </div>
+        {% endfor %}
+        {% endif %}
 
 
         <!-- International Applicant -->
@@ -589,9 +608,7 @@
 
             <div class="international-section-heading">
                 <h3>International Applicant Information</h3>
-                <p>
-                    Complete the following English proficiency information.
-                </p>
+                
             </div>
 
             <div class="application-form-grid">

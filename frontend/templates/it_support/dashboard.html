@@ -28,17 +28,17 @@ IT Support Dashboard
 
 <div class="summary-card">
     <span class="summary-label">User Accounts</span>
-    <strong class="summary-value">—</strong>
+    <strong class="summary-value">{{ summary.accounts }}</strong>
 </div>
 
 <div class="summary-card">
-    <span class="summary-label">Pending Authorization</span>
-    <strong class="summary-value">—</strong>
+    <span class="summary-label">Applicant Accounts</span>
+    <strong class="summary-value">{{ summary.applicants }}</strong>
 </div>
 
 <div class="summary-card">
-    <span class="summary-label">Authorized Accounts</span>
-    <strong class="summary-value">—</strong>
+    <span class="summary-label">Other Accounts</span>
+    <strong class="summary-value">{{ summary.other_accounts }}</strong>
 </div>
 
 {% endblock %}
@@ -60,16 +60,22 @@ IT Support Dashboard
                 <tr>
                     <th>Username</th>
                     <th>User Type</th>
-                    <th>Status</th>
+                    <th>Email</th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr class="empty-row">
-                    <td>—</td>
-                    <td>—</td>
-                    <td>—</td>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.user_type | replace("_", " ") | title }}</td>
+                    <td>{{ user.email }}</td>
                 </tr>
+                {% else %}
+                <tr class="empty-row">
+                    <td colspan="3">No user accounts are registered.</td>
+                </tr>
+                {% endfor %}
             </tbody>
 
         </table>
