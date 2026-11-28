@@ -125,10 +125,25 @@ FILTER_LABELS = {
     "is_international_applicant": "International Applicant",
     "english_test_date": "English Proficiency Test Date",
     "english_proficiency_score": "English Proficiency Score",
-    "gender": "Gender", "legal_residence_country": "Country of Legal Residence",
-    "degree_type": "Previous Degree Type",
     "program_questions": "Program-Specific Answers",
 }
+# SRS 9.6.2 filter groups. Other application fields remain selectable as
+# report columns, but are not available as filtering criteria.
+TAILORED_FILTER_GROUPS = {
+    "Applicant details": (
+        "full_name", "citizenship", "visa", "military_affiliation",
+        "previous_ua_affiliation", "resident_tuition_eligibility", "ethnicity",
+    ),
+    "Supplemental questions": (
+        "sponsor_information", "ta_ra_experience", "funding_information",
+        "program_questions",
+    ),
+    "English proficiency (international applicants)": (
+        "english_test_date", "english_proficiency_score",
+    ),
+}
+TAILORED_STATUS_OPTIONS = ("In Process", "Submitted", "In Review")
+TAILORED_DECISION_OPTIONS = ("Recommend", "Defer", "Deny", "Intent to Matriculate")
 # These are free-text filters; dropdowns are created for the remaining filters.
 TEXT_FILTERS = ("full_name", "citizenship", "visa", "sponsor_information",
                 "ta_ra_experience", "funding_information", "english_test_date",
@@ -301,6 +316,17 @@ def _matches(row, filters):
 def get_authorized_report_data(actor, report_type: str, filters: dict, records=None,
                                program_id=""):
     accounts.require_role(actor, {"administrator", "advisor"})
+    if report_type == "tailored" and not program_id:
+        raise HTTPException(422, "Select a degree program to generate a tailored report")
+    if report_type == "tailored":
+        if filters.get("status") and filters["status"] not in TAILORED_STATUS_OPTIONS:
+            raise HTTPException(422, "Invalid tailored application status filter")
+        if filters.get("decision") and filters["decision"] not in TAILORED_DECISION_OPTIONS:
+            raise HTTPException(422, "Invalid tailored application decision filter")
+    if program_id:
+        allowed_ids = {str(p["id"]) for p in _programs_for(actor)}
+        if program_id not in allowed_ids:
+            raise HTTPException(403, "Degree program is not available for reporting")
     if records is None:
         records = _all_report_rows(actor)
     result = []
@@ -375,7 +401,9 @@ def _report_state(request, actor):
     if graph_type not in GRAPH_TYPES:
         graph_type = "degree_program"
     records = _all_report_rows(actor)
-    rows = get_authorized_report_data(actor, report_type, filters, records, program_id)
+    # A blank tailored selection is an empty form, not an all-program report.
+    rows = (get_authorized_report_data(actor, report_type, filters, records, program_id)
+            if report_type != "tailored" or program_id else [])
     query = urlencode({
         "report_type": report_type, "program_id": program_id,
         **filters, "fields": [f for f in selected if f in FIELD_LABELS],
@@ -398,6 +426,8 @@ async def reports_page(request: Request):
         _report_state(request, actor)
     )
     requested = request.query_params.get("generate") == "1"
+    form_error = ("Select a degree program to generate a tailored report."
+                  if requested and report_type == "tailored" and not program_id else None)
     columns = _columns(report_type, selected)
     options = get_report_filter_options(actor, records)
     return templates.TemplateResponse(
@@ -410,6 +440,10 @@ async def reports_page(request: Request):
             "selected_fields": selected, "field_groups": FIELD_GROUPS,
             "field_labels": FIELD_LABELS, "filter_labels": FILTER_LABELS,
             "text_filters": TEXT_FILTERS,
+            "tailored_filter_groups": TAILORED_FILTER_GROUPS,
+            "tailored_status_options": TAILORED_STATUS_OPTIONS,
+            "tailored_decision_options": TAILORED_DECISION_OPTIONS,
+            "form_error": form_error,
             "report_requested": requested, "report_rows": rows if requested else [],
             "result_count": len(rows) if requested else 0,
             "columns": columns if report_type == "tailored" else SUMMARY_COLUMNS,
