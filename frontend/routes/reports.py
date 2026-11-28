@@ -127,11 +127,12 @@ FILTER_LABELS = {
     "english_proficiency_score": "English Proficiency Score",
     "gender": "Gender", "legal_residence_country": "Country of Legal Residence",
     "degree_type": "Previous Degree Type",
+    "program_questions": "Program-Specific Answers",
 }
 # These are free-text filters; dropdowns are created for the remaining filters.
 TEXT_FILTERS = ("full_name", "citizenship", "visa", "sponsor_information",
                 "ta_ra_experience", "funding_information", "english_test_date",
-                "english_proficiency_score")
+                "english_proficiency_score", "program_questions")
 
 
 def _normalized(value):
@@ -426,21 +427,26 @@ async def reports_page(request: Request):
 @router.get("/advisor/reports.csv", name="advisor_reports_csv")
 async def reports_csv(request: Request):
     actor, _ = _report_actor(request)
-    report_type, filters, program_id, selected, _, records, rows, _ = (
+    report_type, filters, program_id, selected, graph_type, records, rows, _ = (
         _report_state(request, actor)
     )
     columns = _columns(report_type, selected)
     legacy = report_type in {"current-applicants", "applicant-status"}
     output = io.StringIO(newline="")
     writer = csv.writer(output)
-    writer.writerow([
-        ("Applicant" if legacy and key == "full_name" else
-         "Application Status" if legacy and key == "application_status" else
-         FIELD_LABELS[key])
-        for key in columns
-    ])
-    for row in rows:
-        writer.writerow([sanitize_csv_value(row["values"].get(key)) for key in columns])
+    if report_type == "graphical":
+        writer.writerow(["Category", "Application Count"])
+        for item in _graph_data(rows, graph_type):
+            writer.writerow([sanitize_csv_value(item["label"]), item["count"]])
+    else:
+        writer.writerow([
+            ("Applicant" if legacy and key == "full_name" else
+             "Application Status" if legacy and key == "application_status" else
+             FIELD_LABELS[key])
+            for key in columns
+        ])
+        for row in rows:
+            writer.writerow([sanitize_csv_value(row["values"].get(key)) for key in columns])
     names = {
         "current-applicants": "current-degree-applicants",
         "applicant-status": "degree-applicant-status",
