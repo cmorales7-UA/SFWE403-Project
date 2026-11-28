@@ -264,7 +264,7 @@ def test_srs_96_csv_formula_protection_and_empty_fields(reporting):
         "citizenship": "+HYPERLINK(1)", "date_of_birth": "2001-01-01",
     })
     rows = read_csv(ctx["client"].get("/administrator/reports.csv", params={
-        "report_type": "tailored",
+        "report_type": "tailored", "program_id": ctx["program"],
         "fields": ["full_name", "citizenship", "official_transcripts"],
     }))
     assert rows == [{
@@ -287,7 +287,7 @@ def test_srs_962_custom_question_filter_and_srs_966_chart_csv(reporting):
     })
 
     result = read_csv(ctx["client"].get("/administrator/reports.csv", params={
-        "report_type": "tailored",
+        "report_type": "tailored", "program_id": ctx["program"],
         "program_questions": "solar energy",
         "fields": ["full_name", "program_questions"],
     }))
@@ -302,3 +302,86 @@ def test_srs_962_custom_question_filter_and_srs_966_chart_csv(reporting):
         {"Category": "Hispanic", "Application Count": "2"},
         {"Category": "Asian", "Application Count": "1"},
     ]
+
+
+def test_srs_962_conops_only_filters_and_required_program(reporting):
+    ctx = reporting
+    add_application(ctx, "Maya Thompson", "Submitted", fields={
+        "ethnicity": "Hispanic", "gender": "Female",
+        "legal_residence_country": "United States",
+        "degree_type": "Bachelors", "citizenship": "United States",
+    })
+
+    blank = ctx["client"].get("/administrator/reports", params={
+        "report_type": "tailored", "generate": "1",
+    })
+    assert blank.status_code == 200
+    assert "Select a degree program to generate a tailored report." in blank.text
+    assert 'id="program_id"' in blank.text
+    assert "required" in blank.text
+    assert "0 records found." not in blank.text
+    assert "Download CSV" not in blank.text
+
+    missing = ctx["client"].get("/administrator/reports.csv", params={
+        "report_type": "tailored",
+    })
+    assert missing.status_code == 422
+    assert "degree program" in missing.json()["detail"].lower()
+
+    options = ctx["client"].get("/administrator/reports", params={
+        "report_type": "tailored", "program_id": ctx["program"],
+    })
+    assert options.status_code == 200
+    assert "Additional ConOps filters" in options.text
+    assert "Fields to Include" in options.text
+    assert 'id="filter_full_name"' in options.text
+    assert 'id="filter_visa"' in options.text
+    assert 'id="filter_military_affiliation"' in options.text
+    assert 'id="filter_previous_ua_affiliation"' in options.text
+    assert 'id="filter_resident_tuition_eligibility"' in options.text
+    assert 'id="filter_ethnicity"' in options.text
+    assert 'id="filter_program_questions"' in options.text
+    assert 'id="filter_english_test_date"' in options.text
+    assert 'id="filter_english_proficiency_score"' in options.text
+    assert 'id="filter_gender"' not in options.text
+    assert 'id="filter_legal_residence_country"' not in options.text
+    assert 'id="filter_degree_type"' not in options.text
+    assert 'id="filter_is_international_applicant"' not in options.text
+
+    # Tailored application status and decision choices use the ConOps values.
+    assert 'id="tailored_status"' in options.text
+    assert 'value="In Process"' in options.text
+    assert 'value="Submitted"' in options.text
+    assert 'value="In Review"' in options.text
+    assert 'id="tailored_decision"' in options.text
+    for choice in ("Recommend", "Defer", "Deny", "Intent to Matriculate"):
+        assert ('value="' + choice + '"') in options.text
+
+    invalid_status = ctx["client"].get("/administrator/reports.csv", params={
+        "report_type": "tailored", "program_id": ctx["program"],
+        "status": "Denied",
+    })
+    assert invalid_status.status_code == 422
+    invalid_decision = ctx["client"].get("/administrator/reports.csv", params={
+        "report_type": "tailored", "program_id": ctx["program"],
+        "decision": "Accepted",
+    })
+    assert invalid_decision.status_code == 422
+
+
+def test_srs_962_tailored_program_isolated_for_advisors(reporting):
+    ctx = reporting
+    add_application(ctx, "Allowed Applicant", "Submitted")
+    add_application(ctx, "Other Program Applicant", "Submitted",
+                    program=ctx["other_program"])
+    ctx["active"]["user"] = ctx["advisor"]
+
+    accessible = read_csv(ctx["client"].get("/advisor/reports.csv", params={
+        "report_type": "tailored", "program_id": ctx["program"],
+    }))
+    assert [row["Full Name"] for row in accessible] == ["Allowed Applicant"]
+
+    forbidden = ctx["client"].get("/advisor/reports.csv", params={
+        "report_type": "tailored", "program_id": ctx["other_program"],
+    })
+    assert forbidden.status_code == 403
