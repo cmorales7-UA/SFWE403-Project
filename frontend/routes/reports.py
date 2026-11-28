@@ -465,6 +465,8 @@ async def reports_csv(request: Request):
     report_type, filters, program_id, selected, graph_type, records, rows, _ = (
         _report_state(request, actor)
     )
+    if report_type == "tailored" and not program_id:
+        raise HTTPException(422, "Select a degree program to generate a tailored report")
     columns = _columns(report_type, selected)
     legacy = report_type in {"current-applicants", "applicant-status"}
     output = io.StringIO(newline="")
