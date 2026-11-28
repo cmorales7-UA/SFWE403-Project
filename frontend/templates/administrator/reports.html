@@ -38,9 +38,12 @@
         <div class="report-field">
           <label for="report_type">Report Type</label>
           <select id="report_type" name="report_type">
-            {% for value, label in report_types.items() %}
+            {% for value, label in report_type_options.items() %}
             <option value="{{ value }}" {% if selected_report_type == value %}selected{% endif %}>{{ label }}</option>
             {% endfor %}
+            {% if selected_report_type not in report_type_options %}
+            <option value="{{ selected_report_type }}" selected>{{ report_types[selected_report_type] }}</option>
+            {% endif %}
           </select>
         </div>
         <div class="report-field">
