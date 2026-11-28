@@ -200,7 +200,7 @@
             <tr>
               {% for key in columns %}
               <td {% if key == "full_name" %}class="report-applicant"{% endif %}>
-                {{ application.values.get(key) or "Not provided" }}
+                {{ application["values"].get(key) or "Not provided" }}
               </td>
               {% endfor %}
               {% if detail_columns %}
@@ -220,7 +220,7 @@
                     <dl>
                       {% for key, label in ns.visible_items %}
                       <dt>{{ label }}</dt>
-                      <dd>{{ application.values.get(key) or "Not provided" }}</dd>
+                      <dd>{{ application["values"].get(key) or "Not provided" }}</dd>
                       {% endfor %}
                     </dl>
                     {% endif %}
