@@ -272,3 +272,33 @@ def test_srs_96_csv_formula_protection_and_empty_fields(reporting):
         "Citizenship": "'+HYPERLINK(1)",
         "Official Transcripts": "",
     }]
+
+
+def test_srs_962_custom_question_filter_and_srs_966_chart_csv(reporting):
+    ctx = reporting
+    add_application(ctx, "Avery Bennett", "Submitted", fields={
+        "ethnicity": "Hispanic", "custom_research": "Solar energy controls",
+    })
+    add_application(ctx, "Maya Thompson", "Submitted", fields={
+        "ethnicity": "Hispanic", "custom_research": "Embedded security",
+    })
+    add_application(ctx, "Liam Parker", "Submitted", fields={
+        "ethnicity": "Asian",
+    })
+
+    result = read_csv(ctx["client"].get("/administrator/reports.csv", params={
+        "report_type": "tailored",
+        "program_questions": "solar energy",
+        "fields": ["full_name", "program_questions"],
+    }))
+    assert len(result) == 1
+    assert result[0]["Full Name"] == "Avery Bennett"
+    assert "Research interests: Solar energy controls" in result[0]["Program-Specific Answers"]
+
+    chart = read_csv(ctx["client"].get("/administrator/reports.csv", params={
+        "report_type": "graphical", "graph_type": "ethnicity",
+    }))
+    assert chart == [
+        {"Category": "Hispanic", "Application Count": "2"},
+        {"Category": "Asian", "Application Count": "1"},
+    ]
