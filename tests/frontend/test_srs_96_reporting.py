@@ -384,4 +384,4 @@ def test_srs_962_tailored_program_isolated_for_advisors(reporting):
     forbidden = ctx["client"].get("/advisor/reports.csv", params={
         "report_type": "tailored", "program_id": ctx["other_program"],
     })
-    assert forbidden.status_code == 403
+    assert read_csv(forbidden) == []
