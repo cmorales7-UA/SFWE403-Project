@@ -39,6 +39,30 @@ Available endpoints:
 | PUT | `/api/programs/{id}` | Update an authorized program |
 | GET | `/api/programs/{id}/history` | View authorized program change history |
 
+
+## SRS 9.6: Application reporting and analytics
+
+Administrators can open /administrator/reports. Advisors can open
+/advisor/reports and see only applications in their assigned degree programs.
+Both dashboards use persisted application data and allow selecting a program,
+term, campus, application status, and decision.
+
+The report types implement:
+- 9.6.1: current submitted graduate applications with detailed application
+  information, supplemental answers, and downloadable CSV.
+- 9.6.2: tailored reports with custom filters and selectable output columns.
+- 9.6.3: recommended/accepted or intent-to-matriculate applications.
+- 9.6.4: denied or deferred applications.
+- 9.6.5: pending or in-review applications.
+- 9.6.6: bar-chart comparisons by degree program, ethnicity, country of legal
+  residence, applicant-reported gender, campus, prior degree type, prior UA
+  degree, term, or application status. Charts can export aggregate CSV counts.
+
+CSV exports protect formula-like applicant values, and report pages are marked
+Cache-Control: no-store. Missing information is displayed as "Not provided"
+on pages and left blank in CSV; a field is not invented when the application
+has not stored it. Test with fictional applicant records.
+
 ## Testing
 
 ```powershell
