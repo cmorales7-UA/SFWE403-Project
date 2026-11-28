@@ -323,10 +323,6 @@ def get_authorized_report_data(actor, report_type: str, filters: dict, records=N
             raise HTTPException(422, "Invalid tailored application status filter")
         if filters.get("decision") and filters["decision"] not in TAILORED_DECISION_OPTIONS:
             raise HTTPException(422, "Invalid tailored application decision filter")
-    if program_id:
-        allowed_ids = {str(p["id"]) for p in _programs_for(actor)}
-        if program_id not in allowed_ids:
-            raise HTTPException(403, "Degree program is not available for reporting")
     if records is None:
         records = _all_report_rows(actor)
     result = []
@@ -395,6 +391,11 @@ def sanitize_csv_value(value):
 def _report_state(request, actor):
     report_type = normalize_report_type(request.query_params.get("report_type", "current-submitted"))
     filters = get_report_filters(request)
+    if report_type != "tailored":
+        # Filters hidden in non-tailored reports must not change the results.
+        visible_filters = {"campus", "term", "status", "decision"}
+        filters = {key: value if key in visible_filters else ""
+                   for key, value in filters.items()}
     program_id = request.query_params.get("program_id", "").strip()
     selected = request.query_params.getlist("fields")
     graph_type = request.query_params.get("graph_type", "degree_program")
