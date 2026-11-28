@@ -30,6 +30,11 @@ REPORT_TYPES = {
     "current-applicants": "Current Degree Applicants Report",
     "applicant-status": "Degree Applicant Status Report",
 }
+# Keep legacy report URLs working without cluttering the new report selector.
+VISIBLE_REPORT_TYPES = {
+    key: label for key, label in REPORT_TYPES.items()
+    if key not in {"current-applicants", "applicant-status"}
+}
 FINAL_STATUSES = {"Accepted", "Denied"}
 PENDING_STATUSES = {"In Process", "Submitted", "In Review", "Needs Information"}
 
@@ -436,6 +441,7 @@ async def reports_page(request: Request):
         name="administrator/reports.html",
         context={
             "role": role, "report_types": REPORT_TYPES,
+            "report_type_options": VISIBLE_REPORT_TYPES,
             "selected_report_type": report_type,
             "filters": filters, "program_id": program_id,
             "selected_fields": selected, "field_groups": FIELD_GROUPS,
