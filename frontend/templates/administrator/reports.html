@@ -83,9 +83,9 @@
             {% endfor %}
           </select>
         </div>
-        <div class="report-field" data-report-scope="standard">
+        <div class="report-field" data-report-scope="standard" {% if selected_report_type == "tailored" %}hidden{% endif %}>
           <label for="status">Application Status</label>
-          <select id="status" name="status">
+          <select id="status" name="status" {% if selected_report_type == "tailored" %}disabled{% endif %}>
             <option value="">All statuses</option>
             {% for item in status_options %}
             <option value="{{ item }}" {% if filters.status == item %}selected{% endif %}>{{ item }}</option>
@@ -101,9 +101,9 @@
             {% endfor %}
           </select>
         </div>
-        <div class="report-field" data-report-scope="standard">
+        <div class="report-field" data-report-scope="standard" {% if selected_report_type == "tailored" %}hidden{% endif %}>
           <label for="decision">Application Decision</label>
-          <select id="decision" name="decision">
+          <select id="decision" name="decision" {% if selected_report_type == "tailored" %}disabled{% endif %}>
             <option value="">All decisions</option>
             {% for item in decision_options %}
             <option value="{{ item }}" {% if filters.decision == item %}selected{% endif %}>{{ item }}</option>
