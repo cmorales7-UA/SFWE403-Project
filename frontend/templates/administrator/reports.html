@@ -129,7 +129,7 @@
             <span class="report-chevron" aria-hidden="true"></span>
           </summary>
           <div class="report-disclosure-body">
-            <p class="report-explainer">These are the additional filter fields specified in SRS 9.6.2. All fields are optional.</p>
+            <p class="report-explainer">These optional filters match the reporting requirements.</p>
             {% for group_name, group_keys in tailored_filter_groups.items() %}
             <div class="report-filter-group">
               <h3>{{ group_name }}</h3>
@@ -244,7 +244,7 @@
       {% if selected_report_type == "graphical" %}
       <div class="report-graph-area">
         <h3>{{ graph_types[selected_graph_type] }}</h3>
-        <div class="report-chart" role="img" aria-label="{{ graph_types[selected_graph_type] }}">
+        <div class="report-chart" aria-label="{{ graph_types[selected_graph_type] }}">
           {% for item in graph_data %}
           <div class="report-chart-row">
             <span class="report-chart-label">{{ item.label }}</span>
