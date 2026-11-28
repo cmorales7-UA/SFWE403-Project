@@ -67,6 +67,43 @@
         if (hasActiveFilter) additional.open = true;
     }
 
+    const navigationToggle = document.getElementById("sidebar-toggle");
+    if (window.matchMedia("(max-width: 700px)").matches &&
+        navigationToggle?.getAttribute("aria-expanded") === "true") {
+        navigationToggle.click();
+    }
+
+    const drawer = document.getElementById("report-drawer");
+    if (drawer) {
+        const drawerTitle = drawer.querySelector("h2");
+        const drawerContent = drawer.querySelector(".report-drawer-content");
+        let opener;
+        let pointerStartedOnBackdrop = false;
+
+        document.querySelector(".report-table").addEventListener("click", event => {
+            const button = event.target.closest("[data-report-details]");
+            if (!button) return;
+
+            opener = button;
+            drawerTitle.textContent = opener.dataset.applicant;
+            const details = opener.nextElementSibling.content.cloneNode(true);
+            drawerContent.replaceChildren(details);
+            drawer.showModal();
+            drawerContent.scrollTop = 0;
+        });
+
+        drawer.addEventListener("pointerdown", event => {
+            pointerStartedOnBackdrop = event.target === drawer;
+        });
+        drawer.addEventListener("click", event => {
+            if (pointerStartedOnBackdrop && event.target === drawer) drawer.close();
+        });
+        drawer.addEventListener("close", () => {
+            drawerContent.replaceChildren();
+            opener?.focus({preventScroll: true});
+        });
+    }
+
     reportType.addEventListener("change", toggleReportSections);
     toggleReportSections();
 })();

@@ -435,6 +435,14 @@ async def reports_page(request: Request):
     form_error = ("Select a degree program to generate a tailored report."
                   if requested and report_type == "tailored" and not program_id else None)
     columns = _columns(report_type, selected)
+    table_columns = (
+        tuple(key for key in columns if key in SUMMARY_COLUMNS)
+        if report_type == "tailored" else SUMMARY_COLUMNS
+    )
+    detail_groups = {
+        name: [(key, label) for key, label in fields if key in columns]
+        for name, fields in FIELD_GROUPS.items()
+    }
     options = get_report_filter_options(actor, records)
     return templates.TemplateResponse(
         request=request,
@@ -454,7 +462,7 @@ async def reports_page(request: Request):
             "report_requested": requested, "report_rows": rows if requested else [],
             "result_count": len(rows) if requested else 0,
             "columns": columns if report_type == "tailored" else SUMMARY_COLUMNS,
-            "detail_columns": columns if report_type != "tailored" else (),
+            "table_columns": table_columns, "detail_groups": detail_groups,
             "report_csv_query": query, "graph_types": GRAPH_TYPES,
             "selected_graph_type": graph_type,
             "graph_data": _graph_data(rows, graph_type) if requested and report_type == "graphical" else [],

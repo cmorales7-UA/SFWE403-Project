@@ -16,24 +16,11 @@
 {% block dashboard_content %}
 {% set reports_path = "/advisor/reports" if role == "advisor" else "/administrator/reports" %}
 <div class="reports-page">
-  <header class="reports-intro">
-    <div>
-      <p class="reports-eyebrow">Graduate College · Reporting</p>
-      <p class="reports-description">Explore application records, focus your results, and export the information you need.</p>
-    </div>
-  </header>
-
   <form class="reports-controls" method="get" action="{{ reports_path }}" id="reports-form">
     <input type="hidden" name="generate" value="1">
 
     <section class="report-builder-section" aria-labelledby="report-setup-title">
-      <div class="report-step-head">
-        <span class="report-step-number" aria-hidden="true">1</span>
-        <div>
-          <h2 id="report-setup-title">Choose your report</h2>
-          <p>Start with a report type and a degree program.</p>
-        </div>
-      </div>
+      <h2 id="report-setup-title">Choose your report</h2>
       <div class="report-filter-grid report-primary-controls">
         <div class="report-field">
           <label for="report_type">Report Type</label>
@@ -60,13 +47,7 @@
     </section>
 
     <section class="report-builder-section" aria-labelledby="report-filter-title">
-      <div class="report-step-head">
-        <span class="report-step-number" aria-hidden="true">2</span>
-        <div>
-          <h2 id="report-filter-title">Refine your results</h2>
-          <p>Only choose filters that matter for this report.</p>
-        </div>
-      </div>
+      <h2 id="report-filter-title">Filters</h2>
       <div class="report-filter-grid">
         <div class="report-field">
           <label for="campus">Campus</label>
@@ -132,7 +113,6 @@
             <span class="report-chevron" aria-hidden="true"></span>
           </summary>
           <div class="report-disclosure-body">
-            <p class="report-explainer">These optional filters match the reporting requirements.</p>
             {% for group_name, group_keys in tailored_filter_groups.items() %}
             <div class="report-filter-group">
               <h3>{{ group_name }}</h3>
@@ -162,13 +142,7 @@
     </section>
 
     <section class="report-builder-section" data-report-scope="tailored" {% if selected_report_type != "tailored" %}hidden{% endif %} aria-labelledby="report-columns-title">
-      <div class="report-step-head">
-        <span class="report-step-number" aria-hidden="true">3</span>
-        <div>
-          <h2 id="report-columns-title">Choose report columns</h2>
-          <p>Select the information to display and include in your CSV download.</p>
-        </div>
-      </div>
+      <h2 id="report-columns-title">Report fields</h2>
       <details class="report-disclosure report-columns-disclosure" id="report-columns-disclosure">
         <summary>
           <span class="report-disclosure-title">Fields to Include</span>
@@ -199,13 +173,7 @@
     </section>
 
     <section class="report-builder-section" data-report-scope="graphical" {% if selected_report_type != "graphical" %}hidden{% endif %} aria-labelledby="report-chart-settings">
-      <div class="report-step-head">
-        <span class="report-step-number" aria-hidden="true">3</span>
-        <div>
-          <h2 id="report-chart-settings">Chart comparison</h2>
-          <p>Select the category to compare.</p>
-        </div>
-      </div>
+      <h2 id="report-chart-settings">Chart comparison</h2>
       <div class="report-field report-chart-select">
         <label for="graph_type">Compare applications by</label>
         <select id="graph_type" name="graph_type">
@@ -228,14 +196,9 @@
   <section class="report-results" id="report-results" aria-labelledby="report-results-title">
     <div class="report-results-heading">
       <div>
-        <span class="report-label">RESULTS</span>
         <h2 id="report-results-title">{{ report_types[selected_report_type] }}</h2>
         {% if report_requested and not form_error %}
         <p>{{ result_count }} record{% if result_count != 1 %}s{% endif %} found.</p>
-        {% elif form_error %}
-        <p>Choose a degree program above to run the report.</p>
-        {% else %}
-        <p>Generate a report to view your matching applications.</p>
         {% endif %}
       </div>
       {% if report_requested and report_rows and not form_error %}
@@ -261,55 +224,81 @@
         <p class="report-chart-caption">Counts reflect the selected filters. Unavailable values appear as Not provided.</p>
       </div>
       {% endif %}
-      <div class="report-table-wrapper">
-        <table class="report-table">
-          <thead>
-            <tr>
-              {% for key in columns %}
-              <th scope="col">{{ field_labels[key] }}</th>
-              {% endfor %}
-              {% if detail_columns %}<th scope="col">Details</th>{% endif %}
-            </tr>
-          </thead>
-          <tbody>
-            {% for application in report_rows %}
-            <tr>
-              {% for key in columns %}
-              <td {% if key == "full_name" %}class="report-applicant"{% endif %}>
-                {{ application["values"].get(key) or "Not provided" }}
-              </td>
-              {% endfor %}
-              {% if detail_columns %}
-              <td>
-                <details class="report-details">
-                  <summary>View</summary>
-                  <div class="report-details-body">
-                    {% for group_name, items in field_groups.items() %}
-                      {% set ns = namespace(visible_items=[]) %}
-                      {% for field_key, field_label in items %}
-                        {% if field_key in detail_columns %}
-                          {% set ns.visible_items = ns.visible_items + [(field_key, field_label)] %}
-                        {% endif %}
-                      {% endfor %}
-                      {% if ns.visible_items %}
-                      <h4>{{ group_name }}</h4>
-                      <dl>
-                        {% for key, label in ns.visible_items %}
-                        <dt>{{ label }}</dt>
-                        <dd>{{ application["values"].get(key) or "Not provided" }}</dd>
-                        {% endfor %}
-                      </dl>
-                      {% endif %}
-                    {% endfor %}
-                  </div>
-                </details>
-              </td>
-              {% endif %}
-            </tr>
+      <table class="report-table" role="table" aria-labelledby="report-results-title">
+        <thead role="rowgroup">
+          <tr role="row">
+            {% if not table_columns %}<th scope="col" role="columnheader">Application</th>{% endif %}
+            {% for key in table_columns %}
+            <th scope="col" role="columnheader">{{ "Applicant" if key == "full_name" else field_labels[key] }}</th>
             {% endfor %}
-          </tbody>
-        </table>
-      </div>
+            <th scope="col" role="columnheader">Details</th>
+          </tr>
+        </thead>
+        <tbody role="rowgroup">
+          {% for application in report_rows %}
+          {% set values = application["values"] %}
+          {% set applicant = values.get("full_name") if "full_name" in table_columns else "" %}
+          {% set record_label = "Application " ~ loop.index %}
+          <tr role="row">
+            {% if not table_columns %}
+            <th scope="row" role="rowheader" class="report-applicant">{{ record_label }}</th>
+            {% endif %}
+            {% for key in table_columns %}
+              {% set value = values.get(key) or "Not provided" %}
+              {% if key == "full_name" %}
+            <th scope="row" role="rowheader" class="report-applicant">{{ value }}</th>
+              {% else %}
+            <td role="cell">
+              <span class="report-mobile-label" aria-hidden="true">{{ field_labels[key] }}</span>
+              {% if key == "application_status" and values.get(key) %}
+              <span class="report-status">{{ value }}</span>
+              {% else %}
+              <span>{{ value }}</span>
+              {% endif %}
+            </td>
+              {% endif %}
+            {% endfor %}
+            <td role="cell" class="report-row-action">
+              <button type="button" class="report-details-button" data-report-details
+                      data-applicant="{{ applicant or record_label }}"
+                      aria-label="View details for {{ applicant or record_label }}"
+                      aria-haspopup="dialog" aria-controls="report-drawer">
+                View details <span aria-hidden="true">›</span>
+              </button>
+              <template>
+                {% for group_name, fields in detail_groups.items() %}
+                  {% if fields %}
+                <section class="report-detail-section">
+                  <h3>{{ group_name }}</h3>
+                  <dl>
+                    {% for key, label in fields %}
+                    <div>
+                      <dt>{{ label }}</dt>
+                      <dd>{{ values.get(key) or "Not provided" }}</dd>
+                    </div>
+                    {% endfor %}
+                  </dl>
+                </section>
+                  {% endif %}
+                {% endfor %}
+              </template>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <dialog class="report-drawer" id="report-drawer" aria-labelledby="report-drawer-title">
+        <header class="report-drawer-header">
+          <div>
+            <p>Applicant details</p>
+            <h2 id="report-drawer-title"></h2>
+          </div>
+          <form method="dialog">
+            <button type="submit" class="report-drawer-close" aria-label="Close applicant details" autofocus>×</button>
+          </form>
+        </header>
+        <div class="report-drawer-content" tabindex="0" role="region" aria-labelledby="report-drawer-title"></div>
+      </dialog>
     {% elif report_requested and not form_error %}
       <div class="report-empty">
         <h3>No matching applications</h3>
